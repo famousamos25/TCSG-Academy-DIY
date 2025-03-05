@@ -4,11 +4,9 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { VantageScoreTooltip } from '@/components/vantagescore-tooltip';
 import Image from 'next/image';
-import Link from 'next/link';
 import { PersonalInfoDialog } from '@/components/personal-info-dialog';
 import { TutorialVideoDialog } from '@/components/tutorial-video-dialog';
 import { CreditReportImportDialog } from '@/components/credit-report-import-dialog';
@@ -22,36 +20,19 @@ import {
   Target,
   UserPlus,
   Building,
-  Users,
   Upload,
   MonitorPlay,
   FileText,
   DollarSign,
   Blocks,
-  UserCheck,
   TrendingUp,
   Clock,
-  Star,
-  Gift,
-  Award,
-  CreditCard,
-  Sparkles,
-  Eye,
-  Infinity,
-  Send,
-  Copy,
-  Share2,
-  Facebook,
-  Twitter,
-  Linkedin,
   RefreshCw,
-  LayoutDashboard,
 } from 'lucide-react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, onSnapshot, doc, getDoc } from 'firebase/firestore';
-import { useToast } from '@/hooks/use-toast';
-import { formatDate, calculateNextRefresh } from '@/lib/date-utils';
+import { collection, query, orderBy, limit, onSnapshot, doc, getDoc, setDoc } from 'firebase/firestore';
+import { formatDate } from '@/lib/date-utils';
 import { getScoreColor, getScoreLabel, getScorePercentage } from '@/lib/credit-report';
 
 interface CreditGoals {
@@ -139,15 +120,15 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
     completed: false,
     status: 'Incomplete',
   },
-  {
-    title: 'Become An Authorize User',
-    icon: <UserCheck className="h-12 w-12" />,
-    description:
-      'Get added as an authorized user on a trusted credit card to boost your credit age and lower utilization—without extra spending.',
-    primaryButton: 'Become An Authorized User',
-    completed: false,
-    status: 'Incomplete',
-  },
+  // {
+  //   title: 'Become An Authorize User',
+  //   icon: <UserCheck className="h-12 w-12" />,
+  //   description:
+  //     'Get added as an authorized user on a trusted credit card to boost your credit age and lower utilization—without extra spending.',
+  //   primaryButton: 'Become An Authorized User',
+  //   completed: false,
+  //   status: 'Incomplete',
+  // },
 ];
 
 export default function DashboardPage() {
@@ -165,7 +146,6 @@ export default function DashboardPage() {
   const totalPages = Math.ceil(CHECKLIST_ITEMS.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(0);
   const [user] = useAuthState(auth);
-  const { toast } = useToast();
   const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>(CHECKLIST_ITEMS);
 
   useEffect(() => {
@@ -360,7 +340,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleItemAction = (title: string) => {
+  const handleItemAction = async (title: string) => {
     switch (title) {
       case 'Learn How to Use TCSG Academy':
         setTutorialVideoOpen(true);
@@ -370,6 +350,13 @@ export default function DashboardPage() {
             ? { ...item, completed: true, status: 'Completed' } 
             : item
         ));
+
+        const docRef = doc(db, 'users', user!.uid, 'activity', 'tutorial');
+
+        await setDoc(docRef, {
+          watched: true
+        });
+
         break;
       case 'Personal Information':
         setPersonalInfoOpen(true);
@@ -429,50 +416,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between">
-            <div className="flex space-x-12">
-              <Link
-                href="/dashboard"
-                className="flex items-center space-x-2 py-4 text-sm font-medium text-brand-navy border-b-2 border-brand-navy"
-              >
-                <LayoutDashboard size={20} />
-                <span>Dashboard</span>
-              </Link>
-              <Link
-                href="/creditreport"
-                className="flex items-center space-x-2 py-4 text-sm font-medium text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-200"
-              >
-                <FileText size={20} />
-                <span>Credit Report</span>
-              </Link>
-              <Link
-                href="/disputes"
-                className="flex items-center space-x-2 py-4 text-sm font-medium text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-200"
-              >
-                <Target size={20} />
-                <span>Dispute Center</span>
-              </Link>
-              <Link
-                href="/dashboard"
-                className="flex items-center space-x-2 py-4 text-sm font-medium text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-200"
-              >
-                <Upload size={20} />
-                <span>Disputes Overview</span>
-              </Link>
-              <Link
-                href="/dashboard"
-                className="flex items-center space-x-2 py-4 text-sm font-medium text-gray-500 hover:text-gray-900 border-b-2 border-transparent hover:border-gray-200"
-              >
-                <Building size={20} />
-                <span>Mail Center</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    
       <div className="container mx-auto p-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card className="overflow-hidden">
