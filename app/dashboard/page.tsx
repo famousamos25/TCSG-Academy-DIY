@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useMemo, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { VantageScoreTooltip } from '@/components/vantagescore-tooltip';
-import Image from 'next/image';
-import { PersonalInfoDialog } from '@/components/personal-info-dialog';
-import { TutorialVideoDialog } from '@/components/tutorial-video-dialog';
-import { CreditReportImportDialog } from '@/components/credit-report-import-dialog';
-import { CreditScoreGoalDialog } from '@/components/credit-score-goal-dialog';
-import { DigitalSignatureDialog } from '@/components/digital-signature-dialog';
-import { ReferralProgramDialog } from '@/components/referral-program-dialog';
+import React, { useState, useRef, useMemo, useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { VantageScoreTooltip } from "@/components/vantagescore-tooltip";
+import Image from "next/image";
+import { PersonalInfoDialog } from "@/components/personal-info-dialog";
+import { TutorialVideoDialog } from "@/components/tutorial-video-dialog";
+import { CreditReportImportDialog } from "@/components/credit-report-import-dialog";
+import { CreditScoreGoalDialog } from "@/components/credit-score-goal-dialog";
+import { DigitalSignatureDialog } from "@/components/digital-signature-dialog";
+import { ReferralProgramDialog } from "@/components/referral-program-dialog";
 import {
   Info,
   ChevronRight,
@@ -28,12 +28,25 @@ import {
   TrendingUp,
   Clock,
   RefreshCw,
-} from 'lucide-react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, onSnapshot, doc, getDoc, setDoc } from 'firebase/firestore';
-import { formatDate } from '@/lib/date-utils';
-import { getScoreColor, getScoreLabel, getScorePercentage } from '@/lib/credit-report';
+} from "lucide-react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "@/lib/firebase";
+import {
+  collection,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import { formatDate } from "@/lib/date-utils";
+import {
+  getScoreColor,
+  getScoreLabel,
+  getScorePercentage,
+} from "@/lib/credit-report";
 
 interface CreditGoals {
   purpose: string;
@@ -51,74 +64,74 @@ interface ChecklistItem {
   primaryButton: string;
   secondaryButton?: string;
   completed: boolean;
-  status: 'Incomplete' | 'Completed';
+  status: "Incomplete" | "Completed";
 }
 
 const CHECKLIST_ITEMS: ChecklistItem[] = [
   {
-    title: 'Learn How to Use TCSG Academy',
+    title: "Learn How to Use TCSG Academy",
     icon: <MonitorPlay className="h-12 w-12" />,
     description:
-      'Watch this quick tutorial to unlock the full benefits of TCSG Academy!',
-    primaryButton: 'Watch Now',
+      "Watch this quick tutorial to unlock the full benefits of TCSG Academy!",
+    primaryButton: "Watch Now",
     completed: false,
-    status: 'Incomplete',
+    status: "Incomplete",
   },
   {
-    title: 'Personal Information',
+    title: "Personal Information",
     icon: <UserPlus className="h-12 w-12" />,
     description:
-      'Your profile is complete! TCSG Academy will auto-fill your dispute letters with the correct details, making the process seamless.',
-    primaryButton: 'Update Info',
-    secondaryButton: 'Tutorial',
+      "Your profile is complete! TCSG Academy will auto-fill your dispute letters with the correct details, making the process seamless.",
+    primaryButton: "Update Info",
+    secondaryButton: "Tutorial",
     completed: false,
-    status: 'Incomplete',
+    status: "Incomplete",
   },
   {
-    title: 'Upload Credit Report',
+    title: "Upload Credit Report",
     icon: <Upload className="h-12 w-12" />,
     description:
-      'TCSG Academy AI has analyzed your report and generated insights. Check out your personalized Credit Analysis Report for next steps.',
-    primaryButton: 'Update Report',
-    secondaryButton: 'Tutorial',
+      "TCSG Academy AI has analyzed your report and generated insights. Check out your personalized Credit Analysis Report for next steps.",
+    primaryButton: "Update Report",
+    secondaryButton: "Tutorial",
     completed: false,
-    status: 'Incomplete',
+    status: "Incomplete",
   },
   {
-    title: 'Set Your Credit Score Goals',
+    title: "Set Your Credit Score Goals",
     icon: <Target className="h-12 w-12" />,
     description:
       "We've customized your experience based on your goals. Update them anytime to stay on track with your credit journey.",
-    primaryButton: 'Update Goals',
+    primaryButton: "Update Goals",
     completed: false,
-    status: 'Incomplete',
+    status: "Incomplete",
   },
   {
-    title: 'Digital Signature',
+    title: "Digital Signature",
     icon: <FileText className="h-12 w-12" />,
     description:
-      'Your signature secures your disputes and ensures your Declaration of Self-Representation is legally recognized, preventing stall tactics from creditors.',
-    primaryButton: 'View Signature',
+      "Your signature secures your disputes and ensures your Declaration of Self-Representation is legally recognized, preventing stall tactics from creditors.",
+    primaryButton: "View Signature",
     completed: false,
-    status: 'Incomplete',
+    status: "Incomplete",
   },
   {
-    title: 'Become a TCSG Academy Affiliate',
+    title: "Become a TCSG Academy Affiliate",
     icon: <DollarSign className="h-12 w-12" />,
     description:
       "Share TCSG Academy with your network and earn 30% of every friend's subscription. Help people while making extra cash!",
-    primaryButton: 'Start Earning',
+    primaryButton: "Start Earning",
     completed: false,
-    status: 'Incomplete',
+    status: "Incomplete",
   },
   {
-    title: 'Build Your Credit Profile',
+    title: "Build Your Credit Profile",
     icon: <Blocks className="h-12 w-12" />,
     description:
-      'Credit builder programs help you establish or rebuild credit with small, manageable steps. Start building your profile today.',
-    primaryButton: 'Start Building Credit',
+      "Credit builder programs help you establish or rebuild credit with small, manageable steps. Start building your profile today.",
+    primaryButton: "Start Building Credit",
     completed: false,
-    status: 'Incomplete',
+    status: "Incomplete",
   },
   // {
   //   title: 'Become An Authorize User',
@@ -146,7 +159,8 @@ export default function DashboardPage() {
   const totalPages = Math.ceil(CHECKLIST_ITEMS.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(0);
   const [user] = useAuthState(auth);
-  const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>(CHECKLIST_ITEMS);
+  const [checklistItems, setChecklistItems] =
+    useState<ChecklistItem[]>(CHECKLIST_ITEMS);
 
   useEffect(() => {
     if (!user) return;
@@ -154,8 +168,8 @@ export default function DashboardPage() {
     try {
       // Fetch credit report
       const q = query(
-        collection(db, 'users', user.uid, 'credit_reports'),
-        orderBy('importedAt', 'desc'),
+        collection(db, "users", user.uid, "credit_reports"),
+        orderBy("importedAt", "desc"),
         limit(1)
       );
 
@@ -165,18 +179,20 @@ export default function DashboardPage() {
           if (!snapshot.empty) {
             const reportData = snapshot.docs[0].data();
             setCreditReport(reportData);
-            
+
             // Update Upload Credit Report checklist item
-            setChecklistItems(prev => prev.map(item => 
-              item.title === 'Upload Credit Report' 
-                ? { ...item, completed: true, status: 'Completed' } 
-                : item
-            ));
+            setChecklistItems((prev) =>
+              prev.map((item) =>
+                item.title === "Upload Credit Report"
+                  ? { ...item, completed: true, status: "Completed" }
+                  : item
+              )
+            );
           }
           setLoading(false);
         },
         (error) => {
-          console.error('Error fetching credit report:', error);
+          console.error("Error fetching credit report:", error);
           setLoading(false);
         }
       );
@@ -184,97 +200,134 @@ export default function DashboardPage() {
       // Check personal info completion
       const checkPersonalInfo = async () => {
         try {
-          const docRef = doc(db, 'users', user.uid, 'personal_info', 'details');
+          // const docRef = doc(db, 'users', user.uid, 'personal_info', 'details');
+          const docRef = doc(db, "users", user.uid, "activity", "personalInfo");
           const docSnap = await getDoc(docRef);
-          
+
           if (docSnap.exists()) {
             // Update Personal Information checklist item
-            setChecklistItems(prev => prev.map(item => 
-              item.title === 'Personal Information' 
-                ? { ...item, completed: true, status: 'Completed' } 
-                : item
-            ));
+            setChecklistItems((prev) =>
+              prev.map((item) =>
+                item.title === "Personal Information"
+                  ? { ...item, completed: true, status: "Completed" }
+                  : item
+              )
+            );
           }
         } catch (error) {
-          console.error('Error checking personal info:', error);
+          console.error("Error checking personal info:", error);
         }
       };
 
       // Check digital signature
       const checkDigitalSignature = async () => {
         try {
-          const docRef = doc(db, 'users', user.uid, 'signatures', 'default');
+          const docRef = doc(db, "users", user.uid, "signatures", "default");
           const docSnap = await getDoc(docRef);
-          
-          if (docSnap.exists()) {
-            // Update Digital Signature checklist item
-            setChecklistItems(prev => prev.map(item => 
-              item.title === 'Digital Signature' 
-                ? { ...item, completed: true, status: 'Completed' } 
-                : item
-            ));
-          }
+
+          return onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+              // Mark it as completed right away
+              setChecklistItems((prev) =>
+                prev.map((item) =>
+                  item.title === "Digital Signature"
+                    ? { ...item, completed: true, status: "Completed" }
+                    : item
+                )
+              );
+            }
+          });
         } catch (error) {
-          console.error('Error checking digital signature:', error);
+          console.error("Error checking digital signature:", error);
         }
       };
 
       // Check credit goals
       const checkCreditGoals = async () => {
         try {
-          const goalsRef = doc(db, 'users', user.uid, 'credit_goals', 'current');
+          const goalsRef = doc(
+            db,
+            "users",
+            user.uid,
+            "credit_goals",
+            "current"
+          );
           const goalsSnap = await getDoc(goalsRef);
 
           if (goalsSnap.exists()) {
             setCreditGoals(goalsSnap.data() as CreditGoals);
-            
+
             // Update Set Your Credit Score Goals checklist item
-            setChecklistItems(prev => prev.map(item => 
-              item.title === 'Set Your Credit Score Goals' 
-                ? { ...item, completed: true, status: 'Completed' } 
-                : item
-            ));
+            setChecklistItems((prev) =>
+              prev.map((item) =>
+                item.title === "Set Your Credit Score Goals"
+                  ? { ...item, completed: true, status: "Completed" }
+                  : item
+              )
+            );
           }
         } catch (error) {
-          console.error('Error fetching credit goals:', error);
+          console.error("Error fetching credit goals:", error);
         }
       };
 
       // Check tutorial watched
       const checkTutorialWatched = async () => {
         try {
-          const docRef = doc(db, 'users', user.uid, 'activity', 'tutorial');
+          const docRef = doc(db, "users", user.uid, "activity", "tutorial");
           const docSnap = await getDoc(docRef);
-          
+
           if (docSnap.exists() && docSnap.data().watched) {
             // Update Learn How to Use TCSG Academy checklist item
-            setChecklistItems(prev => prev.map(item => 
-              item.title === 'Learn How to Use TCSG Academy' 
-                ? { ...item, completed: true, status: 'Completed' } 
-                : item
-            ));
+            setChecklistItems((prev) =>
+              prev.map((item) =>
+                item.title === "Learn How to Use TCSG Academy"
+                  ? { ...item, completed: true, status: "Completed" }
+                  : item
+              )
+            );
           }
         } catch (error) {
-          console.error('Error checking tutorial watched:', error);
+          console.error("Error checking tutorial watched:", error);
         }
       };
 
       // Check affiliate status
       const checkAffiliateStatus = async () => {
         try {
-          const docRef = doc(db, 'users', user.uid, 'affiliate', 'status');
+          const docRef = doc(db, "users", user.uid, "affiliate", "status");
           const docSnap = await getDoc(docRef);
-          
+
           if (docSnap.exists() && docSnap.data().active) {
             // Update Become a TCSG Academy Affiliate checklist item
-            setChecklistItems(prev => prev.map(item => 
-              item.title === 'Become a TCSG Academy Affiliate' 
-                ? { ...item, completed: true, status: 'Completed' } 
-                : item
-            ));
+            setChecklistItems((prev) =>
+              prev.map((item) =>
+                item.title === "Become a TCSG Academy Affiliate"
+                  ? { ...item, completed: true, status: "Completed" }
+                  : item
+              )
+            );
           }
         } catch (error) {
-          console.error('Error checking affiliate status:', error);
+          console.error("Error checking affiliate status:", error);
+        }
+      };
+      const checkCreditProfileStatus = async () => {
+        try {
+          const docRef = doc(db, "users", user.uid, "credit_profile", "status");
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists() && docSnap.data().active) {
+            setChecklistItems((prev) =>
+              prev.map((item) =>
+                item.title === "Build Your Credit Profile"
+                  ? { ...item, completed: true, status: "Completed" }
+                  : item
+              )
+            );
+          }
+        } catch (error) {
+          console.error("Error checking credit profile status:", error);
         }
       };
 
@@ -284,12 +337,13 @@ export default function DashboardPage() {
       checkCreditGoals();
       checkTutorialWatched();
       checkAffiliateStatus();
+      checkCreditProfileStatus();
 
       return () => {
         unsubscribe();
       };
     } catch (error) {
-      console.error('Error setting up listeners:', error);
+      console.error("Error setting up listeners:", error);
       setLoading(false);
     }
   }, [user]);
@@ -304,28 +358,28 @@ export default function DashboardPage() {
   const bureauData = useMemo(() => {
     if (!creditReport?.data) return [];
 
-    const bureaus = ['transunion', 'experian', 'equifax'];
+    const bureaus = ["transunion", "experian", "equifax"];
     const logos = {
-      transunion: 'https://i.imgur.com/a48jzVj.png',
-      experian: 'https://i.imgur.com/bCRS33i.png',
-      equifax: 'https://i.imgur.com/6lhqUyI.png',
+      transunion: "https://i.imgur.com/a48jzVj.png",
+      experian: "https://i.imgur.com/bCRS33i.png",
+      equifax: "https://i.imgur.com/6lhqUyI.png",
     };
 
     return bureaus.map((bureau) => ({
       name: bureau.charAt(0).toUpperCase() + bureau.slice(1),
       logo: logos[bureau as keyof typeof logos],
       score: creditReport.data.scores?.[bureau] || 0,
-      change: creditReport.data.changes?.[bureau] || '+0',
+      change: creditReport.data.changes?.[bureau] || "+0",
       totalDebt: creditReport.data.totalDebt?.[bureau] || 0,
       utilization: creditReport.data.creditUsage?.[bureau] || 0,
       fair: false,
     }));
   }, [creditReport]);
 
-  const scrollTo = (direction: 'prev' | 'next') => {
+  const scrollTo = (direction: "prev" | "next") => {
     if (scrollContainerRef.current) {
       const newPage =
-        direction === 'next'
+        direction === "next"
           ? Math.min(currentPage + 1, totalPages - 1)
           : Math.max(currentPage - 1, 0);
       setCurrentPage(newPage);
@@ -335,72 +389,95 @@ export default function DashboardPage() {
 
       scrollContainerRef.current.scrollTo({
         left: scrollAmount,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   };
 
   const handleItemAction = async (title: string) => {
     switch (title) {
-      case 'Learn How to Use TCSG Academy':
+      case "Learn How to Use TCSG Academy":
         setTutorialVideoOpen(true);
         // Mark as completed when opened
-        setChecklistItems(prev => prev.map(item => 
-          item.title === title 
-            ? { ...item, completed: true, status: 'Completed' } 
-            : item
-        ));
+        setChecklistItems((prev) =>
+          prev.map((item) =>
+            item.title === title
+              ? { ...item, completed: true, status: "Completed" }
+              : item
+          )
+        );
 
-        const docRef = doc(db, 'users', user!.uid, 'activity', 'tutorial');
+        const docRef = doc(db, "users", user!.uid, "activity", "tutorial");
 
         await setDoc(docRef, {
-          watched: true
+          watched: true,
         });
 
         break;
-      case 'Personal Information':
+      case "Personal Information":
         setPersonalInfoOpen(true);
         break;
-      case 'Upload Credit Report':
+      case "Upload Credit Report":
         setImportDialogOpen(true);
         break;
-      case 'Set Your Credit Score Goals':
+      case "Set Your Credit Score Goals":
         setCreditScoreGoalOpen(true);
-        // Mark as completed when opened
-        setChecklistItems(prev => prev.map(item => 
-          item.title === title 
-            ? { ...item, completed: true, status: 'Completed' } 
-            : item
-        ));
         break;
-      case 'Digital Signature':
+      case "Digital Signature":
         setDigitalSignatureOpen(true);
-        // Mark as completed when opened
-        setChecklistItems(prev => prev.map(item => 
-          item.title === title 
-            ? { ...item, completed: true, status: 'Completed' } 
-            : item
-        ));
         break;
-      case 'Become a TCSG Academy Affiliate':
+      case "Become a TCSG Academy Affiliate":
         setReferralProgramOpen(true);
         // Mark as completed when opened
-        setChecklistItems(prev => prev.map(item => 
-          item.title === title 
-            ? { ...item, completed: true, status: 'Completed' } 
-            : item
-        ));
+        setChecklistItems((prev) =>
+          prev.map((item) =>
+            item.title === title
+              ? { ...item, completed: true, status: "Completed" }
+              : item
+          )
+        );
+        // 2) Persist to Firestore
+        if (user) {
+          await setDoc(doc(db, "users", user.uid, "affiliate", "status"), {
+            active: true,
+            updatedAt: new Date().toISOString(),
+          });
+        }
+
+        // 3) Open the referral dialog if needed
+        setReferralProgramOpen(true);
+        break;
+      case "Build Your Credit Profile":
+        // 1) Immediately mark completed in local state
+        setChecklistItems((prev) =>
+          prev.map((item) =>
+            item.title === "Build Your Credit Profile"
+              ? { ...item, completed: true, status: "Completed" }
+              : item
+          )
+        );
+
+        // 2) Persist to Firestore
+        if (user) {
+          await setDoc(doc(db, "users", user.uid, "credit_profile", "status"), {
+            active: true,
+            updatedAt: new Date().toISOString(),
+          });
+        }
+        // (Optional) Open some dialog if you have one
+        // e.g., setCreditProfileDialogOpen(true);
         break;
     }
   };
-
   const getStatusBadge = (item: ChecklistItem) => {
     return (
-      <div className={`px-3 py-1 rounded-full text-sm ${
-        item.status === 'Completed' 
-          ? 'bg-green-100 text-green-700' 
-          : 'bg-brand-yellow/20 text-brand-navy'
-      }`}>
+      <div
+        className={`px-3 py-1 rounded-full text-sm ${
+          item.status === "Completed"
+            ? "bg-green-100 text-green-700"
+            : "bg-brand-yellow/20 text-brand-navy"
+        }`}
+      >
         {item.status}
       </div>
     );
@@ -416,7 +493,6 @@ export default function DashboardPage() {
 
   return (
     <>
-    
       <div className="container mx-auto p-6">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card className="overflow-hidden">
@@ -468,7 +544,7 @@ export default function DashboardPage() {
                           )}`}
                           style={{
                             width: `${
-                              (Number(creditGoals.currentScore.split('-')[0]) /
+                              (Number(creditGoals.currentScore.split("-")[0]) /
                                 850) *
                               100
                             }%`,
@@ -617,19 +693,27 @@ export default function DashboardPage() {
                             src={bureau.logo}
                             alt={`${bureau.name} logo`}
                             fill
-                            style={{ objectFit: 'contain' }}
+                            style={{ objectFit: "contain" }}
                           />
                         </div>
                         <div className="flex items-center space-x-3">
-                          <span className={`text-3xl font-bold ${getScoreColor(bureau.score)}`}>
-                            {bureau.score || '---'}
+                          <span
+                            className={`text-3xl font-bold ${getScoreColor(
+                              bureau.score
+                            )}`}
+                          >
+                            {bureau.score || "---"}
                           </span>
                           {bureau.score && bureau.change && (
                             <div className="flex flex-col items-end">
-                              <span className={`text-sm font-medium ${
-                                Number(bureau.change) >= 0 ? 'text-green-600' : 'text-red-600'
-                              }`}>
-                                {bureau.change >= 0 ? '+' : ''}
+                              <span
+                                className={`text-sm font-medium ${
+                                  Number(bureau.change) >= 0
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                }`}
+                              >
+                                {bureau.change >= 0 ? "+" : ""}
                                 {bureau.change}
                               </span>
                               <span className="text-xs text-gray-500">
@@ -643,15 +727,23 @@ export default function DashboardPage() {
                       <div className="space-y-4">
                         <div>
                           <div className="flex items-center space-x-2 mb-2">
-                            <div className={`h-2 w-2 rounded-full ${getScoreColor(bureau.score)}`} />
+                            <div
+                              className={`h-2 w-2 rounded-full ${getScoreColor(
+                                bureau.score
+                              )}`}
+                            />
                             <span className="text-sm font-medium text-gray-600">
                               {getScoreLabel(bureau.score)}
                             </span>
                           </div>
                           <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                             <div
-                              className={`h-full ${getScoreColor(bureau.score)} transition-all duration-500`}
-                              style={{ width: `${getScorePercentage(bureau.score)}%` }}
+                              className={`h-full ${getScoreColor(
+                                bureau.score
+                              )} transition-all duration-500`}
+                              style={{
+                                width: `${getScorePercentage(bureau.score)}%`,
+                              }}
                             />
                           </div>
                           <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -663,7 +755,9 @@ export default function DashboardPage() {
                         <div className="grid grid-cols-2 gap-4 pt-2">
                           <div className="bg-gray-50 rounded-lg p-3">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-sm text-gray-600">Total Debt</span>
+                              <span className="text-sm text-gray-600">
+                                Total Debt
+                              </span>
                               <Info className="h-3 w-3 text-gray-400" />
                             </div>
                             <span className="text-lg font-semibold text-gray-900">
@@ -672,7 +766,9 @@ export default function DashboardPage() {
                           </div>
                           <div className="bg-gray-50 rounded-lg p-3">
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-sm text-gray-600">Credit Usage</span>
+                              <span className="text-sm text-gray-600">
+                                Credit Usage
+                              </span>
                               <Info className="h-3 w-3 text-gray-400" />
                             </div>
                             <span className="text-lg font-semibold text-gray-900">
@@ -703,7 +799,7 @@ export default function DashboardPage() {
             <div
               ref={scrollContainerRef}
               className="flex overflow-x-hidden scroll-smooth"
-              style={{ scrollSnapType: 'x mandatory' }}
+              style={{ scrollSnapType: "x mandatory" }}
             >
               <div
                 className="flex space-x-6"
@@ -720,7 +816,7 @@ export default function DashboardPage() {
                   <div
                     key={item.title}
                     className="flex-1"
-                    style={{ scrollSnapAlign: 'start' }}
+                    style={{ scrollSnapAlign: "start" }}
                   >
                     <Card className="h-full p-6 bg-white border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300">
                       <div className="flex flex-col h-full">
@@ -770,7 +866,7 @@ export default function DashboardPage() {
                 <button
                   key={index}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    currentPage === index ? 'bg-brand-navy' : 'bg-brand-navy/20'
+                    currentPage === index ? "bg-brand-navy" : "bg-brand-navy/20"
                   }`}
                   onClick={() => {
                     setCurrentPage(index);
@@ -779,7 +875,7 @@ export default function DashboardPage() {
                         scrollContainerRef.current.clientWidth / itemsPerPage;
                       scrollContainerRef.current.scrollTo({
                         left: index * (itemWidth * itemsPerPage),
-                        behavior: 'smooth',
+                        behavior: "smooth",
                       });
                     }
                   }}
@@ -788,20 +884,20 @@ export default function DashboardPage() {
             </div>
 
             <button
-              onClick={() => scrollTo('prev')}
+              onClick={() => scrollTo("prev")}
               className={`absolute top-1/2 -left-4 transform -translate-y-1/2 p-2 rounded-full bg-white shadow-lg text-brand-navy hover:bg-brand-navy/5 ${
-                currentPage === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={currentPage === 0}
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
-              onClick={() => scrollTo('next')}
+              onClick={() => scrollTo("next")}
               className={`absolute top-1/2 -right-4 transform -translate-y-1/2 p-2 rounded-full bg-white shadow-lg text-brand-navy hover:bg-brand-navy/5 ${
                 currentPage === totalPages - 1
-                  ? 'opacity-50 cursor-not-allowed'
-                  : ''
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
               disabled={currentPage === totalPages - 1}
             >
