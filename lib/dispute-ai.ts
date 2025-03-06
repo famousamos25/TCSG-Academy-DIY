@@ -1,7 +1,7 @@
 import { openai } from '@/lib/openai';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { checkRequiredDocuments } from '@/lib/document-management';
+import { checkRequiredDocuments } from '@/services/document.service';
 
 interface DisputeDetails {
   creditor_name: string;

@@ -1,6 +1,5 @@
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { openai } from '@/lib/openai';
 
 export interface CreditReportData {
   accounts: Account[];

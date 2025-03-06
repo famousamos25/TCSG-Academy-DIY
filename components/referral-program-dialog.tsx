@@ -105,7 +105,7 @@ export function ReferralProgramDialog({ open, onOpenChange }: ReferralProgramDia
         <div className="mt-4">
           <div className="text-gray-600 mb-8">
             Invite friends and family to TCSG Academy and earn 30% commission for every successful sign-up
-            and payment through any of TCSG Academy's membership plans (DIY, Business, or Premium).
+            and payment through any of TCSG Academy&apos;s membership plans (DIY, Business, or Premium).
           </div>
 
           {step === 'info' ? (

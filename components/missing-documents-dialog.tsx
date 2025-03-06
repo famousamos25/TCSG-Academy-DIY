@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AlertCircle, FileText, Upload, X } from 'lucide-react';
-import { REQUIRED_DOCUMENTS } from '@/lib/document-management';
+import { REQUIRED_DOCUMENTS } from '@/services/document.service';
 
 interface MissingDocumentsDialogProps {
   open: boolean;
