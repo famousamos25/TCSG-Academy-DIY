@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -26,11 +26,6 @@ import {
   Lock,
   RefreshCw,
   Shield,
-  Upload,
-  AlertCircle,
-  CheckCircle2,
-  Trash2,
-  Crop,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -40,15 +35,10 @@ import {
   getPersonalInfo,
   type PersonalInfo,
 } from "@/lib/personal-info";
-import {
-  uploadDocument,
-  REQUIRED_DOCUMENTS,
-  type UserDocument,
-} from "@/lib/document-management";
-import { Badge } from "@/components/ui/badge";
-import Cropper from "react-cropper";
-import "cropperjs/dist/cropper.css";
+
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import UploadedUserDocuments from './personal-info/uploaded-user-documents';
+import { CHECKLIST_ITEMS } from '@/constants/checklist';
 
 const US_STATES = [
   { value: "AL", label: "Alabama" },
@@ -115,6 +105,7 @@ export function PersonalInfoDialog({
   const [user] = useAuthState(auth);
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  
   const [activeTab, setActiveTab] = useState("info");
   const [info, setInfo] = useState<Partial<PersonalInfo>>({
     firstName: "",
@@ -129,58 +120,6 @@ export function PersonalInfoDialog({
     email: "",
     ssn: "",
   });
-  const [documents, setDocuments] = useState<Record<string, UserDocument[]>>(
-    {}
-  );
-  const fileInputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
-  const [cropData, setCropData] = useState<{
-    file: File | null;
-    type: string;
-    preview: string;
-  } | null>(null);
-  const cropperRef = useRef<any>(null);
-
-  useEffect(() => {
-    const fetchPersonalInfo = async () => {
-      if (!user) return;
-
-      try {
-        const existingInfo = await getPersonalInfo(user.uid);
-        if (existingInfo) {
-          setInfo(existingInfo);
-        } else if (user.email) {
-          setInfo((prev) => ({ ...prev, email: user.email ?? "" }));
-        }
-      } catch (error) {
-        console.error("Error fetching personal info:", error);
-      }
-    };
-
-    const fetchDocuments = async () => {
-      if (!user) return;
-
-      try {
-        // Fetch documents for each type
-        const docs: Record<string, UserDocument[]> = {};
-
-        for (const docType of REQUIRED_DOCUMENTS) {
-          const userDocs = await getDocumentsByType(user.uid, docType.type);
-          if (userDocs.length > 0) {
-            docs[docType.type] = userDocs;
-          }
-        }
-
-        setDocuments(docs);
-      } catch (error) {
-        console.error("Error fetching documents:", error);
-      }
-    };
-
-    if (open) {
-      fetchPersonalInfo();
-      fetchDocuments();
-    }
-  }, [user, open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -224,7 +163,7 @@ export function PersonalInfoDialog({
         checklistItem.status = "Completed";
       }
 
-      //Mark "Personal Information" as completed in Firestore
+    
       await setDoc(doc(db, "users", user.uid, "activity", "personalInfo"), {
         completed: true,
         updatedAt: serverTimestamp(),
@@ -248,162 +187,27 @@ export function PersonalInfoDialog({
     }
   };
 
-  const handleFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    documentType: string
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  useEffect(() => {
+    const fetchPersonalInfo = async () => {
+      if (!user) return;
 
-    // Validate file size (10MB limit)
-    if (file.size > 10 * 1024 * 1024) {
-      toast({
-        title: "File Too Large",
-        description: "File size must be less than 10MB",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Validate file type
-    const docConfig = REQUIRED_DOCUMENTS.find(
-      (doc) => doc.type === documentType
-    );
-    if (!docConfig?.acceptedTypes.includes(file.type)) {
-      toast({
-        title: "Invalid File Type",
-        description: `Please upload a ${docConfig?.acceptedTypes.join(
-          " or "
-        )} file`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // For image files that need cropping
-    if (
-      documentType === "drivers_license" ||
-      documentType === "social_security" ||
-      documentType === "utility_bill"
-    ) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setCropData({
-          file,
-          type: documentType,
-          preview: reader.result as string,
-        });
-      };
-      reader.readAsDataURL(file);
-    } else {
-      await uploadFile(file, documentType);
-    }
-  };
-
-  const uploadFile = async (file: File, documentType: string) => {
-    if (!user) return;
-
-    try {
-      setLoading(true);
-      const uploadedDoc = await uploadDocument(user.uid, file, documentType);
-
-      setDocuments((prev) => ({
-        ...prev,
-        [documentType]: [...(prev[documentType] || []), uploadedDoc],
-      }));
-
-      toast({
-        title: "Document Uploaded",
-        description: "Your document has been uploaded successfully.",
-      });
-
-      // Check if all required documents are uploaded
-      checkDocumentsCompletion();
-    } catch (error) {
-      console.error("Error uploading document:", error);
-      toast({
-        title: "Upload Failed",
-        description: "Failed to upload document. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const checkDocumentsCompletion = () => {
-    // Check if all required documents are uploaded
-    const requiredDocTypes = REQUIRED_DOCUMENTS.filter(
-      (doc) => doc.required
-    ).map((doc) => doc.type);
-    const hasAllRequired = requiredDocTypes.every(
-      (type) => documents[type] && documents[type].length > 0
-    );
-
-    if (hasAllRequired) {
-      // Update the checklist item status
-      const checklistItem = CHECKLIST_ITEMS.find(
-        (item) => item.title === "Personal Information"
-      );
-      if (checklistItem) {
-        checklistItem.completed = true;
-        checklistItem.status = "Completed";
+      try {
+        const existingInfo = await getPersonalInfo(user.uid);
+        if (existingInfo) {
+          setInfo(existingInfo);
+        } else if (user.email) {
+          setInfo((prev) => ({ ...prev, email: user.email ?? "" }));
+        }
+      } catch (error) {
+        console.error("Error fetching personal info:", error);
       }
+    };
+
+    if (open) {
+      fetchPersonalInfo();
     }
-  };
+  }, [user, open]);
 
-  const handleCrop = async () => {
-    if (!cropData || !cropperRef.current || !user) return;
-
-    try {
-      const canvas = cropperRef.current.cropper.getCroppedCanvas();
-      canvas.toBlob(async (blob: Blob) => {
-        const croppedFile = new File(
-          [blob],
-          cropData.file?.name || "cropped-image.jpg",
-          {
-            type: "image/jpeg",
-          }
-        );
-        await uploadFile(croppedFile, cropData.type);
-        setCropData(null);
-      }, "image/jpeg");
-    } catch (error) {
-      console.error("Error cropping image:", error);
-      toast({
-        title: "Error",
-        description: "Failed to crop image. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleUploadClick = (documentType: string) => {
-    const fileInput = fileInputRefs.current[documentType];
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
-
-  // Mock function for getDocumentsByType since it's not defined
-  const getDocumentsByType = async (
-    userId: string,
-    type: string
-  ): Promise<UserDocument[]> => {
-    // This would normally fetch documents from Firestore
-    // For now, return the documents we already have in state
-    return documents[type] || [];
-  };
-
-  // Mock CHECKLIST_ITEMS for updating completion status
-  const CHECKLIST_ITEMS = [
-    {
-      title: "Personal Information",
-      completed: false,
-      status: "Incomplete",
-    },
-    // Other items would be here
-  ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -656,134 +460,10 @@ export function PersonalInfoDialog({
             </form>
           </TabsContent>
 
-          <TabsContent value="documents">
-            <div className="py-4 space-y-6">
-              {REQUIRED_DOCUMENTS.map((doc) => (
-                <div key={doc.type} className="border rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h3 className="font-medium text-gray-900">{doc.label}</h3>
-                      <p className="text-sm text-gray-600">{doc.description}</p>
-                    </div>
-                    {doc.required && (
-                      <Badge
-                        variant="outline"
-                        className="bg-yellow-50 text-yellow-600"
-                      >
-                        Required
-                      </Badge>
-                    )}
-                  </div>
-
-                  {documents[doc.type]?.length > 0 ? (
-                    <div className="space-y-2">
-                      {documents[doc.type].map((uploadedDoc) => (
-                        <div
-                          key={uploadedDoc.id}
-                          className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
-                        >
-                          <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-brand-yellow/10 rounded-full flex items-center justify-center">
-                              <CheckCircle2 className="h-4 w-4 text-brand-yellow" />
-                            </div>
-                            <div>
-                              <div className="font-medium text-gray-900">
-                                {uploadedDoc.fileName}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                {new Date(
-                                  uploadedDoc.uploadedAt
-                                ).toLocaleDateString()}
-                              </div>
-                            </div>
-                          </div>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-gray-400 hover:text-red-600"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div
-                      onClick={() => handleUploadClick(doc.type)}
-                      className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center cursor-pointer hover:border-gray-300 transition-colors"
-                    >
-                      <Upload className="h-8 w-8 text-gray-400 mx-auto mb-4" />
-                      <p className="text-sm text-gray-600">
-                        Click to upload or drag and drop
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {doc.acceptedTypes
-                          .map((type) => type.split("/")[1].toUpperCase())
-                          .join(", ")}{" "}
-                        up to 10MB
-                      </p>
-                    </div>
-                  )}
-
-                  <input
-                    ref={(el) => (fileInputRefs.current[doc.type] = el as any)}
-                    type="file"
-                    accept={doc.acceptedTypes.join(",")}
-                    className="hidden"
-                    onChange={(e) => handleFileChange(e, doc.type)}
-                  />
-                </div>
-              ))}
-
-              <div className="bg-gray-50 rounded-lg p-4 flex items-start space-x-3">
-                <AlertCircle className="h-5 w-5 text-brand-navy mt-0.5" />
-                <div className="text-sm">
-                  <p className="font-medium text-gray-900">
-                    Document Requirements
-                  </p>
-                  <p className="text-gray-600 mt-1">
-                    All documents must be clear, legible, and current. Documents
-                    will be reviewed within 24-48 hours. You will be notified if
-                    any documents need to be resubmitted.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
+          <UploadedUserDocuments />
         </Tabs>
 
-        {/* Image Cropping Dialog */}
-        {cropData && (
-          <Dialog open={true} onOpenChange={() => setCropData(null)}>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>Crop Document</DialogTitle>
-              </DialogHeader>
-              <div className="py-4">
-                <Cropper
-                  ref={cropperRef}
-                  src={cropData.preview}
-                  style={{ height: 400, width: "100%" }}
-                  aspectRatio={16 / 9}
-                  guides={true}
-                  preview=".preview"
-                />
-                <div className="flex justify-end space-x-3 mt-4">
-                  <Button variant="outline" onClick={() => setCropData(null)}>
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleCrop}
-                    className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                  >
-                    <Crop className="h-4 w-4 mr-2" />
-                    Crop & Upload
-                  </Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-        )}
+        
       </DialogContent>
     </Dialog>
   );

@@ -1,5 +1,6 @@
+
 import { db } from '@/lib/firebase';
-import { collection, doc, getDoc, getDocs, query, where, orderBy, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where, orderBy, addDoc, deleteDoc, Timestamp } from 'firebase/firestore';
 
 export interface UserDocument {
   id: string;
@@ -8,8 +9,8 @@ export interface UserDocument {
   fileUrl: string;
   fileName: string;
   mimeType: string;
-  uploadedAt: Date;
-  verifiedAt?: Date;
+  uploadedAt: Timestamp;
+  verifiedAt?: Timestamp;
   metadata?: Record<string, any>;
 }
 
@@ -55,25 +56,19 @@ export async function uploadDocument(userId: string, file: File, type: string): 
       reader.readAsDataURL(file);
     });
 
+    const date = Timestamp.now();
     const docRef = await addDoc(collection(db, 'users', userId, 'documents'), {
       type,
       status: 'pending',
       fileUrl: fileData,
       fileName: file.name,
       mimeType: file.type,
-      uploadedAt: serverTimestamp(),
+      uploadedAt: date,
       metadata: {
         size: file.size,
         lastModified: file.lastModified,
       },
     });
-
-    // Update the checklist item status
-    const checklistItem = {
-      title: 'Personal Information',
-      completed: true,
-      status: 'Completed',
-    };
 
     return {
       id: docRef.id,
@@ -82,7 +77,7 @@ export async function uploadDocument(userId: string, file: File, type: string): 
       fileUrl: fileData,
       fileName: file.name,
       mimeType: file.type,
-      uploadedAt: new Date(),
+      uploadedAt: date,
       metadata: {
         size: file.size,
         lastModified: file.lastModified,
@@ -173,4 +168,38 @@ export async function getDocument(userId: string, documentId: string): Promise<U
     console.error('Error getting document:', error);
     throw error;
   }
+}
+
+export const getUserDocuments = async (userId: string) => {
+	try {
+		const docRef = collection(db, `users/${userId}/documents`);
+		const itemSnapshot = await getDocs(docRef);
+
+		return itemSnapshot.docs.map((doc) => {
+			return {
+				id: doc.id,
+				...doc.data(),
+			};
+		}) as UserDocument[];
+	} catch (error) {
+		console.log("Error getting user documents:", error);
+
+		return [];
+	}
+};
+
+export const deleteUserDocument = async (userId: string, documentId: string) => {
+	try {
+		const docRef = doc(db, `users/${userId}/documents`, documentId);
+		await deleteDoc(docRef);
+		return {
+			success: true,
+		}
+	} catch (error) {
+		console.log("Error deleting user document:", error);
+		return {
+			success: false,
+			error: "Error deleting user document. Please try again later!",
+		};
+	}
 }
