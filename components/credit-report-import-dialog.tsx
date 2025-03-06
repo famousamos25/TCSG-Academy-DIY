@@ -1,20 +1,34 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import Image from 'next/image';
-import { AlertCircle, Upload, RefreshCw, CheckCircle2, ExternalLink, Lock, User, ArrowLeft } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '@/lib/firebase';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { encrypt } from '@/lib/encryption';
-import { importTestReport } from '@/app/creditreport/test-import';
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Image from "next/image";
+import {
+  AlertCircle,
+  Upload,
+  RefreshCw,
+  CheckCircle2,
+  ExternalLink,
+  Lock,
+  User,
+  ArrowLeft,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { encrypt } from "@/lib/encryption";
+import { importTestReport } from "@/app/creditreport/test-import";
 
 interface CreditReportImportDialogProps {
   open: boolean;
@@ -23,32 +37,35 @@ interface CreditReportImportDialogProps {
 
 const CREDIT_SERVICES = [
   {
-    name: 'SmartCredit',
-    logo: 'https://i.imgur.com/RKqeWHe.png',
-    description: 'Comprehensive credit monitoring with real-time alerts',
-    signupUrl: 'https://smartcredit.com',
+    name: "SmartCredit",
+    logo: "https://i.imgur.com/RKqeWHe.png",
+    description: "Comprehensive credit monitoring with real-time alerts",
+    signupUrl: "https://smartcredit.com",
   },
   {
-    name: 'MyFreeScoreNow',
-    logo: 'https://i.imgur.com/vhCZose.png',
-    description: 'Free credit scores and monitoring services',
-    signupUrl: 'https://myfreescorenow.com',
+    name: "MyFreeScoreNow",
+    logo: "https://i.imgur.com/vhCZose.png",
+    description: "Free credit scores and monitoring services",
+    signupUrl: "https://myfreescorenow.com",
   },
   {
-    name: 'IdentityIQ',
-    logo: 'https://i.imgur.com/c2VWHFM.png',
-    description: 'Identity theft protection and credit monitoring',
-    signupUrl: 'https://identityiq.com',
+    name: "IdentityIQ",
+    logo: "https://i.imgur.com/c2VWHFM.png",
+    description: "Identity theft protection and credit monitoring",
+    signupUrl: "https://identityiq.com",
   },
   {
-    name: 'MyScoreIQ',
-    logo: 'https://i.imgur.com/RecPXag.png',
-    description: 'Advanced credit monitoring and identity protection',
-    signupUrl: 'https://myscoreiq.com',
+    name: "MyScoreIQ",
+    logo: "https://i.imgur.com/RecPXag.png",
+    description: "Advanced credit monitoring and identity protection",
+    signupUrl: "https://myscoreiq.com",
   },
 ];
 
-const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDialogProps) => {
+const CreditReportImportDialog = ({
+  open,
+  onOpenChange,
+}: CreditReportImportDialogProps) => {
   // Keep all existing component implementation...
   const { toast } = useToast();
   const [importing, setImporting] = useState(false);
@@ -56,18 +73,18 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
   const [user] = useAuthState(auth);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [credentials, setCredentials] = useState({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
   });
 
   const handleServiceSelect = (serviceName: string) => {
     setSelectedService(serviceName);
-    setCredentials({ username: '', password: '' });
+    setCredentials({ username: "", password: "" });
   };
 
   const handleBackToServices = () => {
     setSelectedService(null);
-    setCredentials({ username: '', password: '' });
+    setCredentials({ username: "", password: "" });
   };
 
   const handleImportWithCredentials = async () => {
@@ -84,15 +101,18 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
       };
 
       // Save credentials to Firestore
-      await setDoc(doc(db, 'users', user.uid, 'credit_monitoring', selectedService), {
-        service: selectedService,
-        credentials: encryptedCredentials,
-        updatedAt: serverTimestamp(),
-      });
+      await setDoc(
+        doc(db, "users", user.uid, "credit_monitoring", selectedService),
+        {
+          service: selectedService,
+          credentials: encryptedCredentials,
+          updatedAt: serverTimestamp(),
+        }
+      );
 
       // Simulate import process
       const interval = setInterval(() => {
-        setProgress(prev => {
+        setProgress((prev) => {
           if (prev >= 90) {
             clearInterval(interval);
             return prev;
@@ -109,8 +129,8 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
 
       if (result.success) {
         toast({
-          title: 'Import Successful',
-          description: 'Your credit report has been successfully imported.',
+          title: "Import Successful",
+          description: "Your credit report has been successfully imported.",
         });
 
         setTimeout(() => {
@@ -119,11 +139,12 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
         }, 1000);
       }
     } catch (error) {
-      console.error('Import failed:', error);
+      console.error("Import failed:", error);
       toast({
-        title: 'Import Failed',
-        description: 'Failed to import credit report. Please check your credentials and try again.',
-        variant: 'destructive',
+        title: "Import Failed",
+        description:
+          "Failed to import credit report. Please check your credentials and try again.",
+        variant: "destructive",
       });
       setImporting(false);
       setProgress(0);
@@ -133,9 +154,9 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
   const handleTestImport = async () => {
     if (!user) {
       toast({
-        title: 'Authentication Required',
-        description: 'Please sign in to import your credit report.',
-        variant: 'destructive'
+        title: "Authentication Required",
+        description: "Please sign in to import your credit report.",
+        variant: "destructive",
       });
       return;
     }
@@ -145,7 +166,7 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
 
     try {
       const interval = setInterval(() => {
-        setProgress(prev => prev >= 90 ? prev : prev + 10);
+        setProgress((prev) => (prev >= 90 ? prev : prev + 10));
       }, 500);
 
       const result = await importTestReport(user.uid);
@@ -154,8 +175,8 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
 
       if (result.success) {
         toast({
-          title: 'Import Successful',
-          description: 'Test credit report has been imported successfully.',
+          title: "Import Successful",
+          description: "Test credit report has been imported successfully.",
         });
 
         setTimeout(() => {
@@ -164,11 +185,11 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
         }, 1000);
       }
     } catch (error) {
-      console.error('Import failed:', error);
+      console.error("Import failed:", error);
       toast({
-        title: 'Import Failed',
-        description: 'Failed to import test data. Please try again.',
-        variant: 'destructive'
+        title: "Import Failed",
+        description: "Failed to import test data. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setImporting(false);
@@ -193,28 +214,35 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                 Importing Your Credit Report
               </h3>
               <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                Please wait while we securely process and analyze your credit report data...
+                Please wait while we securely process and analyze your credit
+                report data...
               </p>
               <div className="max-w-md mx-auto space-y-4">
                 <Progress value={progress} className="h-2" />
                 <div className="grid grid-cols-4 gap-4">
-                  {['Connecting', 'Importing', 'Processing', 'Analyzing'].map((step, index) => {
-                    const isComplete = progress >= ((index + 1) * 25);
-                    return (
-                      <div key={step} className="text-center">
-                        <div className="flex justify-center mb-2">
-                          {isComplete ? (
-                            <CheckCircle2 className="h-5 w-5 text-green-500" />
-                          ) : (
-                            <div className="h-5 w-5 rounded-full border-2 border-gray-200" />
-                          )}
+                  {["Connecting", "Importing", "Processing", "Analyzing"].map(
+                    (step, index) => {
+                      const isComplete = progress >= (index + 1) * 25;
+                      return (
+                        <div key={step} className="text-center">
+                          <div className="flex justify-center mb-2">
+                            {isComplete ? (
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                            ) : (
+                              <div className="h-5 w-5 rounded-full border-2 border-gray-200" />
+                            )}
+                          </div>
+                          <span
+                            className={`text-sm ${
+                              isComplete ? "text-gray-900" : "text-gray-500"
+                            }`}
+                          >
+                            {step}
+                          </span>
                         </div>
-                        <span className={`text-sm ${isComplete ? 'text-gray-900' : 'text-gray-500'}`}>
-                          {step}
-                        </span>
-                      </div>
-                    );
-                  })}
+                      );
+                    }
+                  )}
                 </div>
               </div>
             </div>
@@ -235,10 +263,13 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                 <Card className="p-6">
                   <div className="relative w-32 h-8 mb-4">
                     <Image
-                      src={CREDIT_SERVICES.find(s => s.name === selectedService)?.logo || ''}
+                      src={
+                        CREDIT_SERVICES.find((s) => s.name === selectedService)
+                          ?.logo || ""
+                      }
                       alt={selectedService}
                       fill
-                      style={{ objectFit: 'contain' }}
+                      style={{ objectFit: "contain" }}
                     />
                   </div>
                   <h3 className="text-lg font-medium text-gray-900 mb-2">
@@ -256,7 +287,12 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                         <Input
                           id="username"
                           value={credentials.username}
-                          onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
+                          onChange={(e) =>
+                            setCredentials((prev) => ({
+                              ...prev,
+                              username: e.target.value,
+                            }))
+                          }
                           className="pl-10"
                           placeholder="Enter your username"
                         />
@@ -270,7 +306,12 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                           id="password"
                           type="password"
                           value={credentials.password}
-                          onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
+                          onChange={(e) =>
+                            setCredentials((prev) => ({
+                              ...prev,
+                              password: e.target.value,
+                            }))
+                          }
                           className="pl-10"
                           placeholder="Enter your password"
                         />
@@ -293,10 +334,16 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                       className="text-brand-navy"
                       onClick={(e) => {
                         e.preventDefault();
-                        window.open(CREDIT_SERVICES.find(s => s.name === selectedService)?.signupUrl, '_blank');
+                        window.open(
+                          CREDIT_SERVICES.find(
+                            (s) => s.name === selectedService
+                          )?.signupUrl,
+                          "_blank"
+                        );
                       }}
                     >
-                      Don't have an account? Sign up <ExternalLink className="h-3 w-3 ml-1" />
+                      Don't have an account? Sign up{" "}
+                      <ExternalLink className="h-3 w-3 ml-1" />
                     </Button>
                   </div>
                 </Card>
@@ -328,10 +375,13 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                   <div className="flex items-start space-x-3 text-sm text-gray-500">
                     <AlertCircle className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium text-gray-900 mb-1">Important Note</p>
+                      <p className="font-medium text-gray-900 mb-1">
+                        Important Note
+                      </p>
                       <p>
-                        Your credentials are securely encrypted and only used to import your credit report.
-                        We use industry-standard encryption to protect your sensitive information.
+                        Your credentials are securely encrypted and only used to
+                        import your credit report. We use industry-standard
+                        encryption to protect your sensitive information.
                       </p>
                     </div>
                   </div>
@@ -352,8 +402,8 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                       key={service.name}
                       className={`p-4 cursor-pointer transition-all ${
                         selectedService === service.name
-                          ? 'border-brand-yellow bg-brand-yellow/5'
-                          : 'hover:border-gray-300'
+                          ? "border-brand-yellow bg-brand-yellow/5"
+                          : "hover:border-gray-300"
                       }`}
                       onClick={() => handleServiceSelect(service.name)}
                     >
@@ -363,7 +413,7 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                             src={service.logo}
                             alt={service.name}
                             fill
-                            style={{ objectFit: 'contain' }}
+                            style={{ objectFit: "contain" }}
                           />
                         </div>
                         <Button
@@ -372,7 +422,7 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                           className="text-brand-navy"
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.open(service.signupUrl, '_blank');
+                            window.open(service.signupUrl, "_blank");
                           }}
                         >
                           Sign Up <ExternalLink className="h-4 w-4 ml-1" />
@@ -412,11 +462,13 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
                   <div className="flex items-start space-x-3 text-sm text-gray-500">
                     <AlertCircle className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium text-gray-900 mb-1">Important Note</p>
+                      <p className="font-medium text-gray-900 mb-1">
+                        Important Note
+                      </p>
                       <p>
-                        The test import uses simulated data for demonstration purposes.
-                        For real credit monitoring, please sign up with one of our
-                        partner services.
+                        The test import uses simulated data for demonstration
+                        purposes. For real credit monitoring, please sign up
+                        with one of our partner services.
                       </p>
                     </div>
                   </div>
@@ -427,7 +479,8 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
             <div className="mt-8 pt-6 border-t">
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-500">
-                  Don't have an account? Sign up with any of our partner services.
+                  Don't have an account? Sign up with any of our partner
+                  services.
                 </div>
                 <Button
                   variant="outline"
@@ -447,4 +500,4 @@ const CreditReportImportDialog = ({ open, onOpenChange }: CreditReportImportDial
 
 export default CreditReportImportDialog;
 
-export { CreditReportImportDialog }
+export { CreditReportImportDialog };

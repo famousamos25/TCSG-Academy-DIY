@@ -1,13 +1,27 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { X, Download, Type } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { X, Download, Type } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { auth, db } from "@/lib/firebase";
+import { setDoc, doc } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface DigitalSignatureDialogProps {
   open: boolean;
@@ -15,23 +29,40 @@ interface DigitalSignatureDialogProps {
 }
 
 const FONTS = [
-  { value: 'dancing-script', label: 'Dancing Script', family: '"Dancing Script", cursive' },
-  { value: 'homemade-apple', label: 'Homemade Apple', family: '"Homemade Apple", cursive' },
-  { value: 'caveat', label: 'Caveat', family: '"Caveat", cursive' },
-  { value: 'sacramento', label: 'Sacramento', family: '"Sacramento", cursive' },
-  { value: 'great-vibes', label: 'Great Vibes', family: '"Great Vibes", cursive' },
+  {
+    value: "dancing-script",
+    label: "Dancing Script",
+    family: '"Dancing Script", cursive',
+  },
+  {
+    value: "homemade-apple",
+    label: "Homemade Apple",
+    family: '"Homemade Apple", cursive',
+  },
+  { value: "caveat", label: "Caveat", family: '"Caveat", cursive' },
+  { value: "sacramento", label: "Sacramento", family: '"Sacramento", cursive' },
+  {
+    value: "great-vibes",
+    label: "Great Vibes",
+    family: '"Great Vibes", cursive',
+  },
 ];
 
-const DigitalSignatureDialog = ({ open, onOpenChange }: DigitalSignatureDialogProps) => {
+const DigitalSignatureDialog = ({
+  open,
+  onOpenChange,
+}: DigitalSignatureDialogProps) => {
   const { toast } = useToast();
-  const [typedSignature, setTypedSignature] = useState('');
+  const [typedSignature, setTypedSignature] = useState("");
   const [selectedFont, setSelectedFont] = useState(FONTS[0].value);
+  const [user] = useAuthState(auth);
 
   useEffect(() => {
     // Load Google Fonts
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Homemade+Apple&family=Caveat:wght@700&family=Sacramento&family=Great+Vibes&display=swap';
-    link.rel = 'stylesheet';
+    const link = document.createElement("link");
+    link.href =
+      "https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Homemade+Apple&family=Caveat:wght@700&family=Sacramento&family=Great+Vibes&display=swap";
+    link.rel = "stylesheet";
     document.head.appendChild(link);
 
     return () => {
@@ -39,30 +70,39 @@ const DigitalSignatureDialog = ({ open, onOpenChange }: DigitalSignatureDialogPr
     };
   }, []);
 
-  const saveSignature = () => {
+  const saveSignature = async () => {
     // Create a temporary canvas to render the typed signature
-    const tempCanvas = document.createElement('canvas');
-    const tempContext = tempCanvas.getContext('2d');
+    const tempCanvas = document.createElement("canvas");
+    const tempContext = tempCanvas.getContext("2d");
     if (!tempContext) return;
 
     tempCanvas.width = 600;
     tempCanvas.height = 200;
 
-    const font = FONTS.find(f => f.value === selectedFont);
+    const font = FONTS.find((f) => f.value === selectedFont);
     tempContext.font = `48px ${font?.family}`;
-    tempContext.fillStyle = '#203965';
-    tempContext.textAlign = 'center';
-    tempContext.textBaseline = 'middle';
-    tempContext.fillText(typedSignature, tempCanvas.width / 2, tempCanvas.height / 2);
+    tempContext.fillStyle = "#203965";
+    tempContext.textAlign = "center";
+    tempContext.textBaseline = "middle";
+    tempContext.fillText(
+      typedSignature,
+      tempCanvas.width / 2,
+      tempCanvas.height / 2
+    );
 
-    const signatureData = tempCanvas.toDataURL('image/png');
+    const signatureData = tempCanvas.toDataURL("image/png");
 
     // Here you would typically save the signature to your backend
-    console.log('Signature saved:', signatureData);
+    if (user) {
+      await setDoc(doc(db, "users", user.uid, "signatures", "default"), {
+        signature: signatureData,
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     toast({
-      title: 'Signature Saved',
-      description: 'Your digital signature has been saved successfully.',
+      title: "Signature Saved",
+      description: "Your digital signature has been saved successfully.",
     });
 
     onOpenChange(false);
@@ -78,7 +118,8 @@ const DigitalSignatureDialog = ({ open, onOpenChange }: DigitalSignatureDialogPr
                 Digital Signature
               </DialogTitle>
               <p className="text-gray-600 mt-2">
-                Type your signature below. This will be used to sign your documents.
+                Type your signature below. This will be used to sign your
+                documents.
               </p>
             </div>
             <Button
@@ -122,7 +163,8 @@ const DigitalSignatureDialog = ({ open, onOpenChange }: DigitalSignatureDialogPr
                 placeholder="Type your signature here"
                 className="text-2xl py-6 px-4 bg-gray-50 border-gray-200 focus:border-brand-navy focus:ring-brand-navy"
                 style={{
-                  fontFamily: FONTS.find(f => f.value === selectedFont)?.family
+                  fontFamily: FONTS.find((f) => f.value === selectedFont)
+                    ?.family,
                 }}
               />
               <Type className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -135,10 +177,11 @@ const DigitalSignatureDialog = ({ open, onOpenChange }: DigitalSignatureDialogPr
               <div
                 className="min-h-[60px] flex items-center justify-center text-3xl text-brand-navy"
                 style={{
-                  fontFamily: FONTS.find(f => f.value === selectedFont)?.family
+                  fontFamily: FONTS.find((f) => f.value === selectedFont)
+                    ?.family,
                 }}
               >
-                {typedSignature || 'Your signature will appear here'}
+                {typedSignature || "Your signature will appear here"}
               </div>
             </div>
           </div>
