@@ -23,6 +23,7 @@ import { db } from "@/lib/firebase";
 import { serverTimestamp, setDoc, doc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
+import { useRouter } from 'next/navigation';
 
 interface CreditScoreGoalDialogProps {
   open: boolean;
@@ -83,6 +84,8 @@ const CreditScoreGoalDialog = ({
   const [step, setStep] = useState(1);
   const [user] = useAuthState(auth);
 
+  const router = useRouter();
+
   const handleSubmit = async () => {
     const goalData = {
       purpose,
@@ -102,6 +105,7 @@ const CreditScoreGoalDialog = ({
     }
 
     onOpenChange(false);
+    router.refresh();
   };
 
   const handleNext = () => {
@@ -136,7 +140,7 @@ const CreditScoreGoalDialog = ({
                 Edit Your Credit Score Goal
               </DialogTitle>
               <p className="text-gray-600 mt-2">
-                Let's dive into your credit goals and customize your experience!
+                Let&apos;s dive into your credit goals and customize your experience!
               </p>
             </div>
             <Button
@@ -202,7 +206,7 @@ const CreditScoreGoalDialog = ({
                 <div className="flex items-center space-x-3 text-brand-navy">
                   <Award className="h-5 w-5" />
                   <Label className="text-lg font-medium">
-                    What's your current credit score?
+                    What&apos;s your current credit score?
                   </Label>
                 </div>
                 <Select value={currentScore} onValueChange={setCurrentScore}>
@@ -225,7 +229,7 @@ const CreditScoreGoalDialog = ({
                 <div className="flex items-center space-x-3 text-brand-navy">
                   <Rocket className="h-5 w-5" />
                   <Label className="text-lg font-medium">
-                    What's your motivation?
+                    What&apos;s your motivation?
                   </Label>
                 </div>
                 <Select value={motivation} onValueChange={setMotivation}>
@@ -271,7 +275,7 @@ const CreditScoreGoalDialog = ({
                 <div className="flex items-center space-x-3 text-brand-navy">
                   <Target className="h-5 w-5" />
                   <Label className="text-lg font-medium">
-                    What's your target credit score?
+                    What&apos;s your target credit score?
                   </Label>
                 </div>
                 <div className="bg-gray-50 rounded-xl p-6">

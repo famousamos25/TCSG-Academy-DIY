@@ -44,6 +44,7 @@ import {
   getScorePercentage,
 } from "@/lib/credit-report";
 import { CHECKLIST_ITEMS, ChecklistItem } from '@/constants/checklist';
+import { BuildCreditProfileDialog } from '@/components/build-credit-profile-dialog';
 
 interface CreditGoals {
   purpose: string;
@@ -61,6 +62,7 @@ export default function DashboardPage() {
   const [creditScoreGoalOpen, setCreditScoreGoalOpen] = useState(false);
   const [digitalSignatureOpen, setDigitalSignatureOpen] = useState(false);
   const [referralProgramOpen, setReferralProgramOpen] = useState(false);
+  const [buildCreditProfileOpen, setBuildCreditProfileOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [creditReport, setCreditReport] = useState<any>(null);
   const [creditGoals, setCreditGoals] = useState<CreditGoals | null>(null);
@@ -336,7 +338,6 @@ export default function DashboardPage() {
         break;
       case "Become a TCSG Academy Affiliate":
         setReferralProgramOpen(true);
-        // Mark as completed when opened
         setChecklistItems((prev) =>
           prev.map((item) =>
             item.title === title
@@ -351,40 +352,25 @@ export default function DashboardPage() {
             updatedAt: new Date().toISOString(),
           });
         }
-
-        // 3) Open the referral dialog if needed
-        setReferralProgramOpen(true);
         break;
       case "Build Your Credit Profile":
-        // 1) Immediately mark completed in local state
-        setChecklistItems((prev) =>
-          prev.map((item) =>
-            item.title === "Build Your Credit Profile"
-              ? { ...item, completed: true, status: "Completed" }
-              : item
-          )
-        );
-
-        // 2) Persist to Firestore
+        setBuildCreditProfileOpen(true);
         if (user) {
           await setDoc(doc(db, "users", user.uid, "credit_profile", "status"), {
             active: true,
             updatedAt: new Date().toISOString(),
           });
         }
-        // (Optional) Open some dialog if you have one
-        // e.g., setCreditProfileDialogOpen(true);
         break;
     }
   };
   const getStatusBadge = (item: ChecklistItem) => {
     return (
       <div
-        className={`px-3 py-1 rounded-full text-sm ${
-          item.status === "Completed"
-            ? "bg-green-100 text-green-700"
-            : "bg-brand-yellow/20 text-brand-navy"
-        }`}
+        className={`px-3 py-1 rounded-full text-sm ${item.status === "Completed"
+          ? "bg-green-100 text-green-700"
+          : "bg-brand-yellow/20 text-brand-navy"
+          }`}
       >
         {item.status}
       </div>
@@ -451,11 +437,10 @@ export default function DashboardPage() {
                             creditGoals.targetScore
                           )}`}
                           style={{
-                            width: `${
-                              (Number(creditGoals.currentScore.split("-")[0]) /
-                                850) *
+                            width: `${(Number(creditGoals.currentScore.split("-")[0]) /
+                              850) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         />
                       </div>
@@ -615,11 +600,10 @@ export default function DashboardPage() {
                           {bureau.score && bureau.change && (
                             <div className="flex flex-col items-end">
                               <span
-                                className={`text-sm font-medium ${
-                                  Number(bureau.change) >= 0
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                                }`}
+                                className={`text-sm font-medium ${Number(bureau.change) >= 0
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                                  }`}
                               >
                                 {bureau.change >= 0 ? "+" : ""}
                                 {bureau.change}
@@ -712,12 +696,10 @@ export default function DashboardPage() {
               <div
                 className="flex space-x-6"
                 style={{
-                  width: `${
-                    100 * Math.ceil(checklistItems.length / itemsPerPage)
-                  }%`,
-                  minWidth: `${
-                    100 * Math.ceil(checklistItems.length / itemsPerPage)
-                  }%`,
+                  width: `${100 * Math.ceil(checklistItems.length / itemsPerPage)
+                    }%`,
+                  minWidth: `${100 * Math.ceil(checklistItems.length / itemsPerPage)
+                    }%`,
                 }}
               >
                 {checklistItems.map((item) => (
@@ -773,9 +755,8 @@ export default function DashboardPage() {
               {Array.from({ length: totalPages }).map((_, index) => (
                 <button
                   key={index}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    currentPage === index ? "bg-brand-navy" : "bg-brand-navy/20"
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-colors ${currentPage === index ? "bg-brand-navy" : "bg-brand-navy/20"
+                    }`}
                   onClick={() => {
                     setCurrentPage(index);
                     if (scrollContainerRef.current) {
@@ -793,20 +774,18 @@ export default function DashboardPage() {
 
             <button
               onClick={() => scrollTo("prev")}
-              className={`absolute top-1/2 -left-4 transform -translate-y-1/2 p-2 rounded-full bg-white shadow-lg text-brand-navy hover:bg-brand-navy/5 ${
-                currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`absolute top-1/2 -left-4 transform -translate-y-1/2 p-2 rounded-full bg-white shadow-lg text-brand-navy hover:bg-brand-navy/5 ${currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               disabled={currentPage === 0}
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
               onClick={() => scrollTo("next")}
-              className={`absolute top-1/2 -right-4 transform -translate-y-1/2 p-2 rounded-full bg-white shadow-lg text-brand-navy hover:bg-brand-navy/5 ${
-                currentPage === totalPages - 1
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
+              className={`absolute top-1/2 -right-4 transform -translate-y-1/2 p-2 rounded-full bg-white shadow-lg text-brand-navy hover:bg-brand-navy/5 ${currentPage === totalPages - 1
+                ? "opacity-50 cursor-not-allowed"
+                : ""
+                }`}
               disabled={currentPage === totalPages - 1}
             >
               <ChevronRight className="h-6 w-6" />
@@ -843,6 +822,11 @@ export default function DashboardPage() {
       <ReferralProgramDialog
         open={referralProgramOpen}
         onOpenChange={setReferralProgramOpen}
+      />
+
+      <BuildCreditProfileDialog
+        open={buildCreditProfileOpen}
+        onOpenChange={setBuildCreditProfileOpen}
       />
     </>
   );
