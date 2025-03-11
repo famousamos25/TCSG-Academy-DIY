@@ -110,6 +110,8 @@ export default function AccountPage() {
   const [paymentCardOpen, setPaymentCardOpen] = useState(false);
   const [emailUpdateOpen, setEmailUpdateOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<any>(null);
+  const [signatureInfo, setSignatureInfo] = useState<any>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -121,6 +123,19 @@ export default function AccountPage() {
 
   useEffect(() => {
     if (!user) return;
+
+    const checkDigitalSignature = async () => {
+      try {
+        const docRef = doc(db, "users", user.uid, "signatures", "default");
+        return onSnapshot(docRef, (docSnap) => {
+          if (docSnap.exists()) {
+            setSignatureInfo(docSnap.data());
+          }
+        });
+      } catch (error) {
+        console.error("Error checking digital signature:", error);
+      }
+    };
 
     try {
       const docRef = doc(db, 'users', user.uid);
@@ -134,6 +149,8 @@ export default function AccountPage() {
             phone: profileData.phone || '',
           });
         }
+
+        checkDigitalSignature()
         setLoading(false);
       });
 
@@ -198,12 +215,12 @@ export default function AccountPage() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         const base64Image = e.target?.result as string;
-        
+
         await updateDoc(doc(db, 'users', user.uid), {
           photoURL: base64Image,
           updatedAt: serverTimestamp(),
         });
-        
+
         toast({
           title: 'Success',
           description: 'Profile photo updated successfully',
@@ -285,7 +302,7 @@ export default function AccountPage() {
 
     try {
       // await deletePaymentCard(user.uid, cardId);
-      
+
       toast({
         title: 'Card Deleted',
         description: 'Payment card has been removed successfully.',
@@ -345,38 +362,38 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
+      <div className="container p-6 mx-auto">
         <div className="flex justify-center">
-          <RefreshCw className="h-8 w-8 animate-spin text-brand-yellow" />
+          <RefreshCw className="w-8 h-8 animate-spin text-brand-yellow" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container p-6 mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-brand-navy mb-2">Account Settings</h1>
+          <h1 className="mb-2 text-3xl font-bold text-brand-navy">Account Settings</h1>
           <p className="text-gray-600">Manage your account preferences and subscription</p>
         </div>
       </div>
 
 
-       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
               <div className="relative">
-                <div className="w-16 h-16 rounded-full overflow-hidden bg-brand-navy/5 flex items-center justify-center">
+                <div className="flex items-center justify-center w-16 h-16 overflow-hidden rounded-full bg-brand-navy/5">
                   {profile?.photoURL ? (
-                    <img 
-                      src={profile.photoURL} 
-                      alt="Profile" 
-                      className="w-full h-full object-cover"
+                    <img
+                      src={profile.photoURL}
+                      alt="Profile"
+                      className="object-cover w-full h-full"
                     />
                   ) : (
-                    <User className="h-8 w-8 text-brand-navy" />
+                    <User className="w-8 h-8 text-brand-navy" />
                   )}
                 </div>
                 <Button
@@ -387,9 +404,9 @@ export default function AccountPage() {
                   disabled={uploadingPhoto}
                 >
                   {uploadingPhoto ? (
-                    <RefreshCw className="h-4 w-4 animate-spin" />
+                    <RefreshCw className="w-4 h-4 animate-spin" />
                   ) : (
-                    <Camera className="h-4 w-4" />
+                    <Camera className="w-4 h-4" />
                   )}
                 </Button>
                 <input
@@ -409,43 +426,43 @@ export default function AccountPage() {
             </div>
           </div>
 
-          <div className="space-y-4 border-t pt-4">
+          <div className="pt-4 space-y-4 border-t">
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-gray-900">DETAILS</h3>
-              
-              <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+
+              <div className="grid grid-cols-2 text-sm gap-x-4 gap-y-2">
                 <div className="text-gray-500">Full Name:</div>
-                <div className="text-gray-900 font-medium">
+                <div className="font-medium text-gray-900">
                   {profile?.firstName} {profile?.lastName || 'Not set'}
                 </div>
 
                 <div className="text-gray-500">Primary Email:</div>
-                <div className="text-gray-900 font-medium">
+                <div className="font-medium text-gray-900">
                   {profile?.email}
                 </div>
 
                 <div className="text-gray-500">Billing Email:</div>
-                <div className="text-gray-900 font-medium">
+                <div className="font-medium text-gray-900">
                   {profile?.billingEmail || profile?.email}
                 </div>
 
                 <div className="text-gray-500">Plan:</div>
-                <div className="text-gray-900 font-medium">
+                <div className="font-medium text-gray-900">
                   {profile?.plan ? profile.plan.charAt(0).toUpperCase() + profile.plan.slice(1) : 'Free'}
                 </div>
 
                 <div className="text-gray-500">Credit Report Type:</div>
-                <div className="text-gray-900 font-medium">
+                <div className="font-medium text-gray-900">
                   {profile?.creditReportType || 'Not available'}
                 </div>
 
                 <div className="text-gray-500">Contact:</div>
-                <div className="text-gray-900 font-medium">
+                <div className="font-medium text-gray-900">
                   {profile?.phone || 'Not set'}
                 </div>
 
                 <div className="text-gray-500">Credit Balance:</div>
-                <div className="text-gray-900 font-medium">
+                <div className="font-medium text-gray-900">
                   ${profile?.creditBalance?.toFixed(2) || '0.00'}
                 </div>
 
@@ -453,13 +470,13 @@ export default function AccountPage() {
                 <div className="flex items-center space-x-1">
                   {profile?.emailVerified ? (
                     <>
-                      <CheckCircle2 className="h-4 w-4 text-green-500" />
-                      <span className="text-green-600 font-medium">Verified</span>
+                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      <span className="font-medium text-green-600">Verified</span>
                     </>
                   ) : (
                     <>
-                      <AlertCircle className="h-4 w-4 text-yellow-500" />
-                      <span className="text-yellow-600 font-medium">Unverified</span>
+                      <AlertCircle className="w-4 h-4 text-yellow-500" />
+                      <span className="font-medium text-yellow-600">Unverified</span>
                     </>
                   )}
                 </div>
@@ -469,14 +486,14 @@ export default function AccountPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center space-x-2">
-                  <CreditCard className="h-4 w-4 text-gray-400" />
+                  <CreditCard className="w-4 h-4 text-gray-400" />
                   <span>Total Credit Pull</span>
                 </div>
                 <span className="font-medium">0</span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center space-x-2">
-                  <Shield className="h-4 w-4 text-gray-400" />
+                  <Shield className="w-4 h-4 text-gray-400" />
                   <span>Total Dispute Letters</span>
                 </div>
                 <span className="font-medium">0</span>
@@ -488,7 +505,7 @@ export default function AccountPage() {
         <div className="lg:col-span-2">
           <Card>
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="w-full justify-start gap-6 p-0 bg-transparent border-b rounded-none h-auto">
+              <TabsList className="justify-start w-full h-auto gap-6 p-0 bg-transparent border-b rounded-none">
                 <TabsTrigger
                   value="profile"
                   className="data-[state=active]:border-brand-navy border-b-2 border-transparent pb-4"
@@ -544,7 +561,7 @@ export default function AccountPage() {
                         variant="outline"
                         onClick={() => setEmailUpdateOpen(true)}
                       >
-                        <Mail className="h-4 w-4 mr-2" />
+                        <Mail className="w-4 h-4 mr-2" />
                         Update
                       </Button>
                     </div>
@@ -566,7 +583,7 @@ export default function AccountPage() {
                   >
                     {updating ? (
                       <>
-                        <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                        <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
                         Updating...
                       </>
                     ) : (
@@ -579,34 +596,34 @@ export default function AccountPage() {
               <TabsContent value="billing" className="p-6">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold text-brand-navy mb-4">Current Plan</h3>
+                    <h3 className="mb-4 text-lg font-semibold text-brand-navy">Current Plan</h3>
                     <Card className="p-6">
                       <div className="flex items-center justify-between mb-6">
                         <div>
-                          <Badge className="bg-green-100 text-green-700 mb-2">
+                          <Badge className="mb-2 text-green-700 bg-green-100">
                             {profile?.subscription?.status === 'trial' ? 'On Trial' : 'Active'}
                           </Badge>
                           <div className="text-2xl font-semibold text-brand-navy">
                             ${profile?.subscription?.price ?? '0.00'} Per Month
                           </div>
-                          <div className="text-sm text-gray-600 mt-1">
+                          <div className="mt-1 text-sm text-gray-600">
                             Next Payment: ${profile?.subscription?.price ?? '0.00'}
                           </div>
                           <div className="text-sm text-gray-600">
-                            Plan Renews On {profile?.subscription?.nextPayment 
-                              ? new Date(profile.subscription.nextPayment).toLocaleDateString() 
+                            Plan Renews On {profile?.subscription?.nextPayment
+                              ? new Date(profile.subscription.nextPayment).toLocaleDateString()
                               : 'Not Started'}
                           </div>
                         </div>
                         <div className="flex flex-col space-y-2">
-                          <Button 
-                            variant="outline" 
+                          <Button
+                            variant="outline"
                             className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
                             onClick={handleEndTrial}
                           >
                             End Trial
                           </Button>
-                          <Button 
+                          <Button
                             className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
                             onClick={handleStartSubscription}
                           >
@@ -622,7 +639,7 @@ export default function AccountPage() {
                             <span className="text-sm text-gray-600">0 of 7 Days</span>
                           </div>
                           <Progress value={0} className="h-2" />
-                          <div className="text-sm text-gray-600 mt-1">7 days remaining until renewal</div>
+                          <div className="mt-1 text-sm text-gray-600">7 days remaining until renewal</div>
                         </div>
                       </div>
                     </Card>
@@ -631,11 +648,11 @@ export default function AccountPage() {
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-brand-navy">Payment Methods</h3>
-                      <Button 
+                      <Button
                         className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
                         onClick={handleAddCard}
                       >
-                        <Plus className="h-4 w-4 mr-2" />
+                        <Plus className="w-4 h-4 mr-2" />
                         Add Card
                       </Button>
                     </div>
@@ -645,7 +662,7 @@ export default function AccountPage() {
                           {profile.paymentMethods.map((method) => (
                             <div key={method.id} className="flex items-center justify-between">
                               <div className="flex items-center space-x-4">
-                                <div className="relative w-12 h-8 bg-white rounded flex items-center justify-center border">
+                                <div className="relative flex items-center justify-center w-12 h-8 bg-white border rounded">
                                   <Image
                                     src={getCardIcon(method.cardType)}
                                     alt={method.cardType}
@@ -671,7 +688,7 @@ export default function AccountPage() {
                                   onClick={() => handleEditCard(method)}
                                   className="text-gray-400 hover:text-brand-navy"
                                 >
-                                  <Pencil className="h-4 w-4" />
+                                  <Pencil className="w-4 h-4" />
                                 </Button>
                                 <Button
                                   variant="ghost"
@@ -679,14 +696,14 @@ export default function AccountPage() {
                                   onClick={() => handleDeleteCard(method.id)}
                                   className="text-gray-400 hover:text-red-600"
                                 >
-                                  <Trash2 className="h-4 w-4" />
+                                  <Trash2 className="w-4 h-4" />
                                 </Button>
                               </div>
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <div className="text-center text-gray-500 py-4">
+                        <div className="py-4 text-center text-gray-500">
                           No payment methods added yet
                         </div>
                       )}
@@ -698,7 +715,7 @@ export default function AccountPage() {
               <TabsContent value="security" className="p-6">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold text-brand-navy mb-4">Security Settings</h3>
+                    <h3 className="mb-4 text-lg font-semibold text-brand-navy">Security Settings</h3>
                     <Card className="p-6">
                       <div className="space-y-6">
                         <div className="flex items-center justify-between">
@@ -764,9 +781,9 @@ export default function AccountPage() {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-brand-navy mb-4">Active Sessions</h3>
+                    <h3 className="mb-4 text-lg font-semibold text-brand-navy">Active Sessions</h3>
                     <Card className="p-6">
-                      <div className="text-center text-gray-500 py-4">
+                      <div className="py-4 text-center text-gray-500">
                         No active sessions to display
                       </div>
                     </Card>
@@ -777,7 +794,7 @@ export default function AccountPage() {
               <TabsContent value="settings" className="p-6">
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold text-brand-navy mb-4">Preferences</h3>
+                    <h3 className="mb-4 text-lg font-semibold text-brand-navy">Preferences</h3>
                     <Card className="p-6">
                       <div className="space-y-6">
                         <div className="flex items-center justify-between">
@@ -873,6 +890,7 @@ export default function AccountPage() {
       <DigitalSignatureDialog
         open={digitalSignatureOpen}
         onOpenChange={setDigitalSignatureOpen}
+        signatureInfo={signatureInfo}
       />
 
       <ReferralProgramDialog
@@ -891,7 +909,7 @@ export default function AccountPage() {
         onOpenChange={setEmailUpdateOpen}
         currentEmail={profile?.email || ''}
       />
-     
+
     </div>
   );
 }

@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X, Download, Type } from "lucide-react";
+import { X, Download, Type, Loader } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { auth, db } from "@/lib/firebase";
 import { setDoc, doc } from "firebase/firestore";
@@ -26,6 +26,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 interface DigitalSignatureDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  signatureInfo?: {
+    signature: string;
+    typedSignature: string;
+    font: string;
+  }
 }
 
 const FONTS = [
@@ -51,10 +56,12 @@ const FONTS = [
 const DigitalSignatureDialog = ({
   open,
   onOpenChange,
+  signatureInfo,
 }: DigitalSignatureDialogProps) => {
   const { toast } = useToast();
-  const [typedSignature, setTypedSignature] = useState("");
-  const [selectedFont, setSelectedFont] = useState(FONTS[0].value);
+  const [typedSignature, setTypedSignature] = useState(signatureInfo?.typedSignature ||"");
+  const [isSaving, setIsSaving] = useState(false);
+  const [selectedFont, setSelectedFont] = useState(signatureInfo?.font || FONTS[0].value);
   const [user] = useAuthState(auth);
 
   useEffect(() => {
@@ -71,41 +78,56 @@ const DigitalSignatureDialog = ({
   }, []);
 
   const saveSignature = async () => {
-    // Create a temporary canvas to render the typed signature
-    const tempCanvas = document.createElement("canvas");
-    const tempContext = tempCanvas.getContext("2d");
-    if (!tempContext) return;
 
-    tempCanvas.width = 600;
-    tempCanvas.height = 200;
+    try {
+      setIsSaving(true);
+      // Create a temporary canvas to render the typed signature
+      const tempCanvas = document.createElement("canvas");
+      const tempContext = tempCanvas.getContext("2d");
+      if (!tempContext) return;
 
-    const font = FONTS.find((f) => f.value === selectedFont);
-    tempContext.font = `48px ${font?.family}`;
-    tempContext.fillStyle = "#203965";
-    tempContext.textAlign = "center";
-    tempContext.textBaseline = "middle";
-    tempContext.fillText(
-      typedSignature,
-      tempCanvas.width / 2,
-      tempCanvas.height / 2
-    );
+      tempCanvas.width = 600;
+      tempCanvas.height = 200;
 
-    const signatureData = tempCanvas.toDataURL("image/png");
+      const font = FONTS.find((f) => f.value === selectedFont);
+      tempContext.font = `48px ${font?.family}`;
+      tempContext.fillStyle = "#203965";
+      tempContext.textAlign = "center";
+      tempContext.textBaseline = "middle";
+      tempContext.fillText(
+        typedSignature,
+        tempCanvas.width / 2,
+        tempCanvas.height / 2
+      );
 
-    // Here you would typically save the signature to your backend
-    if (user) {
-      await setDoc(doc(db, "users", user.uid, "signatures", "default"), {
-        signature: signatureData,
-        timestamp: new Date().toISOString(),
+      const signatureData = tempCanvas.toDataURL("image/png");
+
+      // Here you would typically save the signature to your backend
+      if (user) {
+        await setDoc(doc(db, "users", user.uid, "signatures", "default"), {
+          signature: signatureData,
+          typedSignature,
+          font: selectedFont,
+          timestamp: new Date().toISOString(),
+        });
+      }
+
+      toast({
+        title: "Signature Saved",
+        description: "Your digital signature has been saved successfully.",
       });
+      onOpenChange(false);
+
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred while saving your signature.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
     }
 
-    toast({
-      title: "Signature Saved",
-      description: "Your digital signature has been saved successfully.",
-    });
-
-    onOpenChange(false);
   };
 
   return (
@@ -117,7 +139,7 @@ const DigitalSignatureDialog = ({
               <DialogTitle className="text-2xl font-semibold text-brand-navy">
                 Digital Signature
               </DialogTitle>
-              <p className="text-gray-600 mt-2">
+              <p className="mt-2 text-gray-600">
                 Type your signature below. This will be used to sign your
                 documents.
               </p>
@@ -128,7 +150,7 @@ const DigitalSignatureDialog = ({
               onClick={() => onOpenChange(false)}
               className="text-gray-400 hover:text-gray-500"
             >
-              <X className="h-5 w-5" />
+              <X className="w-5 h-5" />
             </Button>
           </div>
         </DialogHeader>
@@ -161,19 +183,19 @@ const DigitalSignatureDialog = ({
                 value={typedSignature}
                 onChange={(e) => setTypedSignature(e.target.value)}
                 placeholder="Type your signature here"
-                className="text-2xl py-6 px-4 bg-gray-50 border-gray-200 focus:border-brand-navy focus:ring-brand-navy"
+                className="px-4 py-6 text-2xl border-gray-200 bg-gray-50 focus:border-brand-navy focus:ring-brand-navy"
                 style={{
                   fontFamily: FONTS.find((f) => f.value === selectedFont)
                     ?.family,
                 }}
               />
-              <Type className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Type className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 right-3 top-1/2" />
             </div>
           </div>
 
-          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+          <div className="p-6 border border-gray-200 rounded-lg bg-gray-50">
             <div className="text-center">
-              <p className="text-sm text-gray-600 mb-4">Preview</p>
+              <p className="mb-4 text-sm text-gray-600">Preview</p>
               <div
                 className="min-h-[60px] flex items-center justify-center text-3xl text-brand-navy"
                 style={{
@@ -187,7 +209,7 @@ const DigitalSignatureDialog = ({
           </div>
         </div>
 
-        <div className="flex justify-end space-x-3 mt-6 pt-6 border-t">
+        <div className="flex justify-end pt-6 mt-6 space-x-3 border-t">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
@@ -197,10 +219,13 @@ const DigitalSignatureDialog = ({
           </Button>
           <Button
             onClick={saveSignature}
-            disabled={!typedSignature}
+            disabled={!typedSignature || isSaving}
             className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
           >
-            <Download className="h-4 w-4 mr-2" />
+            {
+              isSaving ? <Loader className="w-4 h-4 mr-2 animate-spin" /> :
+                <Download className="w-4 h-4 mr-2" />
+            }
             Save Signature
           </Button>
         </div>

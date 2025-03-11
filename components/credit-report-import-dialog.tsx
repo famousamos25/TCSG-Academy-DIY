@@ -29,6 +29,7 @@ import { auth, db } from "@/lib/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { encrypt } from "@/lib/encryption";
 import { importTestReport } from "@/app/creditreport/test-import";
+import { importMyFreeScoreNow } from '@/app/creditreport/myfreescorenow-import';
 
 interface CreditReportImportDialogProps {
   open: boolean;
@@ -89,7 +90,18 @@ const CreditReportImportDialog = ({
 
   const handleImportWithCredentials = async () => {
     if (!user || !selectedService) return;
+    if (!credentials.username || !credentials.password) {
+      toast({
+        title: "Invalid Credentials",
+        description: "Please enter your username and password to import your credit report.",
+        variant: "destructive",
+      });
+      return;
+    }
 
+    if (selectedService !== "MyFreeScoreNow") return; // Only MyFreeScoreNow is supported for now
+
+    let interval: NodeJS.Timeout | null = null;
     try {
       setImporting(true);
       setProgress(0);
@@ -111,32 +123,28 @@ const CreditReportImportDialog = ({
       );
 
       // Simulate import process
-      const interval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 90) {
-            clearInterval(interval);
-            return prev;
-          }
-          return prev + 10;
-        });
-      }, 500);
+      if (selectedService === "MyFreeScoreNow") {
+        interval = setInterval(() => {
+          setProgress((prev) => (prev >= 90 ? prev : prev + 10));
+        }, 500);
 
-      // Import test data for now
-      const result = await importTestReport(user.uid);
+        console.log("Importing credit report...", credentials);
 
-      clearInterval(interval);
-      setProgress(100);
+        
+        const result = await importMyFreeScoreNow(user.uid, credentials);
+        clearInterval(interval);
 
-      if (result.success) {
-        toast({
-          title: "Import Successful",
-          description: "Your credit report has been successfully imported.",
-        });
+        if (result.success) {
+          toast({
+            title: "Import Successful",
+            description: "Your credit report has been successfully imported.",
+          });
 
-        setTimeout(() => {
-          onOpenChange(false);
-          window.location.reload();
-        }, 1000);
+          setTimeout(() => {
+            onOpenChange(false);
+            window.location.reload();
+          }, 1000);
+        }
       }
     } catch (error) {
       console.error("Import failed:", error);
@@ -148,6 +156,7 @@ const CreditReportImportDialog = ({
       });
       setImporting(false);
       setProgress(0);
+      if(!!interval) clearInterval(interval);
     }
   };
 
@@ -342,7 +351,7 @@ const CreditReportImportDialog = ({
                         );
                       }}
                     >
-                      Don't have an account? Sign up{" "}
+                      Don&apos;t have an account? Sign up{" "}
                       <ExternalLink className="h-3 w-3 ml-1" />
                     </Button>
                   </div>
@@ -479,7 +488,7 @@ const CreditReportImportDialog = ({
             <div className="mt-8 pt-6 border-t">
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-500">
-                  Don't have an account? Sign up with any of our partner
+                  Don&apos;t have an account? Sign up with any of our partner
                   services.
                 </div>
                 <Button

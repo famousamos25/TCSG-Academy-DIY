@@ -45,6 +45,7 @@ import {
 } from "@/lib/credit-report";
 import { CHECKLIST_ITEMS, ChecklistItem } from '@/constants/checklist';
 import { BuildCreditProfileDialog } from '@/components/build-credit-profile-dialog';
+import { convertKeysToLowerFirst } from '@/lib/utils';
 
 interface CreditGoals {
   purpose: string;
@@ -66,13 +67,14 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [creditReport, setCreditReport] = useState<any>(null);
   const [creditGoals, setCreditGoals] = useState<CreditGoals | null>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 4;
   const totalPages = Math.ceil(CHECKLIST_ITEMS.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(0);
+  const [signatureInfo, setSignatureInfo] = useState<any>(null);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [user] = useAuthState(auth);
-  const [checklistItems, setChecklistItems] =
-    useState<ChecklistItem[]>(CHECKLIST_ITEMS);
+  const [checklistItems, setChecklistItems] =useState<ChecklistItem[]>(CHECKLIST_ITEMS);
 
   useEffect(() => {
     if (!user) return;
@@ -90,7 +92,10 @@ export default function DashboardPage() {
         (snapshot) => {
           if (!snapshot.empty) {
             const reportData = snapshot.docs[0].data();
-            setCreditReport(reportData);
+            setCreditReport({
+              ...reportData,
+              data: typeof reportData.data === "string" ? convertKeysToLowerFirst(JSON.parse(reportData.data)) : reportData.data,
+            });
 
             // Update Upload Credit Report checklist item
             setChecklistItems((prev) =>
@@ -145,6 +150,8 @@ export default function DashboardPage() {
                     : item
                 )
               );
+
+              setSignatureInfo(docSnap.data());
             }
           });
         } catch (error) {
@@ -268,22 +275,24 @@ export default function DashboardPage() {
   const bureauData = useMemo(() => {
     if (!creditReport?.data) return [];
 
-    const bureaus = ["transunion", "experian", "equifax"];
+    const bureaus = ["transUnion", "experian", "equifax"];
     const logos = {
       transunion: "https://i.imgur.com/a48jzVj.png",
       experian: "https://i.imgur.com/bCRS33i.png",
       equifax: "https://i.imgur.com/6lhqUyI.png",
     };
 
-    return bureaus.map((bureau) => ({
-      name: bureau.charAt(0).toUpperCase() + bureau.slice(1),
-      logo: logos[bureau as keyof typeof logos],
-      score: creditReport.data.scores?.[bureau] || 0,
-      change: creditReport.data.changes?.[bureau] || "+0",
-      totalDebt: creditReport.data.totalDebt?.[bureau] || 0,
-      utilization: creditReport.data.creditUsage?.[bureau] || 0,
-      fair: false,
-    }));
+    return bureaus.map((bureau) => {
+      return ({
+        name: bureau.charAt(0).toUpperCase() + bureau.slice(1),
+        logo: logos[bureau as keyof typeof logos],
+        score: creditReport.data.scores?.[bureau]?.score || 0,
+        change: creditReport.data.changes?.[bureau]?.score || "+0",
+        totalDebt: creditReport.data.totalDebt?.[bureau]?.score || 0,
+        utilization: creditReport.data.creditUsage?.[bureau]?.score || 0,
+        fair: false,
+      });
+    });
   }, [creditReport]);
 
   const scrollTo = (direction: "prev" | "next") => {
@@ -379,28 +388,28 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <RefreshCw className="h-8 w-8 animate-spin text-brand-yellow" />
+      <div className="flex items-center justify-center min-h-screen">
+        <RefreshCw className="w-8 h-8 animate-spin text-brand-yellow" />
       </div>
     );
   }
 
   return (
     <>
-      <div className="container mx-auto p-6">
+      <div className="container p-6 mx-auto">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <Card className="overflow-hidden">
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6">
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-gray-700 font-semibold">Dispute Summary</h2>
-                <Info className="h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors" />
+            <div className="p-6 bg-gradient-to-r from-green-50 to-blue-50">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="font-semibold text-gray-700">Dispute Summary</h2>
+                <Info className="w-5 h-5 text-gray-400 transition-colors hover:text-gray-600" />
               </div>
 
               {creditGoals && (
-                <div className="mb-6 bg-white rounded-xl p-4 shadow-sm">
+                <div className="p-4 mb-6 bg-white shadow-sm rounded-xl">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
-                      <Target className="h-5 w-5 text-brand-yellow" />
+                      <Target className="w-5 h-5 text-brand-yellow" />
                       <span className="text-sm font-medium text-gray-700">
                         Credit Score Goal
                       </span>
@@ -415,7 +424,7 @@ export default function DashboardPage() {
 
                   <div className="space-y-4">
                     <div>
-                      <div className="flex justify-between items-center mb-2">
+                      <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-2">
                           <div
                             className={`h-2 w-2 rounded-full ${getScoreColor(
@@ -431,7 +440,7 @@ export default function DashboardPage() {
                           {creditGoals.purpose}
                         </span>
                       </div>
-                      <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                      <div className="w-full h-2 overflow-hidden bg-gray-100 rounded-full">
                         <div
                           className={`h-full transition-all duration-500 ${getScoreColor(
                             creditGoals.targetScore
@@ -444,23 +453,23 @@ export default function DashboardPage() {
                           }}
                         />
                       </div>
-                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <div className="flex justify-between mt-1 text-xs text-gray-500">
                         <span>Current: {creditGoals.currentScore}</span>
                         <span>Goal: {creditGoals.targetScore}</span>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <div className="text-sm text-gray-600 mb-1">
+                      <div className="p-3 rounded-lg bg-gray-50">
+                        <div className="mb-1 text-sm text-gray-600">
                           Motivation
                         </div>
                         <span className="text-sm font-medium text-gray-900">
                           {creditGoals.motivation}
                         </span>
                       </div>
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <div className="text-sm text-gray-600 mb-1">
+                      <div className="p-3 rounded-lg bg-gray-50">
+                        <div className="mb-1 text-sm text-gray-600">
                           Timeline
                         </div>
                         <span className="text-sm font-medium text-gray-900">
@@ -473,42 +482,42 @@ export default function DashboardPage() {
               )}
 
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-white rounded-xl p-4 shadow-sm">
+                <div className="p-4 bg-white shadow-sm rounded-xl">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                      <FileText className="h-5 w-5 text-orange-500" />
+                    <div className="flex items-center justify-center w-10 h-10 bg-orange-100 rounded-full">
+                      <FileText className="w-5 h-5 text-orange-500" />
                     </div>
-                    <span className="text-orange-500 font-semibold">0</span>
+                    <span className="font-semibold text-orange-500">0</span>
                   </div>
                   <p className="text-sm text-gray-600">Disputes Created</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-4 shadow-sm">
+                <div className="p-4 bg-white shadow-sm rounded-xl">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Upload className="h-5 w-5 text-blue-500" />
+                    <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
+                      <Upload className="w-5 h-5 text-blue-500" />
                     </div>
-                    <span className="text-blue-500 font-semibold">0 | 0</span>
+                    <span className="font-semibold text-blue-500">0 | 0</span>
                   </div>
                   <p className="text-sm text-gray-600">Sent | Unsent</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-4 shadow-sm">
+                <div className="p-4 bg-white shadow-sm rounded-xl">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                      <Building className="h-5 w-5 text-purple-500" />
+                    <div className="flex items-center justify-center w-10 h-10 bg-purple-100 rounded-full">
+                      <Building className="w-5 h-5 text-purple-500" />
                     </div>
-                    <span className="text-purple-500 font-semibold">0</span>
+                    <span className="font-semibold text-purple-500">0</span>
                   </div>
                   <p className="text-sm text-gray-600">Accounts In-Dispute</p>
                 </div>
 
-                <div className="bg-white rounded-xl p-4 shadow-sm">
+                <div className="p-4 bg-white shadow-sm rounded-xl">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-                      <Target className="h-5 w-5 text-red-500" />
+                    <div className="flex items-center justify-center w-10 h-10 bg-red-100 rounded-full">
+                      <Target className="w-5 h-5 text-red-500" />
                     </div>
-                    <span className="text-red-500 font-semibold">0</span>
+                    <span className="font-semibold text-red-500">0</span>
                   </div>
                   <p className="text-sm text-gray-600">Accounts Deleted</p>
                 </div>
@@ -516,16 +525,16 @@ export default function DashboardPage() {
 
               <Button
                 variant="outline"
-                className="w-full bg-white shadow-sm border-0 hover:bg-gray-50 transition-colors"
+                className="w-full transition-colors bg-white border-0 shadow-sm hover:bg-gray-50"
               >
-                <RefreshCw className="mr-2 h-4 w-4 animate-spin-slow" /> Sync
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin-slow" /> Sync
                 Stats
               </Button>
 
-              <div className="mt-6 bg-white rounded-xl p-4 shadow-sm">
-                <div className="flex justify-between items-center mb-3">
+              <div className="p-4 mt-6 bg-white shadow-sm rounded-xl">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-2">
-                    <TrendingUp className="h-4 w-4 text-green-500" />
+                    <TrendingUp className="w-4 h-4 text-green-500" />
                     <span className="text-sm font-medium text-gray-700">
                       Checklist Progress
                     </span>
@@ -543,18 +552,18 @@ export default function DashboardPage() {
           </Card>
 
           <Card className="overflow-hidden">
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6">
-              <div className="flex justify-between items-center mb-6">
+            <div className="p-6 bg-gradient-to-r from-purple-50 to-pink-50">
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
-                  <h2 className="text-gray-700 font-semibold">Credit Scores</h2>
+                  <h2 className="font-semibold text-gray-700">Credit Scores</h2>
                   <VantageScoreTooltip>
-                    <div className="px-2 py-1 bg-white rounded-full text-xs text-gray-600 shadow-sm cursor-help">
+                    <div className="px-2 py-1 text-xs text-gray-600 bg-white rounded-full shadow-sm cursor-help">
                       VantageScore 3.0
                     </div>
                   </VantageScoreTooltip>
                 </div>
                 <div className="flex items-center space-x-2 text-sm text-gray-500">
-                  <Clock className="h-4 w-4" />
+                  <Clock className="w-4 h-4" />
                   {creditReport ? (
                     <span>
                       Last updated {formatDate(creditReport.importedAt)}
@@ -568,19 +577,19 @@ export default function DashboardPage() {
               {bureauData.length === 0 ? (
                 <Button
                   variant="outline"
-                  className="w-full bg-white shadow-sm border-0 hover:bg-gray-50 transition-colors"
+                  className="w-full transition-colors bg-white border-0 shadow-sm hover:bg-gray-50"
                   onClick={() => setImportDialogOpen(true)}
                 >
-                  <Upload className="mr-2 h-4 w-4" /> Import Credit Report
+                  <Upload className="w-4 h-4 mr-2" /> Import Credit Report
                 </Button>
               ) : (
                 <div className="space-y-6">
                   {bureauData.map((bureau) => (
                     <div
                       key={bureau.name}
-                      className="bg-white rounded-xl p-4 shadow-sm"
+                      className="p-4 bg-white shadow-sm rounded-xl"
                     >
-                      <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center justify-between mb-4">
                         <div className="relative w-24 h-8">
                           <Image
                             src={bureau.logo}
@@ -618,7 +627,7 @@ export default function DashboardPage() {
 
                       <div className="space-y-4">
                         <div>
-                          <div className="flex items-center space-x-2 mb-2">
+                          <div className="flex items-center mb-2 space-x-2">
                             <div
                               className={`h-2 w-2 rounded-full ${getScoreColor(
                                 bureau.score
@@ -628,7 +637,7 @@ export default function DashboardPage() {
                               {getScoreLabel(bureau.score)}
                             </span>
                           </div>
-                          <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                          <div className="w-full h-2 overflow-hidden bg-gray-100 rounded-full">
                             <div
                               className={`h-full ${getScoreColor(
                                 bureau.score
@@ -638,30 +647,30 @@ export default function DashboardPage() {
                               }}
                             />
                           </div>
-                          <div className="flex justify-between text-xs text-gray-500 mt-1">
+                          <div className="flex justify-between mt-1 text-xs text-gray-500">
                             <span>300</span>
                             <span>850</span>
                           </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4 pt-2">
-                          <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="p-3 rounded-lg bg-gray-50">
                             <div className="flex items-center justify-between mb-1">
                               <span className="text-sm text-gray-600">
                                 Total Debt
                               </span>
-                              <Info className="h-3 w-3 text-gray-400" />
+                              <Info className="w-3 h-3 text-gray-400" />
                             </div>
                             <span className="text-lg font-semibold text-gray-900">
                               ${bureau.totalDebt.toLocaleString()}
                             </span>
                           </div>
-                          <div className="bg-gray-50 rounded-lg p-3">
+                          <div className="p-3 rounded-lg bg-gray-50">
                             <div className="flex items-center justify-between mb-1">
                               <span className="text-sm text-gray-600">
                                 Credit Usage
                               </span>
-                              <Info className="h-3 w-3 text-gray-400" />
+                              <Info className="w-3 h-3 text-gray-400" />
                             </div>
                             <span className="text-lg font-semibold text-gray-900">
                               {bureau.utilization}%
@@ -678,12 +687,12 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-8">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-2">
               <h2 className="text-2xl font-semibold text-brand-navy">
                 Success Checklist
               </h2>
-              <Info className="h-5 w-5 text-brand-navy/60" />
+              <Info className="w-5 h-5 text-brand-navy/60" />
             </div>
           </div>
 
@@ -708,13 +717,13 @@ export default function DashboardPage() {
                     className="flex-1"
                     style={{ scrollSnapAlign: "start" }}
                   >
-                    <Card className="h-full p-6 bg-white border border-gray-100 shadow-lg hover:shadow-xl transition-all duration-300">
+                    <Card className="h-full p-6 transition-all duration-300 bg-white border border-gray-100 shadow-lg hover:shadow-xl">
                       <div className="flex flex-col h-full">
-                        <div className="flex items-center space-x-2 mb-4">
+                        <div className="flex items-center mb-4 space-x-2">
                           {getStatusBadge(item)}
                         </div>
 
-                        <h3 className="text-lg font-medium text-brand-navy mb-2">
+                        <h3 className="mb-2 text-lg font-medium text-brand-navy">
                           {item.title}
                         </h3>
 
@@ -722,7 +731,7 @@ export default function DashboardPage() {
                           <div className="text-brand-yellow">{item.icon}</div>
                         </div>
 
-                        <p className="text-sm text-gray-600 mb-6 flex-grow">
+                        <p className="flex-grow mb-6 text-sm text-gray-600">
                           {item.description}
                         </p>
 
@@ -740,7 +749,7 @@ export default function DashboardPage() {
                               size="icon"
                               className="border-brand-yellow text-brand-yellow hover:bg-brand-yellow/10"
                             >
-                              <Info className="h-4 w-4" />
+                              <Info className="w-4 h-4" />
                             </Button>
                           )}
                         </div>
@@ -751,7 +760,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <div className="flex justify-center space-x-2 mt-6">
+            <div className="flex justify-center mt-6 space-x-2">
               {Array.from({ length: totalPages }).map((_, index) => (
                 <button
                   key={index}
@@ -778,7 +787,7 @@ export default function DashboardPage() {
                 }`}
               disabled={currentPage === 0}
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={() => scrollTo("next")}
@@ -788,7 +797,7 @@ export default function DashboardPage() {
                 }`}
               disabled={currentPage === totalPages - 1}
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -817,6 +826,7 @@ export default function DashboardPage() {
       <DigitalSignatureDialog
         open={digitalSignatureOpen}
         onOpenChange={setDigitalSignatureOpen}
+        signatureInfo={signatureInfo}
       />
 
       <ReferralProgramDialog

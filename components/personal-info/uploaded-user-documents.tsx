@@ -188,13 +188,13 @@ const UploadedUserDocuments = () => {
 		if (user?.uid) {
 			fetchDocuments();
 		}
-	}, [user]);
+	}, [user]);	
 
 	return (
 		<TabsContent value="documents">
 			<div className="py-4 space-y-6">
 				{REQUIRED_DOCUMENTS.map((doc) => (
-					<div key={doc.type} className="border rounded-lg p-4">
+					<div key={doc.type} className="p-4 border rounded-lg">
 						<div className="flex items-center justify-between mb-4">
 							<div>
 								<h3 className="font-medium text-gray-900">{doc.label}</h3>
@@ -203,7 +203,7 @@ const UploadedUserDocuments = () => {
 							{doc.required && (
 								<Badge
 									variant="outline"
-									className="bg-yellow-50 text-yellow-600"
+									className="text-yellow-600 bg-yellow-50"
 								>
 									Required
 								</Badge>
@@ -215,14 +215,20 @@ const UploadedUserDocuments = () => {
 								{documents[doc.type].map((uploadedDoc) => (
 									<div
 										key={uploadedDoc.id}
-										className="flex items-center justify-between bg-gray-50 p-3 rounded-lg"
+										className="flex items-center justify-between p-3 rounded-lg bg-gray-50"
 									>
 										<div className="flex items-center space-x-3">
-											<div className="w-8 h-8 bg-brand-yellow/10 rounded-full flex items-center justify-center">
-												<CheckCircle2 className="h-4 w-4 text-brand-yellow" />
+											<div className="flex items-center justify-center w-8 h-8 rounded-full bg-brand-yellow/10">
+												<CheckCircle2 className="w-4 h-4 text-brand-yellow" />
 											</div>
-											<div>
-												<div className="font-medium text-gray-900">
+											<div onClick={() => {
+												if (uploadedDoc.fileUrl) {
+													window.open(uploadedDoc.fileUrl, '_blank');
+												}
+											}}
+											className='cursor-pointer group'
+											>
+												<div className="font-medium text-gray-900 group-hover:underline">
 													{uploadedDoc.fileName}
 												</div>
 												<div className="text-sm text-gray-600">
@@ -242,7 +248,7 @@ const UploadedUserDocuments = () => {
 
 												className="text-gray-400 hover:text-red-600"
 											>
-												<Trash2 className="h-4 w-4" />
+												<Trash2 className="w-4 h-4" />
 											</Button>
 										</ConfirmModal>
 									</div>
@@ -251,13 +257,13 @@ const UploadedUserDocuments = () => {
 						) : (
 							<div
 								onClick={() => handleUploadClick(doc.type)}
-								className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center cursor-pointer hover:border-gray-300 transition-colors"
+								className="p-8 text-center transition-colors border-2 border-gray-200 border-dashed rounded-lg cursor-pointer hover:border-gray-300"
 							>
-								<Upload className="h-8 w-8 text-gray-400 mx-auto mb-4" />
+								<Upload className="w-8 h-8 mx-auto mb-4 text-gray-400" />
 								<p className="text-sm text-gray-600">
 									Click to upload or drag and drop
 								</p>
-								<p className="text-xs text-gray-500 mt-1">
+								<p className="mt-1 text-xs text-gray-500">
 									{doc.acceptedTypes
 										.map((type) => type.split("/")[1].toUpperCase())
 										.join(", ")}{" "}
@@ -276,13 +282,13 @@ const UploadedUserDocuments = () => {
 					</div>
 				))}
 
-				<div className="bg-gray-50 rounded-lg p-4 flex items-start space-x-3">
+				<div className="flex items-start p-4 space-x-3 rounded-lg bg-gray-50">
 					<AlertCircle className="h-5 w-5 text-brand-navy mt-0.5" />
 					<div className="text-sm">
 						<p className="font-medium text-gray-900">
 							Document Requirements
 						</p>
-						<p className="text-gray-600 mt-1">
+						<p className="mt-1 text-gray-600">
 							All documents must be clear, legible, and current. Documents
 							will be reviewed within 24-48 hours. You will be notified if
 							any documents need to be resubmitted.
@@ -307,7 +313,7 @@ const UploadedUserDocuments = () => {
 								guides={true}
 								preview=".preview"
 							/>
-							<div className="flex justify-end space-x-3 mt-4">
+							<div className="flex justify-end mt-4 space-x-3">
 								<Button variant="outline" onClick={() => setCropData(null)}>
 									Cancel
 								</Button>
@@ -318,9 +324,9 @@ const UploadedUserDocuments = () => {
 								>
 									{
 										uploadingDocuments ? (
-											<Loader className="h-4 w-4 mr-2 animate-spin" />
+											<Loader className="w-4 h-4 mr-2 animate-spin" />
 										) : (
-											<Crop className="h-4 w-4 mr-2" />
+											<Crop className="w-4 h-4 mr-2" />
 										)
 									}
 

@@ -1,5 +1,5 @@
 import { db } from '@/lib/firebase';
-import { doc, setDoc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
+import { doc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
 
 // Test credit report data
 const TEST_DATA = {

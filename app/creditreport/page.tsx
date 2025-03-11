@@ -3,18 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { VantageScoreTooltip } from '@/components/vantagescore-tooltip';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import {
   Select,
   SelectContent,
@@ -33,10 +24,6 @@ import {
   Car,
   GraduationCap,
   Wallet,
-  Ban,
-  AlertTriangle,
-  CheckCircle2,
-  XCircle,
   User,
   RefreshCw,
   AlertCircle,
@@ -49,6 +36,8 @@ import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestor
 import { useToast } from '@/hooks/use-toast';
 import { formatDate, calculateNextRefresh } from '@/lib/date-utils';
 import { getScoreColor, getScoreLabel, getScorePercentage } from '@/lib/credit-report';
+import { convertKeysToLowerFirst } from '@/lib/utils';
+import CreditSummaryDashboard from './credit-summary';
 
 // Account type options for filtering
 const ACCOUNT_TYPES = [
@@ -60,19 +49,9 @@ const ACCOUNT_TYPES = [
   { value: 'personalLoan', label: 'Personal Loans', icon: Wallet },
 ];
 
-// Account status options for filtering
-const ACCOUNT_STATUSES = [
-  { value: 'all', label: 'All Statuses' },
-  { value: 'open', label: 'Open' },
-  { value: 'closed', label: 'Closed' },
-  { value: 'negative', label: 'Negative' },
-  { value: 'positive', label: 'Positive' },
-];
-
 export default function CreditReportPage() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('accounts');
   const [accountFilter, setAccountFilter] = useState('all');
-  const [bureauFilter, setBureauFilter] = useState('all');
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user] = useAuthState(auth);
@@ -92,7 +71,10 @@ export default function CreditReportPage() {
       const unsubscribe = onSnapshot(q, (snapshot) => {
         if (!snapshot.empty) {
           const reportData = snapshot.docs[0].data();
-          setCreditReport(reportData);
+          setCreditReport({
+            ...reportData,
+            data: typeof reportData.data === "string" ? convertKeysToLowerFirst(JSON.parse(reportData.data)) : reportData.data,
+          });
         }
         setLoading(false);
       }, (error) => {
@@ -110,7 +92,8 @@ export default function CreditReportPage() {
       console.error('Error setting up credit report listener:', error);
       setLoading(false);
     }
-  }, [user, toast]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const hasImportedReport = !!creditReport;
 
@@ -119,7 +102,7 @@ export default function CreditReportPage() {
     {
       name: 'TransUnion',
       logo: 'https://i.imgur.com/a48jzVj.png',
-      score: creditReport?.data?.scores?.transunion || null,
+      score: creditReport?.data?.scores?.transUnion?.score || null,
       change: creditReport?.data?.changes?.transunion || null,
       totalDebt: creditReport?.data?.totalDebt?.transunion || 0,
       creditUsage: creditReport?.data?.creditUsage?.transunion || 0,
@@ -127,7 +110,7 @@ export default function CreditReportPage() {
     {
       name: 'Experian',
       logo: 'https://i.imgur.com/bCRS33i.png',
-      score: creditReport?.data?.scores?.experian || null,
+      score: creditReport?.data?.scores?.experian?.score || null,
       change: creditReport?.data?.changes?.experian || null,
       totalDebt: creditReport?.data?.totalDebt?.experian || 0,
       creditUsage: creditReport?.data?.creditUsage?.experian || 0,
@@ -135,12 +118,16 @@ export default function CreditReportPage() {
     {
       name: 'Equifax',
       logo: 'https://i.imgur.com/6lhqUyI.png',
-      score: creditReport?.data?.scores?.equifax || null,
+      score: creditReport?.data?.scores?.equifax?.score || null,
       change: creditReport?.data?.changes?.equifax || null,
       totalDebt: creditReport?.data?.totalDebt?.equifax || 0,
       creditUsage: creditReport?.data?.creditUsage?.equifax || 0,
     },
   ];
+
+
+  console.log('creditReport', creditReport);
+  
 
   if (loading) {
     return (
@@ -182,15 +169,15 @@ export default function CreditReportPage() {
           </div>
         </div>
         <div className="flex space-x-3">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="border-brand-navy text-brand-navy hover:bg-brand-navy/10"
             disabled={!hasImportedReport}
           >
             <Download className="h-4 w-4 mr-2" />
             Export Report
           </Button>
-          <Button 
+          <Button
             className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
             onClick={() => setImportDialogOpen(true)}
           >
@@ -217,12 +204,11 @@ export default function CreditReportPage() {
                 <span className={`text-3xl font-bold ${getScoreColor(bureau.score)}`}>
                   {bureau.score || '---'}
                 </span>
-                {bureau.score && bureau.change && (
+                {bureau.score && (
                   <div className="flex flex-col items-end">
-                    <span className={`text-sm font-medium ${
-                      Number(bureau.change) >= 0 ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {bureau.change >= 0 ? '+' : ''}{bureau.change}
+                    <span className={`text-sm font-medium ${Number(bureau.score) >= 0 ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                      {bureau.score >= 0 ? '+' : ''}{bureau.score}
                     </span>
                     <span className="text-xs text-gray-500">Last 30 days</span>
                   </div>
@@ -241,7 +227,7 @@ export default function CreditReportPage() {
                       </span>
                     </div>
                     <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className={`h-full rounded-full transition-all duration-500 ${getScoreColor(bureau.score)}`}
                         style={{ width: `${getScorePercentage(bureau.score)}%` }}
                       />
@@ -278,39 +264,21 @@ export default function CreditReportPage() {
         ))}
       </div>
 
-      {/* Main Content */}
-      <Card className="mb-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <div className="border-b px-6">
-            <TabsList className="w-full justify-start gap-6">
-              <TabsTrigger value="overview" className="pb-4">Overview</TabsTrigger>
-              <TabsTrigger value="accounts" className="pb-4">Accounts</TabsTrigger>
-              <TabsTrigger value="inquiries" className="pb-4">Inquiries</TabsTrigger>
-              <TabsTrigger value="personalInfo" className="pb-4">Personal Info</TabsTrigger>
-            </TabsList>
-          </div>
+      <CreditSummaryDashboard creditData={creditReport?.data?.summary} />
 
-          <TabsContent value="overview" className="p-6">
-            <div className="text-center py-12">
-              <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Report Data Available</h3>
-              <p className="text-gray-600 mb-6">
-                Import your credit report to see a comprehensive overview of your credit profile
-              </p>
-              <Button
-                className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                onClick={() => setImportDialogOpen(true)}
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                Import Credit Report
-              </Button>
-            </div>
-          </TabsContent>
+      {/* Main Content */}
+      <Card className="mb-6 border-none">
+        <Tabs value={activeTab} className='border-b-none' onValueChange={setActiveTab}>
+          <TabsList className="w-full justify-start gap-6">
+            <TabsTrigger value="accounts" className="">Accounts</TabsTrigger>
+            <TabsTrigger value="inquiries" className="">Inquiries</TabsTrigger>
+            <TabsTrigger value="personalInfo" className="">Personal Info</TabsTrigger>
+          </TabsList>
 
           <TabsContent value="accounts" className="p-6">
             {hasImportedReport ? (
               <>
-                <div className="flex justify-between items-center mb-6">
+                {/* <div className="flex justify-between items-center mb-6">
                   <div className="flex items-center space-x-4">
                     <Select value={accountFilter} onValueChange={setAccountFilter}>
                       <SelectTrigger className="w-[180px]">
@@ -330,101 +298,86 @@ export default function CreditReportPage() {
                     </Select>
                   </div>
 
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
                   >
                     <Download className="h-4 w-4 mr-2" />
                     Export
                   </Button>
-                </div>
+                </div> */}
 
-                <div className="space-y-6">
-                  {creditReport.data.accounts.map((account: any) => (
-                    <Card key={account.id} className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <div className="flex items-center space-x-3">
-                            <h3 className="text-xl font-semibold text-brand-navy">
-                              {account.creditorName}
-                            </h3>
-                            <Badge variant={account.accountStatus === 'Open' ? 'success' : 'secondary'}>
-                              {account.accountStatus}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-gray-600 mt-1">
-                            Account #{account.accountNumber} • {account.accountType}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-brand-navy">
-                            ${account?.currentBalance?.toLocaleString()}
-                          </div>
-                          <p className="text-sm text-gray-600">Current Balance</p>
-                        </div>
-                      </div>
+                <div className="space-y-6_ grid grid-cols-3 gap-4">
+                  {creditReport.data.accounts.map((account: any, idx: number) => {
 
-                      <div className="grid grid-cols-3 gap-6">
-                        <div>
-                          <h4 className="font-medium text-gray-900 mb-2">Account Details</h4>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Original Amount</span>
-                              <span>${account?.originalAmount?.toLocaleString()}</span>
-                            </div>
-                            {account.creditLimit && (
-                              <div className="flex justify-between">
-                                <span className="text-gray-600">Credit Limit</span>
-                                <span>${account?.creditLimit?.toLocaleString()}</span>
-                              </div>
-                            )}
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Monthly Payment</span>
-                              <span>${account?.monthlyPayment?.toLocaleString()}</span>
-                            </div>
-                          </div>
-                        </div>
+                    const info = account[0];
+                    if (!info) return;
 
-                        <div>
-                          <h4 className="font-medium text-gray-900 mb-2">Payment Status</h4>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Current Status</span>
-                              <Badge variant={account?.paymentStatus === 'Current' ? 'success' : 'destructive'}>
-                                {account.paymentStatus}
+                    const values: any = Object.values(info)[0];
+                    console.log('values', values);
+
+
+                    return (
+                      <Card key={idx} className="p-6">
+                        <div className="flex_ items-start justify-between mb-4">
+                          <div>
+                            <div className="flex items-center space-x-3">
+                              <h3 className="text-xl font-semibold text-brand-navy">
+                                {values.creditorName}
+                              </h3>
+                              <Badge variant={account.accountStatus === 'Open' ? 'success' : 'secondary'}>
+                                {values.accountStatus}
                               </Badge>
                             </div>
-                            {account.pastDueAmount > 0 && (
-                              <div className="flex justify-between">
-                                <span className="text-gray-600">Past Due Amount</span>
-                                <span className="text-red-600">${account?.pastDueAmount?.toLocaleString()}</span>
-                              </div>
-                            )}
+                            <p className="text-sm text-gray-600 flex items-center gap-2">
+                              Account #{values.accountNumber} • {values.accountType}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-sm font-bold text-brand-navy">
+                              ${values?.balance}
+                            </div>
+                            <p className="text-sm text-gray-600">Current Balance</p>
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="font-medium text-gray-900 mb-2">Important Dates</h4>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
-                              <span className="text-gray-600">Opened</span>
-                              <span>{account.dateOpened}</span>
+                              <span className="text-gray-600">Account Number:</span>
+                              <span className='truncate'>{values?.accountNumber}</span>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Last Updated</span>
-                              <span>{account.lastUpdated}</span>
-                            </div>
-                            {account.dateClosed && (
+                            {values.creditLimit && (
                               <div className="flex justify-between">
-                                <span className="text-gray-600">Closed</span>
-                                <span>{account.dateClosed}</span>
+                                <span className="text-gray-600">Credit Limit</span>
+                                <span>${values?.creditLimit?.toLocaleString()}</span>
                               </div>
                             )}
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Balance:</span>
+                              <span>${values?.balance}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Payment Status:</span>
+                              <span>{values?.paymentStatus}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Account Status:</span>
+                              <span>{values?.accountStatus}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Account Type:</span>
+                              <span>{values?.accountType}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-600">Date Opened:</span>
+                              <span>{values?.dateOpened}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Card>
-                  ))}
+                      </Card>
+                    );
+                  })}
                 </div>
               </>
             ) : (

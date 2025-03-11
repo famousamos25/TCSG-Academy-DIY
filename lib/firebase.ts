@@ -1,7 +1,9 @@
 import { initializeApp, getApps, FirebaseOptions } from 'firebase/app';
 import { getAuth, browserLocalPersistence, setPersistence } from 'firebase/auth';
-import { getFirestore, enableIndexedDbPersistence, initializeFirestore, CACHE_SIZE_UNLIMITED } from 'firebase/firestore';
+import { enableIndexedDbPersistence, initializeFirestore, CACHE_SIZE_UNLIMITED } from 'firebase/firestore';
 import { getAnalytics, isSupported } from 'firebase/analytics';
+import { getStorage } from "firebase/storage";
+
 
 // Validate Firebase config before initialization
 const validateConfig = (config: FirebaseOptions) => {
@@ -41,6 +43,7 @@ const initializeFirebase = () => {
 
     // Initialize Auth
     const auth = getAuth(app);
+    const storage = getStorage(app);
 
     // Set auth persistence
     if (typeof window !== 'undefined') {
@@ -70,7 +73,7 @@ const initializeFirebase = () => {
       }
     }
 
-    return { app, auth, db };
+    return { app, auth, db, storage };
   } catch (error) {
     console.error('Error initializing Firebase:', error);
     throw error;
@@ -88,4 +91,4 @@ try {
 }
 
 // Export services
-export const { auth, db } = services;
+export const { auth, db, storage } = services;

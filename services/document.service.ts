@@ -1,6 +1,7 @@
 
-import { db } from '@/lib/firebase';
+import { db, storage } from '@/lib/firebase';
 import { collection, doc, getDoc, getDocs, query, where, orderBy, addDoc, deleteDoc, Timestamp } from 'firebase/firestore';
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export interface UserDocument {
   id: string;
@@ -47,26 +48,26 @@ export const REQUIRED_DOCUMENTS = [
 
 export async function uploadDocument(userId: string, file: File, type: string): Promise<UserDocument> {
   try {
-    // For now, we'll store the file as base64 in Firestore
-    // In production, you'd want to use proper file storage like Firebase Storage
-    const reader = new FileReader();
-    const fileData = await new Promise<string>((resolve, reject) => {
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+    //
+    const unique5charId = Math.random().toString(36).substring(2, 7);
+    const uniqueFileName = `${unique5charId}-${file.name}`;
+    const storageRef = ref(storage, `users/${userId}/documents/${type}/${uniqueFileName}`);
+
+    const snapshot = await uploadBytes(storageRef, file);
+    const fileUrl = await getDownloadURL(snapshot.ref);
 
     const date = Timestamp.now();
     const docRef = await addDoc(collection(db, 'users', userId, 'documents'), {
       type,
       status: 'pending',
-      fileUrl: fileData,
-      fileName: file.name,
+      fileUrl,
+      fileName: uniqueFileName,
       mimeType: file.type,
       uploadedAt: date,
       metadata: {
         size: file.size,
         lastModified: file.lastModified,
+        originalName: file.name,
       },
     });
 
@@ -74,13 +75,14 @@ export async function uploadDocument(userId: string, file: File, type: string): 
       id: docRef.id,
       type: type as UserDocument['type'],
       status: 'pending',
-      fileUrl: fileData,
-      fileName: file.name,
+      fileUrl,
+      fileName: uniqueFileName,
       mimeType: file.type,
       uploadedAt: date,
       metadata: {
         size: file.size,
         lastModified: file.lastModified,
+        originalName: file.name,
       },
     };
   } catch (error) {
@@ -102,7 +104,7 @@ export async function checkRequiredDocuments(userId: string): Promise<{
       where('status', '==', 'verified'),
       orderBy('uploadedAt', 'desc')
     );
-    
+
     const snapshot = await getDocs(q);
     const documents = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -112,9 +114,9 @@ export async function checkRequiredDocuments(userId: string): Promise<{
     // Check which required documents are missing
     const missingDocuments = REQUIRED_DOCUMENTS
       .filter(doc => doc.required)
-      .filter(requiredDoc => 
-        !documents.some(userDoc => 
-          userDoc.type === requiredDoc.type && 
+      .filter(requiredDoc =>
+        !documents.some(userDoc =>
+          userDoc.type === requiredDoc.type &&
           userDoc.status === 'verified'
         )
       )
@@ -139,7 +141,7 @@ export async function getDocumentsByType(userId: string, type: string): Promise<
       where('type', '==', type),
       orderBy('uploadedAt', 'desc')
     );
-    
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
       id: doc.id,
@@ -155,7 +157,7 @@ export async function getDocument(userId: string, documentId: string): Promise<U
   try {
     const docRef = doc(db, 'users', userId, 'documents', documentId);
     const docSnap = await getDoc(docRef);
-    
+
     if (!docSnap.exists()) {
       return null;
     }
@@ -171,35 +173,59 @@ export async function getDocument(userId: string, documentId: string): Promise<U
 }
 
 export const getUserDocuments = async (userId: string) => {
-	try {
-		const docRef = collection(db, `users/${userId}/documents`);
-		const itemSnapshot = await getDocs(docRef);
+  try {
+    const docRef = collection(db, `users/${userId}/documents`);
+    const itemSnapshot = await getDocs(docRef);
 
-		return itemSnapshot.docs.map((doc) => {
-			return {
-				id: doc.id,
-				...doc.data(),
-			};
-		}) as UserDocument[];
-	} catch (error) {
-		console.log("Error getting user documents:", error);
+    return itemSnapshot.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
+    }) as UserDocument[];
+  } catch (error) {
+    console.log("Error getting user documents:", error);
 
-		return [];
-	}
+    return [];
+  }
 };
 
 export const deleteUserDocument = async (userId: string, documentId: string) => {
-	try {
-		const docRef = doc(db, `users/${userId}/documents`, documentId);
-		await deleteDoc(docRef);
-		return {
-			success: true,
-		}
-	} catch (error) {
-		console.log("Error deleting user document:", error);
-		return {
-			success: false,
-			error: "Error deleting user document. Please try again later!",
-		};
-	}
-}
+  try {
+    const docRef = doc(db, `users/${userId}/documents`, documentId);
+
+    const document = await getDoc(docRef);
+    if (!document.exists()) {
+      return {
+        success: false,
+        error: "Document not found",
+      };
+    }
+
+    await deleteDoc(docRef);
+
+    const docInfo = document.data();
+    if (docInfo.type && docInfo.fileName) {
+      await deleteFileInStorage(`users/${userId}/documents/${docInfo.type}/${docInfo.fileName}`);
+    }
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.log("Error deleting user document:", error);
+    return {
+      success: false,
+      error: "Error deleting user document. Please try again later!",
+    };
+  }
+};
+
+const deleteFileInStorage = async (docPath: string) => {
+  try {
+    const fileRef = ref(storage, docPath);
+    await deleteObject(fileRef);
+  } catch (error) {
+    console.log("Error deleting file in storage:", error);
+  }
+};
