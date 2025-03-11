@@ -14,8 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import {
-  AlertCircle,
-  Upload,
   RefreshCw,
   CheckCircle2,
   ExternalLink,
@@ -28,7 +26,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { encrypt } from "@/lib/encryption";
-import { importTestReport } from "@/app/creditreport/test-import";
 import { importMyFreeScoreNow } from '@/app/creditreport/myfreescorenow-import';
 
 interface CreditReportImportDialogProps {
@@ -160,55 +157,55 @@ const CreditReportImportDialog = ({
     }
   };
 
-  const handleTestImport = async () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign in to import your credit report.",
-        variant: "destructive",
-      });
-      return;
-    }
+  // const handleTestImport = async () => {
+  //   if (!user) {
+  //     toast({
+  //       title: "Authentication Required",
+  //       description: "Please sign in to import your credit report.",
+  //       variant: "destructive",
+  //     });
+  //     return;
+  //   }
 
-    setImporting(true);
-    setProgress(0);
+  //   setImporting(true);
+  //   setProgress(0);
 
-    try {
-      const interval = setInterval(() => {
-        setProgress((prev) => (prev >= 90 ? prev : prev + 10));
-      }, 500);
+  //   try {
+  //     const interval = setInterval(() => {
+  //       setProgress((prev) => (prev >= 90 ? prev : prev + 10));
+  //     }, 500);
 
-      const result = await importTestReport(user.uid);
-      clearInterval(interval);
-      setProgress(100);
+  //     const result = await importTestReport(user.uid);
+  //     clearInterval(interval);
+  //     setProgress(100);
 
-      if (result.success) {
-        toast({
-          title: "Import Successful",
-          description: "Test credit report has been imported successfully.",
-        });
+  //     if (result.success) {
+  //       toast({
+  //         title: "Import Successful",
+  //         description: "Test credit report has been imported successfully.",
+  //       });
 
-        setTimeout(() => {
-          onOpenChange(false);
-          window.location.reload();
-        }, 1000);
-      }
-    } catch (error) {
-      console.error("Import failed:", error);
-      toast({
-        title: "Import Failed",
-        description: "Failed to import test data. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setImporting(false);
-      setProgress(0);
-    }
-  };
+  //       setTimeout(() => {
+  //         onOpenChange(false);
+  //         window.location.reload();
+  //       }, 1000);
+  //     }
+  //   } catch (error) {
+  //     console.error("Import failed:", error);
+  //     toast({
+  //       title: "Import Failed",
+  //       description: "Failed to import test data. Please try again.",
+  //       variant: "destructive",
+  //     });
+  //   } finally {
+  //     setImporting(false);
+  //     setProgress(0);
+  //   }
+  // };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold text-brand-navy">
             Import Credit Report
@@ -218,11 +215,11 @@ const CreditReportImportDialog = ({
         {importing ? (
           <div className="py-12">
             <div className="text-center">
-              <RefreshCw className="h-16 w-16 text-brand-yellow mx-auto mb-6 animate-spin" />
-              <h3 className="text-xl font-medium text-gray-900 mb-3">
+              <RefreshCw className="w-16 h-16 mx-auto mb-6 text-brand-yellow animate-spin" />
+              <h3 className="mb-3 text-xl font-medium text-gray-900">
                 Importing Your Credit Report
               </h3>
-              <p className="text-gray-600 mb-8 max-w-md mx-auto">
+              <p className="max-w-md mx-auto mb-8 text-gray-600">
                 Please wait while we securely process and analyze your credit
                 report data...
               </p>
@@ -236,9 +233,9 @@ const CreditReportImportDialog = ({
                         <div key={step} className="text-center">
                           <div className="flex justify-center mb-2">
                             {isComplete ? (
-                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                              <CheckCircle2 className="w-5 h-5 text-green-500" />
                             ) : (
-                              <div className="h-5 w-5 rounded-full border-2 border-gray-200" />
+                              <div className="w-5 h-5 border-2 border-gray-200 rounded-full" />
                             )}
                           </div>
                           <span
@@ -263,11 +260,11 @@ const CreditReportImportDialog = ({
               className="mb-6"
               onClick={handleBackToServices}
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Services
             </Button>
 
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-8">
               <div>
                 <Card className="p-6">
                   <div className="relative w-32 h-8 mb-4">
@@ -281,10 +278,10 @@ const CreditReportImportDialog = ({
                       style={{ objectFit: "contain" }}
                     />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  <h3 className="mb-2 text-lg font-medium text-gray-900">
                     Login to {selectedService}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-6">
+                  <p className="mb-6 text-sm text-gray-600">
                     Enter your credentials to import your credit report
                   </p>
 
@@ -292,7 +289,7 @@ const CreditReportImportDialog = ({
                     <div>
                       <Label htmlFor="username">Username</Label>
                       <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <User className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                         <Input
                           id="username"
                           value={credentials.username}
@@ -310,7 +307,7 @@ const CreditReportImportDialog = ({
                     <div>
                       <Label htmlFor="password">Password</Label>
                       <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <Lock className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                         <Input
                           id="password"
                           type="password"
@@ -352,23 +349,23 @@ const CreditReportImportDialog = ({
                       }}
                     >
                       Don&apos;t have an account? Sign up{" "}
-                      <ExternalLink className="h-3 w-3 ml-1" />
+                      <ExternalLink className="w-3 h-3 ml-1" />
                     </Button>
                   </div>
                 </Card>
               </div>
 
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
+              {/* <div>
+                <h3 className="mb-4 text-lg font-medium text-gray-900">
                   Test Import
                 </h3>
-                <Card className="p-6 bg-gray-50 border-dashed">
+                <Card className="p-6 border-dashed bg-gray-50">
                   <div className="text-center">
-                    <Upload className="h-12 w-12 text-brand-yellow mx-auto mb-4" />
-                    <h4 className="text-lg font-medium text-gray-900 mb-2">
+                    <Upload className="w-12 h-12 mx-auto mb-4 text-brand-yellow" />
+                    <h4 className="mb-2 text-lg font-medium text-gray-900">
                       Import Test Data
                     </h4>
-                    <p className="text-sm text-gray-600 mb-6">
+                    <p className="mb-6 text-sm text-gray-600">
                       Try out the features with simulated credit report data
                     </p>
                     <Button
@@ -384,7 +381,7 @@ const CreditReportImportDialog = ({
                   <div className="flex items-start space-x-3 text-sm text-gray-500">
                     <AlertCircle className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium text-gray-900 mb-1">
+                      <p className="mb-1 font-medium text-gray-900">
                         Important Note
                       </p>
                       <p>
@@ -395,14 +392,14 @@ const CreditReportImportDialog = ({
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-8">
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                <h3 className="mb-4 text-lg font-medium text-gray-900">
                   Select Credit Monitoring Service
                 </h3>
                 <div className="space-y-4">
@@ -434,10 +431,10 @@ const CreditReportImportDialog = ({
                             window.open(service.signupUrl, "_blank");
                           }}
                         >
-                          Sign Up <ExternalLink className="h-4 w-4 ml-1" />
+                          Sign Up <ExternalLink className="w-4 h-4 ml-1" />
                         </Button>
                       </div>
-                      <p className="text-sm text-gray-600 mt-2">
+                      <p className="mt-2 text-sm text-gray-600">
                         {service.description}
                       </p>
                     </Card>
@@ -445,17 +442,17 @@ const CreditReportImportDialog = ({
                 </div>
               </div>
 
-              <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-4">
+              {/* <div className='hidden'>
+                <h3 className="mb-4 text-lg font-medium text-gray-900">
                   Test Import
                 </h3>
-                <Card className="p-6 bg-gray-50 border-dashed">
+                <Card className="p-6 border-dashed bg-gray-50">
                   <div className="text-center">
-                    <Upload className="h-12 w-12 text-brand-yellow mx-auto mb-4" />
-                    <h4 className="text-lg font-medium text-gray-900 mb-2">
+                    <Upload className="w-12 h-12 mx-auto mb-4 text-brand-yellow" />
+                    <h4 className="mb-2 text-lg font-medium text-gray-900">
                       Import Test Data
                     </h4>
-                    <p className="text-sm text-gray-600 mb-6">
+                    <p className="mb-6 text-sm text-gray-600">
                       Try out the features with simulated credit report data
                     </p>
                     <Button
@@ -471,7 +468,7 @@ const CreditReportImportDialog = ({
                   <div className="flex items-start space-x-3 text-sm text-gray-500">
                     <AlertCircle className="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-medium text-gray-900 mb-1">
+                      <p className="mb-1 font-medium text-gray-900">
                         Important Note
                       </p>
                       <p>
@@ -482,11 +479,11 @@ const CreditReportImportDialog = ({
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
-            <div className="mt-8 pt-6 border-t">
-              <div className="flex justify-between items-center">
+            <div className="pt-6 mt-8 border-t">
+              <div className="flex items-center justify-between">
                 <div className="text-sm text-gray-500">
                   Don&apos;t have an account? Sign up with any of our partner
                   services.
