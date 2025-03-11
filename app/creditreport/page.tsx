@@ -6,24 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { VantageScoreTooltip } from '@/components/vantagescore-tooltip';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import Image from 'next/image';
 import {
   Upload,
-  FileText,
   Download,
-  Filter,
   CreditCard,
-  Home,
-  Car,
-  GraduationCap,
-  Wallet,
   User,
   RefreshCw,
   AlertCircle,
@@ -40,19 +27,8 @@ import { convertKeysToLowerFirst } from '@/lib/utils';
 import CreditSummaryDashboard from './credit-summary';
 import PersonalInformation from './personal-information';
 
-// Account type options for filtering
-const ACCOUNT_TYPES = [
-  { value: 'all', label: 'All Accounts', icon: CreditCard },
-  { value: 'creditCard', label: 'Credit Cards', icon: CreditCard },
-  { value: 'mortgage', label: 'Mortgages', icon: Home },
-  { value: 'autoLoan', label: 'Auto Loans', icon: Car },
-  { value: 'studentLoan', label: 'Student Loans', icon: GraduationCap },
-  { value: 'personalLoan', label: 'Personal Loans', icon: Wallet },
-];
-
 export default function CreditReportPage() {
   const [activeTab, setActiveTab] = useState('accounts');
-  const [accountFilter, setAccountFilter] = useState('all');
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user] = useAuthState(auth);
@@ -281,45 +257,11 @@ export default function CreditReportPage() {
           <TabsContent value="accounts" className="p-6">
             {hasImportedReport ? (
               <>
-                {/* <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center space-x-4">
-                    <Select value={accountFilter} onValueChange={setAccountFilter}>
-                      <SelectTrigger className="w-[180px]">
-                        <Filter className="h-4 w-4 mr-2" />
-                        <SelectValue placeholder="Filter by type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ACCOUNT_TYPES.map((type) => (
-                          <SelectItem key={type.value} value={type.value}>
-                            <div className="flex items-center">
-                              {type.icon && <type.icon className="h-4 w-4 mr-2" />}
-                              {type.label}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <Button
-                    variant="outline"
-                    className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Export
-                  </Button>
-                </div> */}
-
                 <div className="space-y-6_ grid grid-cols-3 gap-4">
                   {creditReport.data.accounts.map((account: any, idx: number) => {
-
                     const info = account[0];
                     if (!info) return;
-
                     const values: any = Object.values(info)[0];
-                    console.log('values', values);
-
-
                     return (
                       <Card key={idx} className="p-6">
                         <div className="flex_ items-start justify-between mb-4">
