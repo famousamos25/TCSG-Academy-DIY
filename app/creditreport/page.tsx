@@ -38,6 +38,7 @@ import { formatDate, calculateNextRefresh } from '@/lib/date-utils';
 import { getScoreColor, getScoreLabel, getScorePercentage } from '@/lib/credit-report';
 import { convertKeysToLowerFirst } from '@/lib/utils';
 import CreditSummaryDashboard from './credit-summary';
+import PersonalInformation from './personal-information';
 
 // Account type options for filtering
 const ACCOUNT_TYPES = [
@@ -265,6 +266,8 @@ export default function CreditReportPage() {
       </div>
 
       <CreditSummaryDashboard creditData={creditReport?.data?.summary} />
+
+      <PersonalInformation personalInfo={creditReport?.data?.personalInfo} />
 
       {/* Main Content */}
       <Card className="mb-6 border-none">

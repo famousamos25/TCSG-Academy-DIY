@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ChevronUp } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const CreditSummaryDashboard = ({ creditData }: any) => {
+
+	const [isRevealed, setIsRevealed] = useState(false);
 
 	const metrics = [
 		{ name: 'Total Accounts', key: 'totalAccounts' },
@@ -26,20 +29,24 @@ const CreditSummaryDashboard = ({ creditData }: any) => {
 
 	return (
 		<Card className="text-black mb-5 shadow-sm">
-			<CardHeader className="flex flex-row items-center justify-between pb-2 border-b ">
+			<CardHeader onClick={() => setIsRevealed(prev => !prev)} className="flex cursor-pointer flex-row items-center justify-between pb-2 border-b ">
 				<div>
 					<CardDescription className="text-slate-400 text-sm mb-1">Overview</CardDescription>
 					<CardTitle className="text-slate-600 text-2xl">Credit Summary</CardTitle>
 				</div>
-				<div className="rounded-full bg-slate-800 p-2">
-					<ChevronUp className="h-4 w-4 text-slate-400" />
+				<div className="rounded-full p-2">
+					<ChevronRight className={cn("h-4 w-4 text-slate-400 transition-all", {
+						"transform rotate-90": isRevealed
+					})} />
 				</div>
 			</CardHeader>
-			<CardContent className="px-0 py-0">
+			<CardContent className={cn("px-0 py-0 h-0 transition-all opacity-0 overflow-hidden", {
+				"h-auto opacity-100": isRevealed
+			})}>
 				<Table>
 					<TableHeader>
 						<TableRow className="border-b ">
-							<TableHead className="text-slate-400 pl-6">Metrics</TableHead>
+							<TableHead className="text-slate-400 pl-6"></TableHead>
 							<TableHead className="text-cyan-400 text-center">TRANSUNION</TableHead>
 							<TableHead className="text-blue-400 text-center">EXPERIAN</TableHead>
 							<TableHead className="text-red-400 text-center">EQUIFAX</TableHead>
