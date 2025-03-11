@@ -10,7 +10,7 @@ import Image from "next/image";
 import { PersonalInfoDialog } from "@/components/personal-info-dialog";
 import { TutorialVideoDialog } from "@/components/tutorial-video-dialog";
 import { CreditReportImportDialog } from "@/components/credit-report-import-dialog";
-import { CreditScoreGoalDialog } from "@/components/credit-score-goal-dialog";
+import { CreditGoals, CreditScoreGoalDialog } from "@/components/credit-score-goal-dialog";
 import { DigitalSignatureDialog } from "@/components/digital-signature-dialog";
 import { ReferralProgramDialog } from "@/components/referral-program-dialog";
 import {
@@ -47,15 +47,6 @@ import { CHECKLIST_ITEMS, ChecklistItem } from '@/constants/checklist';
 import { BuildCreditProfileDialog } from '@/components/build-credit-profile-dialog';
 import { convertKeysToLowerFirst } from '@/lib/utils';
 
-interface CreditGoals {
-  purpose: string;
-  currentScore: string;
-  motivation: string;
-  timeframe: string;
-  targetScore: number;
-  createdAt: Date;
-}
-
 export default function DashboardPage() {
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [tutorialVideoOpen, setTutorialVideoOpen] = useState(false);
@@ -74,7 +65,7 @@ export default function DashboardPage() {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [user] = useAuthState(auth);
-  const [checklistItems, setChecklistItems] =useState<ChecklistItem[]>(CHECKLIST_ITEMS);
+  const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>(CHECKLIST_ITEMS);
 
   useEffect(() => {
     if (!user) return;
@@ -162,13 +153,7 @@ export default function DashboardPage() {
       // Check credit goals
       const checkCreditGoals = async () => {
         try {
-          const goalsRef = doc(
-            db,
-            "users",
-            user.uid,
-            "credit_goals",
-            "current"
-          );
+          const goalsRef = doc(db, "users", user.uid, "credit_goals", "current");
           const goalsSnap = await getDoc(goalsRef);
 
           if (goalsSnap.exists()) {
@@ -821,6 +806,7 @@ export default function DashboardPage() {
       <CreditScoreGoalDialog
         open={creditScoreGoalOpen}
         onOpenChange={setCreditScoreGoalOpen}
+        creditGoal={creditGoals || undefined}
       />
 
       <DigitalSignatureDialog

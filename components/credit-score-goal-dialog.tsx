@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -25,9 +25,19 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from 'next/navigation';
 
+export interface CreditGoals {
+  purpose: string;
+  currentScore: string;
+  motivation: string;
+  timeframe: string;
+  targetScore: number;
+  createdAt: Date;
+}
+
 interface CreditScoreGoalDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  creditGoal?: CreditGoals | null;
 }
 
 const PURPOSES = [
@@ -75,14 +85,22 @@ const getScoreLabel = (score: number) => {
 const CreditScoreGoalDialog = ({
   open,
   onOpenChange,
+  creditGoal
 }: CreditScoreGoalDialogProps) => {
-  const [purpose, setPurpose] = useState("");
-  const [currentScore, setCurrentScore] = useState("");
-  const [motivation, setMotivation] = useState("");
-  const [timeframe, setTimeframe] = useState("");
-  const [targetScore, setTargetScore] = useState([700]);
+  const [purpose, setPurpose] = useState(creditGoal?.purpose || "");
+  const [currentScore, setCurrentScore] = useState(creditGoal?.currentScore || "");
+  const [motivation, setMotivation] = useState(creditGoal?.motivation || "");
+  const [timeframe, setTimeframe] = useState(creditGoal?.timeframe || "");
+  const [targetScore, setTargetScore] = useState(creditGoal?.targetScore ? [creditGoal?.targetScore] : [700]);
   const [step, setStep] = useState(1);
   const [user] = useAuthState(auth);
+
+  // set correct step
+  useEffect(() => {
+    if (creditGoal) {
+      setStep(5);
+    }
+  }, [creditGoal]);
 
   const router = useRouter();
 
@@ -139,7 +157,7 @@ const CreditScoreGoalDialog = ({
               <DialogTitle className="text-2xl font-semibold text-brand-navy">
                 Edit Your Credit Score Goal
               </DialogTitle>
-              <p className="text-gray-600 mt-2">
+              <p className="mt-2 text-gray-600">
                 Let&apos;s dive into your credit goals and customize your experience!
               </p>
             </div>
@@ -149,14 +167,14 @@ const CreditScoreGoalDialog = ({
               className="text-gray-400 hover:text-gray-500"
               onClick={() => onOpenChange(false)}
             >
-              <X className="h-5 w-5" />
+              <X className="w-5 h-5" />
             </Button>
           </div>
         </DialogHeader>
 
         <div className="relative">
           {/* Progress Steps */}
-          <div className="flex justify-between mb-8 relative">
+          <div className="relative flex justify-between mb-8">
             <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2" />
             <div
               className="absolute top-1/2 left-0 h-0.5 bg-brand-yellow transition-all duration-500"
@@ -181,7 +199,7 @@ const CreditScoreGoalDialog = ({
             {step === 1 && (
               <div className="space-y-4 animate-in slide-in-from-right">
                 <div className="flex items-center space-x-3 text-brand-navy">
-                  <Target className="h-5 w-5" />
+                  <Target className="w-5 h-5" />
                   <Label className="text-lg font-medium">
                     What brings you here?
                   </Label>
@@ -204,7 +222,7 @@ const CreditScoreGoalDialog = ({
             {step === 2 && (
               <div className="space-y-4 animate-in slide-in-from-right">
                 <div className="flex items-center space-x-3 text-brand-navy">
-                  <Award className="h-5 w-5" />
+                  <Award className="w-5 h-5" />
                   <Label className="text-lg font-medium">
                     What&apos;s your current credit score?
                   </Label>
@@ -227,7 +245,7 @@ const CreditScoreGoalDialog = ({
             {step === 3 && (
               <div className="space-y-4 animate-in slide-in-from-right">
                 <div className="flex items-center space-x-3 text-brand-navy">
-                  <Rocket className="h-5 w-5" />
+                  <Rocket className="w-5 h-5" />
                   <Label className="text-lg font-medium">
                     What&apos;s your motivation?
                   </Label>
@@ -250,7 +268,7 @@ const CreditScoreGoalDialog = ({
             {step === 4 && (
               <div className="space-y-4 animate-in slide-in-from-right">
                 <div className="flex items-center space-x-3 text-brand-navy">
-                  <Clock className="h-5 w-5" />
+                  <Clock className="w-5 h-5" />
                   <Label className="text-lg font-medium">
                     How soon do you want to reach your goal?
                   </Label>
@@ -273,12 +291,12 @@ const CreditScoreGoalDialog = ({
             {step === 5 && (
               <div className="space-y-6 animate-in slide-in-from-right">
                 <div className="flex items-center space-x-3 text-brand-navy">
-                  <Target className="h-5 w-5" />
+                  <Target className="w-5 h-5" />
                   <Label className="text-lg font-medium">
                     What&apos;s your target credit score?
                   </Label>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-6">
+                <div className="p-6 bg-gray-50 rounded-xl">
                   <div className="mb-8">
                     <Slider
                       value={targetScore}
@@ -342,7 +360,7 @@ const CreditScoreGoalDialog = ({
             className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 min-w-[140px]"
           >
             {step === 5 ? "Save Goal" : "Continue"}{" "}
-            <ChevronRight className="ml-2 h-4 w-4" />
+            <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
         </div>
       </DialogContent>

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -11,43 +12,15 @@ import { Badge } from '@/components/ui/badge';
 import { PersonalInfoDialog } from '@/components/personal-info-dialog';
 import { TutorialVideoDialog } from '@/components/tutorial-video-dialog';
 import { CreditReportImportDialog } from '@/components/credit-report-import-dialog';
-import { CreditScoreGoalDialog } from '@/components/credit-score-goal-dialog';
+import { CreditGoals, CreditScoreGoalDialog } from '@/components/credit-score-goal-dialog';
 import { DigitalSignatureDialog } from '@/components/digital-signature-dialog';
 import { ReferralProgramDialog } from '@/components/referral-program-dialog';
 import { PaymentCardDialog } from '@/components/payment-card-dialog';
 import { EmailUpdateDialog } from '@/components/email-update-dialog';
 import Image from 'next/image';
-import Link from 'next/link';
 import {
-  Info,
-  ChevronRight,
-  Target,
-  UserPlus,
-  Building,
-  Users,
-  Upload,
-  MonitorPlay,
-  FileText,
-  DollarSign,
-  Blocks,
-  UserCheck,
-  TrendingUp,
-  Clock,
-  Star,
-  Gift,
-  Award,
   CreditCard,
-  Sparkles,
-  Eye,
-  Infinity,
-  Send,
-  Copy,
-  Share2,
-  Facebook,
-  Twitter,
-  Linkedin,
   RefreshCw,
-  LayoutDashboard,
   User,
   Shield,
   Mail,
@@ -60,7 +33,7 @@ import {
 } from 'lucide-react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, onSnapshot, doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { onSnapshot, doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 
 interface Profile {
@@ -110,8 +83,10 @@ export default function AccountPage() {
   const [paymentCardOpen, setPaymentCardOpen] = useState(false);
   const [emailUpdateOpen, setEmailUpdateOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState<any>(null);
-  const [signatureInfo, setSignatureInfo] = useState<any>(null);
 
+  const [signatureInfo, setSignatureInfo] = useState<any>(null);
+  const [creditGoals, setCreditGoals] = useState<CreditGoals | null>(null);
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -137,6 +112,19 @@ export default function AccountPage() {
       }
     };
 
+    const checkCreditGoals = async () => {
+      try {
+        const goalsRef = doc(db, "users", user.uid, "credit_goals", "current");
+        const goalsSnap = await getDoc(goalsRef);
+
+        if (goalsSnap.exists()) {
+          setCreditGoals(goalsSnap.data() as CreditGoals);
+        }
+      } catch (error) {
+        console.error("Error fetching credit goals:", error);
+      }
+    };
+
     try {
       const docRef = doc(db, 'users', user.uid);
       const unsubscribe = onSnapshot(docRef, (docSnap) => {
@@ -150,7 +138,8 @@ export default function AccountPage() {
           });
         }
 
-        checkDigitalSignature()
+        checkDigitalSignature();
+        checkCreditGoals()
         setLoading(false);
       });
 
@@ -885,6 +874,7 @@ export default function AccountPage() {
       <CreditScoreGoalDialog
         open={creditScoreGoalOpen}
         onOpenChange={setCreditScoreGoalOpen}
+        creditGoal={creditGoals}
       />
 
       <DigitalSignatureDialog
