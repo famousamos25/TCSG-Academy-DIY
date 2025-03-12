@@ -21,3 +21,9 @@ export function convertKeysToLowerFirst(obj: any): any {
     }
     return obj; // Return primitive values as is
 }
+
+export const formatAmountWithCurrency = (value: any, format: any) => {
+		if (value === null) return 'null';
+		if (format) return `$${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(value)}`;
+		return value;
+	};

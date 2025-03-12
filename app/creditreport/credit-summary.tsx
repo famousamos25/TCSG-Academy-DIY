@@ -16,14 +16,14 @@ const CreditSummaryDashboard = ({ creditData }: any) => {
 		{ name: 'Delinquent Accounts', key: 'delinquentAccounts' },
 		{ name: 'Derogatory Accounts', key: 'derogatoryAccounts' },
 		{ name: 'Total Balance', key: 'totalBalances', format: true },
-		{ name: 'Total Payments', key: 'totalMonthlyPayments' },
+		{ name: 'Total Payments', key: 'totalMonthlyPayments', format: true },
 		// { name: 'Public Records', key: 'publicRecords' },
 		// { name: 'Total Inquiries', key: 'totalInquiries' }
 	];
 
 	const formatValue = (value: any, format: any) => {
 		if (value === null) return 'null';
-		if (format && typeof value === 'number') return `$${value.toLocaleString()}`;
+		if (format) return `$${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(value)}`;
 		return value;
 	};
 
@@ -31,8 +31,8 @@ const CreditSummaryDashboard = ({ creditData }: any) => {
 		<Card className="text-black mb-5 shadow-sm">
 			<CardHeader onClick={() => setIsRevealed(prev => !prev)} className="flex cursor-pointer flex-row items-center justify-between pb-2 border-b ">
 				<div>
-					<CardDescription className="text-slate-400 text-sm mb-1">Overview</CardDescription>
-					<CardTitle className="text-slate-600 text-2xl">Credit Summary</CardTitle>
+					<CardDescription className="text-slate-400 text-sm">Overview</CardDescription>
+					<CardTitle className="text-slate-600 text-lg">Credit Summary</CardTitle>
 				</div>
 				<div className="rounded-full p-2">
 					<ChevronRight className={cn("h-4 w-4 text-slate-400 transition-all", {

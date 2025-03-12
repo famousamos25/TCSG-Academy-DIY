@@ -11,8 +11,8 @@ const PersonalInformation = ({ personalInfo }: any) => {
 		<Card className="text-black mb-5 shadow-sm">
 			<CardHeader onClick={() => setIsRevealed(prev => !prev)} className="flex cursor-pointer flex-row items-center justify-between pb-5 border-b ">
 				<div>
-					<CardDescription className="text-slate-400 text-sm mb-1">Personal Info</CardDescription>
-					<CardTitle className="text-slate-600 text-2xl">Personal Information</CardTitle>
+					<CardDescription className="text-slate-400 text-sm">Personal Info</CardDescription>
+					<CardTitle className="text-slate-600 text-lg">Personal Information</CardTitle>
 				</div>
 				<div className="rounded-full p-2">
 					<ChevronRight className={cn("h-4 w-4 text-slate-400 transition-all", {

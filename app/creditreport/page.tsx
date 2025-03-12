@@ -23,7 +23,7 @@ import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestor
 import { useToast } from '@/hooks/use-toast';
 import { formatDate, calculateNextRefresh } from '@/lib/date-utils';
 import { getScoreColor, getScoreLabel, getScorePercentage } from '@/lib/credit-report';
-import { convertKeysToLowerFirst } from '@/lib/utils';
+import { convertKeysToLowerFirst, formatAmountWithCurrency } from '@/lib/utils';
 import CreditSummaryDashboard from './credit-summary';
 import PersonalInformation from './personal-information';
 
@@ -80,31 +80,27 @@ export default function CreditReportPage() {
       name: 'TransUnion',
       logo: 'https://i.imgur.com/a48jzVj.png',
       score: creditReport?.data?.scores?.transUnion?.score || null,
+      totalDebt: creditReport?.data?.summary?.transUnion?.totalBalances || 0,
       change: creditReport?.data?.changes?.transunion || null,
-      totalDebt: creditReport?.data?.totalDebt?.transunion || 0,
       creditUsage: creditReport?.data?.creditUsage?.transunion || 0,
     },
     {
       name: 'Experian',
       logo: 'https://i.imgur.com/bCRS33i.png',
       score: creditReport?.data?.scores?.experian?.score || null,
+      totalDebt: creditReport?.data?.summary?.experian?.totalBalances || 0,
       change: creditReport?.data?.changes?.experian || null,
-      totalDebt: creditReport?.data?.totalDebt?.experian || 0,
       creditUsage: creditReport?.data?.creditUsage?.experian || 0,
     },
     {
       name: 'Equifax',
       logo: 'https://i.imgur.com/6lhqUyI.png',
       score: creditReport?.data?.scores?.equifax?.score || null,
+      totalDebt: creditReport?.data?.summary?.equifax?.totalBalances || 0,
       change: creditReport?.data?.changes?.equifax || null,
-      totalDebt: creditReport?.data?.totalDebt?.equifax || 0,
       creditUsage: creditReport?.data?.creditUsage?.equifax || 0,
     },
   ];
-
-
-  console.log('creditReport', creditReport);
-  
 
   if (loading) {
     return (
@@ -203,10 +199,37 @@ export default function CreditReportPage() {
                         {getScoreLabel(bureau.score)}
                       </span>
                     </div>
-                    <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                    {/* <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                       <div
-                        className={`h-full rounded-full transition-all duration-500 ${getScoreColor(bureau.score)}`}
+                        className={`h-full rounded-full transition-all duration-500 text-blue-300 ${getScoreColor(bureau.score)}`}
                         style={{ width: `${getScorePercentage(bureau.score)}%` }}
+                      />
+                    </div> */}
+                    <div className="flex gap-1 w-full h-2 bg-transparent">
+                      <div className="flex-[50%] max-w-[50%] rounded-md"
+                        style={{
+                          background: 'linear-gradient(to right, rgb(255, 109, 0) 92.3636%, rgb(204, 204, 204) 92.3636%)',
+                        }}
+                      />
+                      <div className="flex-[20%] max-w-[20%] rounded-md"
+                        style={{
+                          background: 'rgb(204, 204, 204)',
+                        }}
+                      />
+                      <div className="flex-[15%] max-w-[15%] rounded-md"
+                        style={{
+                          background: 'rgb(204, 204, 204)',
+                        }}
+                      />
+                      <div className="flex-[10%] max-w-[10%] rounded-md"
+                        style={{
+                          background: 'rgb(204, 204, 204)',
+                        }}
+                      />
+                      <div className="flex-[5%] max-w-[5%] rounded-md"
+                        style={{
+                          background: 'rgb(204, 204, 204)',
+                        }}
                       />
                     </div>
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -219,7 +242,7 @@ export default function CreditReportPage() {
                     <div className="bg-gray-50 rounded-lg p-3">
                       <div className="text-sm text-gray-600 mb-1">Total Debt</div>
                       <span className="text-lg font-semibold text-gray-900">
-                        ${bureau.totalDebt.toLocaleString()}
+                        {formatAmountWithCurrency(bureau.totalDebt, true)}
                       </span>
                     </div>
                     <div className="bg-gray-50 rounded-lg p-3">
