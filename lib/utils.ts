@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+    return twMerge(clsx(inputs));
 }
 
 export function lowerFirstLetter(str: any) {
@@ -23,7 +23,7 @@ export function convertKeysToLowerFirst(obj: any): any {
 }
 
 export const formatAmountWithCurrency = (value: any, format: any) => {
-		if (value === null) return 'null';
-		if (format) return `$${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(value)}`;
-		return value;
-	};
+    if (value === null) return 'null';
+    if (format) return `$${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(value)}`;
+    return value;
+};
