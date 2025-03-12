@@ -22,7 +22,7 @@ import { auth, db } from '@/lib/firebase';
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { formatDate, calculateNextRefresh } from '@/lib/date-utils';
-import { getScoreColor, getScoreLabel, getScorePercentage } from '@/lib/credit-report';
+import { getScoreColor, getScoreLabel } from '@/lib/credit-report';
 import { convertKeysToLowerFirst, formatAmountWithCurrency } from '@/lib/utils';
 import CreditSummaryDashboard from './credit-summary';
 import PersonalInformation from './personal-information';
