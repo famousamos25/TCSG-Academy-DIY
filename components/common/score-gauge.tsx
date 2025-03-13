@@ -89,8 +89,8 @@ const ScoreGauge = ({ score }: Props) => {
 				))}
 			</div>
 			<div className="flex justify-between text-xs text-gray-500 mt-1">
-				<span>300</span>
-				<span>850</span>
+				<span>{minScore}</span>
+				<span>{maxScore}</span>
 			</div>
 		</div>
 	);
