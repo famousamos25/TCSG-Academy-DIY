@@ -2,11 +2,11 @@ import { CreditReportData } from './credit-report-analysis';
 
 export function getScoreColor(score: number | null): string {
   if (!score) return 'text-gray-400';
-  if (score >= 800) return 'text-emerald-500 bg-emerald-500';
-  if (score >= 740) return 'text-green-500 bg-green-500';
-  if (score >= 670) return 'text-blue-500 bg-blue-500';
-  if (score >= 580) return 'text-orange-500 bg-orange-500';
-  return 'text-red-500 bg-red-500';
+  if (score >= 800) return 'text-emerald-500';
+  if (score >= 740) return 'text-green-500';
+  if (score >= 670) return 'text-blue-500';
+  if (score >= 580) return 'text-orange-500';
+  return 'text-red-500 bg-red-500_';
 }
 
 export function getScoreLabel(score: number | null): string {

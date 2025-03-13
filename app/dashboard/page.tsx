@@ -46,6 +46,7 @@ import {
 import { CHECKLIST_ITEMS, ChecklistItem } from '@/constants/checklist';
 import { BuildCreditProfileDialog } from '@/components/build-credit-profile-dialog';
 import { convertKeysToLowerFirst } from '@/lib/utils';
+import ScoreGauge from '@/components/common/score-gauge';
 
 export default function DashboardPage() {
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
@@ -262,7 +263,7 @@ export default function DashboardPage() {
 
     const bureaus = ["transUnion", "experian", "equifax"];
     const logos = {
-      transunion: "https://i.imgur.com/a48jzVj.png",
+      transUnion: "https://i.imgur.com/a48jzVj.png",
       experian: "https://i.imgur.com/bCRS33i.png",
       equifax: "https://i.imgur.com/6lhqUyI.png",
     };
@@ -611,32 +612,7 @@ export default function DashboardPage() {
                       </div>
 
                       <div className="space-y-4">
-                        <div>
-                          <div className="flex items-center mb-2 space-x-2">
-                            <div
-                              className={`h-2 w-2 rounded-full ${getScoreColor(
-                                bureau.score
-                              )}`}
-                            />
-                            <span className="text-sm font-medium text-gray-600">
-                              {getScoreLabel(bureau.score)}
-                            </span>
-                          </div>
-                          <div className="w-full h-2 overflow-hidden bg-gray-100 rounded-full">
-                            <div
-                              className={`h-full ${getScoreColor(
-                                bureau.score
-                              )} transition-all duration-500`}
-                              style={{
-                                width: `${getScorePercentage(bureau.score)}%`,
-                              }}
-                            />
-                          </div>
-                          <div className="flex justify-between mt-1 text-xs text-gray-500">
-                            <span>300</span>
-                            <span>850</span>
-                          </div>
-                        </div>
+                        <ScoreGauge score={bureau.score} />
 
                         <div className="grid grid-cols-2 gap-4 pt-2">
                           <div className="p-3 rounded-lg bg-gray-50">

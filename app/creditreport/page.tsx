@@ -22,10 +22,11 @@ import { auth, db } from '@/lib/firebase';
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { formatDate, calculateNextRefresh } from '@/lib/date-utils';
-import { getScoreColor, getScoreLabel } from '@/lib/credit-report';
-import { convertKeysToLowerFirst, formatAmountWithCurrency } from '@/lib/utils';
+import { getScoreColor } from '@/lib/credit-report';
+import { convertKeysToLowerFirst } from '@/lib/utils';
 import CreditSummaryDashboard from './credit-summary';
 import PersonalInformation from './personal-information';
+import ScoreGauge from '@/components/common/score-gauge';
 
 export default function CreditReportPage() {
   const [activeTab, setActiveTab] = useState('accounts');
@@ -37,7 +38,6 @@ export default function CreditReportPage() {
 
   useEffect(() => {
     if (!user) return;
-
     try {
       const q = query(
         collection(db, 'users', user.uid, 'credit_reports'),
@@ -191,68 +191,7 @@ export default function CreditReportPage() {
 
             <div className="space-y-4">
               {bureau.score ? (
-                <>
-                  <div>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <div className={`h-2 w-2 rounded-full ${getScoreColor(bureau.score)}`} />
-                      <span className="text-sm font-medium text-gray-600">
-                        {getScoreLabel(bureau.score)}
-                      </span>
-                    </div>
-                    {/* <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-500 text-blue-300 ${getScoreColor(bureau.score)}`}
-                        style={{ width: `${getScorePercentage(bureau.score)}%` }}
-                      />
-                    </div> */}
-                    <div className="flex gap-1 w-full h-2 bg-transparent">
-                      <div className="flex-[50%] max-w-[50%] rounded-md"
-                        style={{
-                          background: 'linear-gradient(to right, rgb(255, 109, 0) 92.3636%, rgb(204, 204, 204) 92.3636%)',
-                        }}
-                      />
-                      <div className="flex-[20%] max-w-[20%] rounded-md"
-                        style={{
-                          background: 'rgb(204, 204, 204)',
-                        }}
-                      />
-                      <div className="flex-[15%] max-w-[15%] rounded-md"
-                        style={{
-                          background: 'rgb(204, 204, 204)',
-                        }}
-                      />
-                      <div className="flex-[10%] max-w-[10%] rounded-md"
-                        style={{
-                          background: 'rgb(204, 204, 204)',
-                        }}
-                      />
-                      <div className="flex-[5%] max-w-[5%] rounded-md"
-                        style={{
-                          background: 'rgb(204, 204, 204)',
-                        }}
-                      />
-                    </div>
-                    <div className="flex justify-between text-xs text-gray-500 mt-1">
-                      <span>300</span>
-                      <span>850</span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 pt-2">
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <div className="text-sm text-gray-600 mb-1">Total Debt</div>
-                      <span className="text-lg font-semibold text-gray-900">
-                        {formatAmountWithCurrency(bureau.totalDebt, true)}
-                      </span>
-                    </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <div className="text-sm text-gray-600 mb-1">Credit Usage</div>
-                      <span className="text-lg font-semibold text-gray-900">
-                        {bureau.creditUsage}%
-                      </span>
-                    </div>
-                  </div>
-                </>
+                <ScoreGauge score={Number(bureau.score)+200} />
               ) : (
                 <div className="text-center py-4">
                   <p className="text-gray-500">No score available</p>
