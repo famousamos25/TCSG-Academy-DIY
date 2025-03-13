@@ -191,7 +191,7 @@ export default function CreditReportPage() {
 
             <div className="space-y-4">
               {bureau.score ? (
-                <ScoreGauge score={Number(bureau.score)+200} />
+                <ScoreGauge score={Number(bureau.score)} />
               ) : (
                 <div className="text-center py-4">
                   <p className="text-gray-500">No score available</p>

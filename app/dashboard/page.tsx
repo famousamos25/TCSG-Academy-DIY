@@ -41,7 +41,6 @@ import { formatDate } from "@/lib/date-utils";
 import {
   getScoreColor,
   getScoreLabel,
-  getScorePercentage,
 } from "@/lib/credit-report";
 import { CHECKLIST_ITEMS, ChecklistItem } from '@/constants/checklist';
 import { BuildCreditProfileDialog } from '@/components/build-credit-profile-dialog';
