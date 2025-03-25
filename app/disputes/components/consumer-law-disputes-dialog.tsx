@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -20,14 +20,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { X, Search, FileText, Info, ChevronDown } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { FileText, Search, X } from 'lucide-react';
+import { useState } from 'react';
 
 interface ConsumerLawDisputesDialogProps {
   open: boolean;
