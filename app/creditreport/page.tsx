@@ -24,8 +24,8 @@ import { useToast } from '@/hooks/use-toast';
 import { formatDate, calculateNextRefresh } from '@/lib/date-utils';
 import { getScoreColor } from '@/lib/credit-report';
 import { convertKeysToLowerFirst } from '@/lib/utils';
-import CreditSummaryDashboard from './credit-summary';
-import PersonalInformation from './personal-information';
+import CreditSummaryDashboard from './components/credit-summary';
+import PersonalInformation from './components/personal-information';
 import ScoreGauge from '@/components/common/score-gauge';
 
 export default function CreditReportPage() {
@@ -113,7 +113,7 @@ export default function CreditReportPage() {
         </div>
       </div>
     );
-  }
+  }  
 
   return (
     <div className="container mx-auto p-6">
@@ -210,10 +210,12 @@ export default function CreditReportPage() {
       {/* Main Content */}
       <Card className="mb-6 border-none">
         <Tabs value={activeTab} className='border-b-none' onValueChange={setActiveTab}>
-          <TabsList className="w-full justify-start gap-6">
+          <TabsList className="w-full justify-start">
             <TabsTrigger value="accounts" className="">Accounts</TabsTrigger>
+            <TabsTrigger value="derogatory" className="">Derogatory</TabsTrigger>
             <TabsTrigger value="inquiries" className="">Inquiries</TabsTrigger>
-            <TabsTrigger value="personalInfo" className="">Personal Info</TabsTrigger>
+            <TabsTrigger value="publicRecords" className="">Public Records</TabsTrigger>
+            <TabsTrigger value="latePayments" className="">Late Payments</TabsTrigger>
           </TabsList>
 
           <TabsContent value="accounts" className="p-6">

@@ -26,7 +26,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { encrypt } from "@/lib/encryption";
-import { importMyFreeScoreNow } from '@/app/creditreport/myfreescorenow-import';
+import { importMyFreeScoreNow } from '@/app/creditreport/api/myfreescorenow-import';
 
 interface CreditReportImportDialogProps {
   open: boolean;
