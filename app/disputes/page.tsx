@@ -1,19 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -22,45 +13,42 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  FileText,
-  Search,
-  Filter,
-  Plus,
-  Clock,
-  ArrowRight,
-  CheckCircle2,
-  AlertTriangle,
-  XCircle,
-  Sparkles,
-  Eye,
-  Download,
-  Trash2,
-  Mail,
-  Printer,
-  RefreshCw,
-  Edit,
-  Truck,
-  Bell,
-  FileEdit,
-  icons,
-  MailOpen,
-  Files,
-  Film,
-  FilmIcon,
-  CircleDot,
-  Circle,
-  Send,
-  EyeIcon,
-  MailIcon,
-  PrinterIcon,
-  Trash2Icon,
-  DownloadCloud,
-  LucideDownload,
-} from 'lucide-react';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
-import { Checkbox } from '@/components/ui/checkbox';
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Circle,
+  CircleDot,
+  Clock,
+  EyeIcon,
+  FileEdit,
+  Files,
+  FileText,
+  FilmIcon,
+  Filter,
+  LucideDownload,
+  Mail,
+  MailIcon,
+  MailOpen,
+  PrinterIcon,
+  RefreshCw,
+  Search,
+  Send,
+  Sparkles,
+  Trash2Icon,
+  Truck,
+  XCircle
+} from 'lucide-react';
+import { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 interface DisputeLetter {
   id: string;
