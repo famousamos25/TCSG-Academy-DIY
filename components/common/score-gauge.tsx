@@ -36,33 +36,30 @@ const ScoreGauge = ({ score }: Props) => {
 	const scoreDetails = getScoreDetails(score);
 
 	// Calculate which segments should be colored
-  let accumulatedPercent = 0;
-  const segmentsWithColor = segments.map((segment) => {
-    const segmentWidth = parseInt(segment.flex);
-    const segmentStart = accumulatedPercent;
-    const segmentEnd = segmentStart + segmentWidth;
-    accumulatedPercent = segmentEnd;
-    
-    // Determine how much of this segment should be colored
-    let colorPercentage = 0;
-    if (percentageFilled > segmentStart) {
-      if (percentageFilled >= segmentEnd) {
-        colorPercentage = 100; // Fully colored
-      } else {
-        colorPercentage = ((percentageFilled - segmentStart) / segmentWidth) * 100;
-      }
-    }
-    
-    return {
-      ...segment,
-      background: colorPercentage > 0 
-        ? `linear-gradient(to right, ${segment.color} ${colorPercentage}%, rgb(204, 204, 204) ${colorPercentage}%)`
-        : 'rgb(204, 204, 204)'
-    };
-  });
+	let accumulatedPercent = 0;
+	const segmentsWithColor = segments.map((segment) => {
+		const segmentWidth = parseInt(segment.flex);
+		const segmentStart = accumulatedPercent;
+		const segmentEnd = segmentStart + segmentWidth;
+		accumulatedPercent = segmentEnd;
 
-	console.log(segmentsWithColor, score);
+		// Determine how much of this segment should be colored
+		let colorPercentage = 0;
+		if (percentageFilled > segmentStart) {
+			if (percentageFilled >= segmentEnd) {
+				colorPercentage = 100; // Fully colored
+			} else {
+				colorPercentage = ((percentageFilled - segmentStart) / segmentWidth) * 100;
+			}
+		}
 
+		return {
+			...segment,
+			background: colorPercentage > 0
+				? `linear-gradient(to right, ${segment.color} ${colorPercentage}%, rgb(204, 204, 204) ${colorPercentage}%)`
+				: 'rgb(204, 204, 204)'
+		};
+	});
 
 	return (
 		<div>

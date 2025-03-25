@@ -27,6 +27,7 @@ import { convertKeysToLowerFirst } from '@/lib/utils';
 import CreditSummaryDashboard from './components/credit-summary';
 import PersonalInformation from './components/personal-information';
 import ScoreGauge from '@/components/common/score-gauge';
+import { Separator } from '@/components/ui/separator';
 
 export default function CreditReportPage() {
   const [activeTab, setActiveTab] = useState('accounts');
@@ -113,7 +114,9 @@ export default function CreditReportPage() {
         </div>
       </div>
     );
-  }  
+  }
+
+  console.log('creditReport:', creditReport);
 
   return (
     <div className="container mx-auto p-6">
@@ -227,20 +230,24 @@ export default function CreditReportPage() {
                     if (!info) return;
                     const values: any = Object.values(info)[0];
                     return (
-                      <Card key={idx} className="p-6">
+                      <Card key={idx} className="p-6 overflow-hidden">
                         <div className="flex_ items-start justify-between mb-4">
-                          <div>
-                            <div className="flex items-center space-x-3">
-                              <h3 className="text-xl font-semibold text-brand-navy">
-                                {values.creditorName}
-                              </h3>
-                              <Badge variant={account.accountStatus === 'Open' ? 'success' : 'secondary'}>
-                                {values.accountStatus}
-                              </Badge>
+                          <div className="flex items-center flex-wrap justify-between gap-2">
+                            <div>
+                              <div className="flex items-center">
+                                <h3 className="text-xl font-semibold text-brand-navy">
+                                  {values.creditorName}
+                                </h3>
+                                <Badge variant={account.accountStatus === 'Open' ? 'success' : 'secondary'}>
+                                  {values.accountStatus}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-gray-600 line-clamp-1 runcate flex items-center gap-2">
+                                Account #{values.accountNumber} <br />{values.accountType}
+                              </p>
                             </div>
-                            <p className="text-sm text-gray-600 flex items-center gap-2">
-                              Account #{values.accountNumber} • {values.accountType}
-                            </p>
+                            <Button className='h-7 border-accent text-accent hover:text-white text-sm' variant={"outline"}>Details</Button>
+
                           </div>
                           <div className="text-right">
                             <div className="text-sm font-bold text-brand-navy">
@@ -250,6 +257,7 @@ export default function CreditReportPage() {
                           </div>
                         </div>
 
+                        <Separator className='mb-3' />
                         <div>
                           <div className="space-y-2 text-sm">
                             <div className="flex justify-between">
