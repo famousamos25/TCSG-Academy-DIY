@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -41,10 +41,26 @@ import {
   Edit,
   Truck,
   Bell,
+  FileEdit,
+  icons,
+  MailOpen,
+  Files,
+  Film,
+  FilmIcon,
+  CircleDot,
+  Circle,
+  Send,
+  EyeIcon,
+  MailIcon,
+  PrinterIcon,
+  Trash2Icon,
+  DownloadCloud,
+  LucideDownload,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface DisputeLetter {
   id: string;
@@ -119,6 +135,131 @@ export default function DisputesPage() {
       content: 'Sample dispute letter content...'
     }
   ];
+
+  // sample disputes
+  const disputes = [
+    { icon: <FileEdit size={24} />, title: 'Security Freeze Dispute' },
+    { icon: <Files size={24} />, title: 'Consumer Law Disputes' },
+    { icon: <Files size={24} />, title: 'Metro-2 Disputes' },
+    { icon: <Files size={24} />, title: 'Other Disputes' },
+    { icon: <MailOpen size={24} />, title: 'Disputed Letters' },
+  ]
+
+  const disputesTracker = [
+    {
+      title: "Unsent Disputes",
+      description: "Letters drafted/prepared but not yet sent.",
+      count: 0,
+      color: "text-orange-500",
+      icon: <CircleDot className="text-orange-500" size={20} />,
+      borderColor: "border-orange-500",
+    },
+    {
+      title: "Sent Disputes",
+      description: "Letters Successfully mailed out.",
+      count: 2,
+      color: "text-blue-500",
+      icon: <Circle className="text-blue-500" size={20} />,
+      borderColor: "border-blue-500",
+    },
+    {
+      title: "Completed Disputes",
+      description: "Letter that received a reply or marked as completed.",
+      count: 0,
+      color: "text-green-500",
+      icon: <Circle className="text-green-500" size={20} />,
+      borderColor: "border-green-500",
+    },
+  ];
+
+  const tableDisputes = [
+    {
+      letter: 'Security Freeze Attack',
+      creditor: { name: 'SAFERENT SOLUTIONS, LLC', role: 'Data Furnisher' },
+      dateSent: '2024-02-20 10:00:00',
+      disputeRound: 'Dispute Round #1',
+      disputedItems: 1,
+    },
+    {
+      letter: 'Security Freeze Attack',
+      creditor: { name: 'CHEX SYSTEMS, INC.', role: 'Data Furnisher' },
+      dateSent: '2024-03-15 14:30:00',
+      disputeRound: 'Dispute Round #1',
+      disputedItems: 2,
+    },
+    {
+      letter: 'Credit Report Dispute',
+      creditor: { name: 'EQUIFAX INFORMATION SERVICES', role: 'Data Furnisher' },
+      dateSent: '2024-04-10 08:45:00',
+      disputeRound: 'Dispute Round #2',
+      disputedItems: 3,
+    },
+    {
+      letter: 'Fraud Alert Request',
+      creditor: { name: 'EXPERIAN', role: 'Data Furnisher' },
+      dateSent: '2024-05-05 16:20:00',
+      disputeRound: 'Dispute Round #3',
+      disputedItems: 1,
+    },
+    {
+      letter: 'Identity Theft Dispute',
+      creditor: { name: 'TRANSUNION', role: 'Data Furnisher' },
+      dateSent: '2024-06-12 11:10:00',
+      disputeRound: 'Dispute Round #1',
+      disputedItems: 2,
+    },
+  ];
+
+  const formatDate = (dateString: string, type: string) => {
+    if (!dateString) return '-';
+
+    const date = new Date(dateString);
+
+    if (type === 'date') {
+      return new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+        timeZone: 'UTC',
+      }).format(date);
+    }
+
+    if (type === 'time') {
+      return new Intl.DateTimeFormat('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true,
+        timeZone: 'UTC',
+      }).format(date).toLowerCase() + ' utc';
+    }
+
+    return dateString;
+  };
+
+
+  const [selected, setSelected] = useState<boolean[]>(new Array(tableDisputes.length).fill(false));
+  const [allSelected, setAllSelected] = useState(false);
+
+  const handleSelectAll = () => {
+    const newState = !allSelected;
+    setAllSelected(newState);
+    setSelected(selected.map(() => newState));
+  }
+
+  const handleSelectRow = (index: number) => {
+    const updatedSelected = [...selected];
+    updatedSelected[index] = !updatedSelected[index];
+    setSelected(updatedSelected);
+
+    if (!updatedSelected.every(Boolean)) {
+      setAllSelected(false);
+    } else {
+      setAllSelected(true);
+    }
+  };
+
+
 
   const getStatusBadge = (status: DisputeLetter['status'], outcome?: DisputeLetter['outcome']) => {
     switch (status) {
@@ -197,7 +338,7 @@ export default function DisputesPage() {
   };
 
   const filteredLetters = letters.filter(letter => {
-    const matchesSearch = 
+    const matchesSearch =
       letter.creditor.toLowerCase().includes(searchTerm.toLowerCase()) ||
       letter.accountNumber.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'all' || letter.status === filterStatus;
@@ -275,113 +416,137 @@ export default function DisputesPage() {
       </Card>
 
       {/* Letters List */}
-      <Card>
-        <div className="overflow-x-auto">
-          <Table>
+      <Card className="bg-white p-6 text-center">
+        <h2 className="text-green-600 text-xl font-semibold mb-4">Create a Dispute</h2>
+        <div className="flex justify-center space-x-3">
+          <button className="bg-green-500 text-white px-3 py-1 rounded-md text-sm">Start Tour</button>
+          <button className="border border-green-500 text-green-600 px-3 py-1 rounded-md text-sm flex items-center gap-1">
+            <FilmIcon size={16} />
+            Tutorial
+          </button>        </div>
+        <div className="grid grid-cols-5 gap-4 mt-6">
+          {disputes.map((item, index) => (
+            <div
+              key={index}
+              className="border-2 border-dashed border-gray-300 p-5 rounded-lg text-center flex flex-col items-center space-y-2
+              hover:border-green-400 hover:border-solid hover:bg-opacity-10 cursor-pointer transition-all group"
+            >
+              <div className="bg-gray-100 p-1 rounded-lg flex items-center justify-center
+              group-hover:bg-green-100 group-hover:text-green-500 transition-all">
+                {item.icon}
+              </div>
+              {item.Badge && (
+                <div className="bg-green-100 text-green-500 px-3 py-1 text-xs font-semibold rounded-md flex items-center gap-1">
+                  <span>9</span> Letters
+                </div>
+              )}
+              <span className="text-gray-600 text-sm">{item.title}</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      <div className="w-full mt-6 mx-auto">
+        <Card className="bg-card text-card-foreground shadow-lg p-6">
+          <CardHeader>
+            <CardTitle className="text-green-600 text-center">
+              Dispute Tracker
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {disputesTracker.map((item, index) => (
+                <div
+                  key={index}
+                  className={`border ${item.borderColor} p-4 rounded-lg flex flex-col`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      {item.icon}
+                      <span className="font-semibold">{item.title}</span>
+                    </div>
+                    <span className="text-xl font-bold">{item.count}</span>
+                  </div>
+
+                  <p className="text-sm text-gray-400 mt-1 ml-7">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+          <Table className="w-full border-t text-white">
             <TableHeader>
-              <TableRow>
-                <TableHead>CREDITOR</TableHead>
-                <TableHead>ACCOUNT</TableHead>
-                <TableHead>TYPE</TableHead>
-                <TableHead>BUREAU</TableHead>
-                <TableHead>MAILING OPTIONS</TableHead>
-                <TableHead>STATUS</TableHead>
-                <TableHead>CREATED</TableHead>
-                <TableHead className="text-right">ACTIONS</TableHead>
+              <TableRow className="text-gray-400">
+                <TableHead className="py-2 px-4">
+                  <Checkbox
+                    className='w-5 h-5 cursor-pointer'
+                    checked={allSelected}
+                    onCheckedChange={handleSelectAll}
+                  />
+                </TableHead>
+                <TableHead className="py-2 px-4">Dispute Letter</TableHead>
+                <TableHead className="py-2 px-4">Creditor Name</TableHead>
+                <TableHead className="py-2 px-4">Date Sent</TableHead>
+                <TableHead className="py-2 px-4">Dispute Round</TableHead>
+                <TableHead className="py-2 px-4">Disputed Items</TableHead>
+                <TableHead className="py-2 px-4">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredLetters.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={8} className="h-32 text-center">
-                    <div className="flex flex-col items-center">
-                      <FileText className="h-12 w-12 text-gray-400 mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">No dispute letters found</h3>
-                      <p className="text-gray-600 mb-4">
-                        {searchTerm || filterStatus !== 'all'
-                          ? 'Try adjusting your search filters'
-                          : 'Create your first dispute letter to get started'}
-                      </p>
-                      <Button
-                        className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                        onClick={handleCreateDispute}
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Create New Dispute
-                      </Button>
+              {tableDisputes.map((dispute, index) => (
+                <TableRow key={index} className="border-b">
+                  <TableCell className="py-2 px-4">
+                    <Checkbox
+                      className='w-5 h-5 cursor-pointer'
+                      checked={selected[index]}
+                      onCheckedChange={() => handleSelectRow(index)}
+                    />
+                  </TableCell>
+                  <TableCell className="py-2 px-4 text-gray-500 text-sm">{dispute.letter}</TableCell>
+                  <TableCell className="py-2 px-4">
+                    <span className="text-blue-400">{dispute.creditor.name}</span>
+                    <br />
+                    <span className="text-gray-400 text-sm">{dispute.creditor.role}</span>
+                  </TableCell>
+                  <TableCell className="py-2 px-4">
+                    <div className="flex flex-col items-start">
+                      <span className="text-gray-500 font-semibold">{formatDate(dispute.dateSent, 'date')}</span>
+                      <span className="text-gray-500 text-sm">{formatDate(dispute.dateSent, 'time')}</span>
                     </div>
                   </TableCell>
+                  <TableCell className="py-2 px-4">
+                    <span className="border border-green-500 text-green-500 px-2 py-1 rounded">
+                      {dispute.disputeRound}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-2 px-4">{dispute.disputedItems}</TableCell>
+                  <TableCell className="py-2 px-4 flex space-x-2">
+                    <button className="text-green-400" title="Send">
+                      <Send size={18} />
+                    </button>
+                    <button className="text-green-400" title="View">
+                      <EyeIcon size={18} />
+                    </button>
+                    <button className="text-green-400" title="Mail">
+                      <MailIcon size={18} />
+                    </button>
+                    <button className="text-green-400" title="Delete">
+                      <LucideDownload size={18} />
+                    </button>
+                    <button className="text-green-400" title="Print">
+                      <PrinterIcon size={18} />
+                    </button>
+                    <button className="text-red-400" title="Delete">
+                      <Trash2Icon size={18} />
+                    </button>
+                  </TableCell>
                 </TableRow>
-              ) : (
-                filteredLetters.map((letter) => (
-                  <TableRow key={letter.id} className="hover:bg-gray-50">
-                    <TableCell className="font-medium">{letter.creditor}</TableCell>
-                    <TableCell>{letter.accountNumber}</TableCell>
-                    <TableCell>{letter.type}</TableCell>
-                    <TableCell>{letter.bureau}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <Badge variant="outline">
-                          {letter.mailingOptions.method === 'certified' ? 'Certified' : 'First Class'}
-                        </Badge>
-                        <Badge variant="outline">
-                          {letter.mailingOptions.color === 'color' ? 'Color' : 'B&W'}
-                        </Badge>
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(letter.status, letter.outcome)}</TableCell>
-                    <TableCell>{new Date(letter.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <div className="flex justify-end space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handlePreviewLetter(letter)}
-                          className="text-gray-500 hover:text-brand-navy"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        {letter.status === 'draft' && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleEditLetter(letter)}
-                            className="text-gray-500 hover:text-brand-navy"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        )}
-                        {letter.mailingOptions.tracking && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                              toast({
-                                title: 'Tracking Info',
-                                description: `Tracking number: ${letter.mailingOptions.tracking}`,
-                              });
-                            }}
-                            className="text-gray-500 hover:text-brand-navy"
-                          >
-                            <Truck className="h-4 w-4" />
-                          </Button>
-                        )}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-gray-500 hover:text-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
+              ))}
             </TableBody>
           </Table>
-        </div>
-      </Card>
+        </Card>
+      </div>
+
     </div>
   );
 }
