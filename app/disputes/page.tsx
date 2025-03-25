@@ -143,7 +143,7 @@ export default function DisputesPage() {
     { icon: <Files size={24} />, title: 'Metro-2 Disputes' },
     { icon: <Files size={24} />, title: 'Other Disputes' },
     { icon: <MailOpen size={24} />, title: 'Disputed Letters' },
-  ]
+  ];
 
   const disputesTracker = [
     {
@@ -245,7 +245,7 @@ export default function DisputesPage() {
     const newState = !allSelected;
     setAllSelected(newState);
     setSelected(selected.map(() => newState));
-  }
+  };
 
   const handleSelectRow = (index: number) => {
     const updatedSelected = [...selected];
@@ -435,11 +435,6 @@ export default function DisputesPage() {
               group-hover:bg-green-100 group-hover:text-green-500 transition-all">
                 {item.icon}
               </div>
-              {item.Badge && (
-                <div className="bg-green-100 text-green-500 px-3 py-1 text-xs font-semibold rounded-md flex items-center gap-1">
-                  <span>9</span> Letters
-                </div>
-              )}
               <span className="text-gray-600 text-sm">{item.title}</span>
             </div>
           ))}
