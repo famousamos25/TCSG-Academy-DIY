@@ -1,6 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -13,127 +12,21 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { FileText, Search, X } from 'lucide-react';
+import { ACCOUNTS } from '@/constants/accounts-data';
+import { Search, X } from 'lucide-react';
 import { useState } from 'react';
+import DisputeTypes from './dispute-types';
+import DisputeTable from './DisputeTable';
 
 interface ConsumerLawDisputesDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
-const DISPUTE_TYPES = [
-  {
-    name: 'Derogatory',
-    count: 21,
-    description: 'You have 21 Derogatory(s)'
-  },
-  {
-    name: 'Inquiries',
-    count: 5,
-    description: 'You have 5 Inquiry(s)'
-  },
-  {
-    name: 'Late Payments',
-    count: 2,
-    description: 'You have 2 Late Payment(s)'
-  },
-  {
-    name: 'Public Records',
-    count: 0,
-    description: 'You have none'
-  },
-  {
-    name: 'All Accounts',
-    count: 0,
-    description: 'You have none'
-  },
-  {
-    name: 'Personal Information',
-    count: 0,
-    description: 'Dispute'
-  }
-];
-
-const ACCOUNTS = [
-  {
-    furnisher: 'UTILITY SELFREPORTED',
-    accountId: 'PR026AB925D0915481288780E8947F597E4',
-    accountType: 'Unknown -credit',
-    bureaus: {
-      tu: 'Not Reported',
-      exp: 'In-Dispute',
-      eqfx: 'Not Reported'
-    },
-    reason: 'CDTR',
-    instruction: 'Please delete due to a violation of',
-    status: 'Positive'
-  },
-  {
-    furnisher: 'FB&T/MERCURY',
-    accountId: '0059499809',
-    accountType: 'Credit Card',
-    bureaus: {
-      tu: 'In-Dispute',
-      exp: 'In-Dispute',
-      eqfx: 'In-Dispute'
-    },
-    reason: 'CDTR',
-    instruction: 'Please delete due to a violation of',
-    status: 'Negative'
-  },
-  {
-    furnisher: 'LVNV FUNDING LLC',
-    accountId: '379364015536330',
-    accountType: 'Unknown -credit',
-    bureaus: {
-      tu: 'Not Reported',
-      exp: 'In-Dispute',
-      eqfx: 'In-Dispute'
-    },
-    reason: 'CDTR',
-    instruction: 'Please delete due to a violation of',
-    status: 'Negative'
-  },
-  {
-    furnisher: 'LVNV FUNDING LLC',
-    accountId: '4707930522615307',
-    accountType: 'Unknown -credit',
-    bureaus: {
-      tu: 'Not Reported',
-      exp: 'In-Dispute',
-      eqfx: 'In-Dispute'
-    },
-    reason: 'CDTR',
-    instruction: 'Please delete due to a violation of',
-    status: 'Negative'
-  },
-  {
-    furnisher: 'SECCREDIT',
-    accountId: '5194979',
-    accountType: 'Collection',
-    bureaus: {
-      tu: 'Not Reported',
-      exp: 'Not Reported',
-      eqfx: 'In-Dispute'
-    },
-    reason: 'CDTR Not Found',
-    instruction: 'Please delete due to a violation of',
-    status: 'Negative'
-  }
-];
 
 interface BureauSelection {
   tu: boolean;
@@ -191,7 +84,6 @@ const AVAILABLE_INSTRUCTIONS = [
 export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDisputesDialogProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
-  const [selectedDisputeType, setSelectedDisputeType] = useState('Derogatory');
   const [disputeRound, setDisputeRound] = useState('Dispute Round #1');
   const [bureauSelections, setBureauSelections] = useState<AccountBureauSelections>({});
   const [selectedReason, setSelectedReason] = useState('');
@@ -205,7 +97,7 @@ export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDis
   }>({});
 
   const handleSelectAccount = (accountId: string) => {
-    setSelectedAccounts(prev => 
+    setSelectedAccounts(prev =>
       prev.includes(accountId)
         ? prev.filter(id => id !== accountId)
         : [...prev, accountId]
@@ -244,10 +136,6 @@ export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDis
     account.furnisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
     account.accountId.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const handleDisputeTypeSelect = (type: string) => {
-    setSelectedDisputeType(type);
-  };
 
   const handleCustomSelection = (accountId: string, type: 'reason' | 'instruction', value: string) => {
     setCustomSelections(prev => ({
@@ -325,51 +213,7 @@ export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDis
         <div className="p-6 space-y-6 max-h-[calc(90vh-120px)] overflow-y-auto">
           <h2 className="text-lg font-medium text-center mb-6">What do you want to dispute?</h2>
 
-          <div className="grid grid-cols-6 gap-4">
-            {DISPUTE_TYPES.map((type) => (
-              <div 
-                key={type.name}
-                className={`border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md ${
-                  selectedDisputeType === type.name 
-                    ? 'border-brand-yellow ring-2 ring-brand-yellow/50 bg-brand-yellow/5' 
-                    : 'hover:border-gray-300'
-                }`}
-                onClick={() => handleDisputeTypeSelect(type.name)}
-              >
-                <div className="mb-2">
-                  <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                    Attack Guide
-                  </Badge>
-                </div>
-                <div className="flex flex-col items-center justify-center h-20">
-                  <FileText className="h-6 w-6 mb-2 text-brand-navy" />
-                  <div className="text-center">
-                    <div className="font-medium">{type.name}</div>
-                    <div className="text-xs text-gray-600">{type.description}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-4 gap-4 mt-6">
-            <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-              <div className="text-xl font-bold">0</div>
-              <div className="text-sm text-gray-600">Inquiries</div>
-            </div>
-            <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-              <div className="text-xl font-bold">0</div>
-              <div className="text-sm text-gray-600">Derogatory Accounts</div>
-            </div>
-            <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-              <div className="text-xl font-bold">0</div>
-              <div className="text-sm text-gray-600">Late Payment Accounts</div>
-            </div>
-            <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-              <div className="text-xl font-bold">0</div>
-              <div className="text-sm text-gray-600">Public Records</div>
-            </div>
-          </div>
+          <DisputeTypes/>
 
           <div className="flex justify-between items-center mt-8">
             <div className="flex space-x-4">
@@ -452,52 +296,15 @@ export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDis
           </div>
 
           <div className="border rounded-md overflow-hidden shadow-sm mt-4">
-            <Table>
-              <TableHeader className="bg-gray-50">
-                <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox 
-                      checked={selectedAccounts.length === ACCOUNTS.length && ACCOUNTS.length > 0}
-                      onCheckedChange={handleSelectAll}
-                    />
-                  </TableHead>
-                  <TableHead>FURNISHER</TableHead>
-                  <TableHead>ACCOUNT TYPE</TableHead>
-                  <TableHead>BUREAUS</TableHead>
-                  <TableHead>REASON</TableHead>
-                  <TableHead>INSTRUCTION</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredAccounts.map((account) => (
-                  <TableRow key={account.accountId} className="hover:bg-gray-50">
-                    <TableCell>
-                      <Checkbox 
-                        checked={selectedAccounts.includes(account.accountId)}
-                        onCheckedChange={() => handleSelectAccount(account.accountId)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <div className="font-medium">{account.furnisher}</div>
-                      <div className="text-sm text-gray-500">{account.accountId}</div>
-                      <div className={`text-xs ${account.status === 'Positive' ? 'text-green-600' : 'text-red-600'}`}>
-                        {account.status}
-                      </div>
-                    </TableCell>
-                    <TableCell>{account.accountType}</TableCell>
-                    <TableCell>
-                      {renderBureauCheckboxes(account)}
-                    </TableCell>
-                    <TableCell>
-                      {customSelections[account.accountId]?.reason || account.reason}
-                    </TableCell>
-                    <TableCell>
-                      {customSelections[account.accountId]?.instruction || account.instruction}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <DisputeTable
+              ACCOUNTS={ACCOUNTS}
+              filteredAccounts={filteredAccounts}
+              selectedAccounts={selectedAccounts}
+              handleSelectAll={handleSelectAll}
+              handleSelectAccount={handleSelectAccount}
+              renderBureauCheckboxes={renderBureauCheckboxes}
+              customSelections={customSelections}
+            />
           </div>
 
           <div className="flex justify-end space-x-4 mt-6">
