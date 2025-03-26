@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { X, Eye, ExternalLink } from 'lucide-react';
+import { SecurityFreezeDetailDialog } from './security-freeze-detail-dialog';
 
 interface SecurityFreezeDialogProps {
   open: boolean;
@@ -151,18 +153,21 @@ const FURNISHER_DATA = [
 export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialogProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFurnishers, setSelectedFurnishers] = useState<string[]>([]);
-
+  const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<boolean>(false);
+   
   const filteredFurnishers = FURNISHER_DATA.filter(furnisher => 
     furnisher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     furnisher.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSelectAll = () => {
-    if (selectedFurnishers.length === FURNISHER_DATA.length) {
-      setSelectedFurnishers([]);
-    } else {
-      setSelectedFurnishers(FURNISHER_DATA.map(f => f.name));
-    }
+    setSelectedFurnishers(FURNISHER_DATA.map(f => f.name));
+  };
+
+  const handleDeselectAll = () => {
+     if(selectedFurnishers.length > 1){
+       setSelectedFurnishers([]);
+     }
   };
 
   const toggleFurnisher = (name: string) => {
@@ -204,6 +209,15 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
             >
               Select All Data Furnisher
             </Button>
+            {selectedFurnishers.length > 0 && 
+              <Button 
+              variant="outline" 
+              className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
+              onClick={handleDeselectAll}
+              >
+              Deselect All Data Furnisher
+              </Button>
+            }
             <div className="flex-1 min-w-[200px]">
               <Input
                 placeholder="Search"
@@ -257,9 +271,18 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
                         {furnisher.detail ? (
                           <span>{furnisher.detail}</span>
                         ) : (
-                          <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-600">
-                            <Eye className="h-4 w-4" />
-                          </Button>
+                          <TooltipProvider delayDuration={0}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-600" onClick={()=>setIsDetailDialogOpen(!isDetailDialogOpen)}>
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Learn More</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         )}
                       </td>
                     </tr>
@@ -268,6 +291,12 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
               </table>
             </div>
           </div>
+          {isDetailDialogOpen &&
+            <SecurityFreezeDetailDialog 
+              isOpen={isDetailDialogOpen} 
+              onOpenChange={() => setIsDetailDialogOpen(!isDetailDialogOpen)} 
+            />
+          }
 
           <div className="flex justify-end space-x-4">
             <Button 
