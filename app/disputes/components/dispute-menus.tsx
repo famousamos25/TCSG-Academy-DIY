@@ -6,6 +6,7 @@ import { FilmIcon } from 'lucide-react';
 import { useState } from 'react';
 import { ConsumerLawDisputesDialog } from './consumer-law-disputes-dialog';
 import { SecurityFreezeDialog } from './security-freeze-dialog';
+import { OtherdisputeDialog } from './other-dispute-dialog';
 
 interface Props { }
 
@@ -64,6 +65,15 @@ const DisputeMenus = ({ }: Props) => {
 						open={selectedMenu === "metro-2"}
 						onOpenChange={() => setSelectedMenu(null)}
 						hideDisputeActions={true}
+					/>
+				)
+			}
+
+            {
+				selectedMenu === "other" && (
+					<OtherdisputeDialog
+						open={selectedMenu === "other"}
+						onOpenChange={() => setSelectedMenu(null)}
 					/>
 				)
 			}
