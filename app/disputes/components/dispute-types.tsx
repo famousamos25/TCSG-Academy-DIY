@@ -234,7 +234,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                         selectedAccounts={selectedAccounts}
                         handleSelectAll={handleSelectAll}
                         handleSelectAccount={handleSelectAccount}
-                        renderBureauCheckboxes={renderBureauCheckboxes}
+                        renderBureauCheckboxes={renderBureauCheckboxes as any}
                         customSelections={customSelections}
                     />
                     <DisputeFooter
@@ -266,7 +266,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                             selectedAccounts={selectedAccounts}
                             handleSelectAll={handleSelectAll}
                             handleSelectAccount={handleSelectAccount}
-                            renderBureauCheckboxes={renderBureauCheckboxes}
+                            renderBureauCheckboxes={renderBureauCheckboxes as any}
                             customSelections={customSelections}
                         />
                     </>

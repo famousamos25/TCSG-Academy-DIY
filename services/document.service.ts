@@ -1,6 +1,6 @@
 
 import { db, storage } from '@/lib/firebase';
-import { collection, doc, getDoc, getDocs, query, where, orderBy, addDoc, deleteDoc, Timestamp } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export interface UserDocument {
@@ -57,7 +57,7 @@ export async function uploadDocument(userId: string, file: File, type: string): 
     const fileUrl = await getDownloadURL(snapshot.ref);
 
     const date = Timestamp.now();
-    const docRef = await addDoc(collection(db, 'users', userId, 'documents'), {
+    const newDataSnapshot = await addDoc(collection(db, 'users', userId, 'documents'), {
       type,
       status: 'pending',
       fileUrl,
@@ -72,7 +72,7 @@ export async function uploadDocument(userId: string, file: File, type: string): 
     });
 
     return {
-      id: docRef.id,
+      id: newDataSnapshot.id,
       type: type as UserDocument['type'],
       status: 'pending',
       fileUrl,
