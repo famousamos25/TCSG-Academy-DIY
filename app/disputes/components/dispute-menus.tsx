@@ -6,6 +6,7 @@ import { disputeMenus } from '@/constants/disputes';
 import { FilmIcon } from 'lucide-react';
 import { useState } from 'react';
 import { ConsumerLawDisputesDialog } from './consumer-law-disputes-dialog';
+import { OtherdisputeDialog } from './other-dispute-dialog';
 
 interface Props { }
 
@@ -52,6 +53,15 @@ const DisputeMenus = ({ }: Props) => {
 				selectedMenu === "consumer-law" && (
 					<ConsumerLawDisputesDialog
 						open={selectedMenu === "consumer-law"}
+						onOpenChange={() => setSelectedMenu(null)}
+					/>
+				)
+			}
+
+            {
+				selectedMenu === "other" && (
+					<OtherdisputeDialog
+						open={selectedMenu === "other"}
 						onOpenChange={() => setSelectedMenu(null)}
 					/>
 				)
