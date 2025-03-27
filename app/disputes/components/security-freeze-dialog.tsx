@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { X, Eye, ExternalLink } from 'lucide-react';
-import { SecurityFreezeDetailDialog } from './security-freeze-detail-dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { FURNISHER_DATA } from '@/constants/furnisher-data';
+import { ExternalLink, Eye, X } from 'lucide-react';
+import { useState } from 'react';
+import { SecurityFreezeDetailDialog } from './security-freeze-detail-dialog';
 
 interface SecurityFreezeDialogProps {
   open: boolean;
@@ -30,7 +30,7 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
   };
 
   const handleDeselectAll = () => {
-     if(selectedFurnishers.length > 1){
+     if(selectedFurnishers.length > 0){
        setSelectedFurnishers([]);
      }
   };
