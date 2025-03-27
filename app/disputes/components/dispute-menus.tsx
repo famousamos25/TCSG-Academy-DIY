@@ -1,11 +1,11 @@
 "use client";
 
-import { SecurityFreezeDialog } from '@/app/disputes/components/security-freeze-dialog';
 import { Card } from '@/components/ui/card';
 import { disputeMenus } from '@/constants/disputes';
 import { FilmIcon } from 'lucide-react';
 import { useState } from 'react';
 import { ConsumerLawDisputesDialog } from './consumer-law-disputes-dialog';
+import { SecurityFreezeDialog } from './security-freeze-dialog';
 
 interface Props { }
 
@@ -53,6 +53,17 @@ const DisputeMenus = ({ }: Props) => {
 					<ConsumerLawDisputesDialog
 						open={selectedMenu === "consumer-law"}
 						onOpenChange={() => setSelectedMenu(null)}
+						hideDisputeActions={false}
+					/>
+				)
+			}
+
+			{
+				selectedMenu === "metro-2" && (
+					<ConsumerLawDisputesDialog
+						open={selectedMenu === "metro-2"}
+						onOpenChange={() => setSelectedMenu(null)}
+						hideDisputeActions={true}
 					/>
 				)
 			}
