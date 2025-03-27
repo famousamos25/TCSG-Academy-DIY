@@ -2,53 +2,49 @@
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ACCOUNTS, AVAILABLE_INSTRUCTIONS, AVAILABLE_REASONS, LATE_PAYMENTS, INQUIRIES_DATA as inquiriesData } from "@/constants/dispute-type-data";
 import { DISPUTE_TYPES } from "@/constants/dispute-types";
 import { Badge, FileText, NetworkIcon } from "lucide-react";
 import { useState } from "react";
+import { DisputeActions, DisputeFooter, DisputeTableWrapper, InquirySection } from "./dispute-actions";
+import { SelectDisputeInstruction, SelectDisputeReason } from "./dispute-reason-instructions";
+import DisputeTable from "./DisputeTable";
 import PersonalInformationDisputeDialog from "./personal-information-dispute";
+import PublicRecordsNotice from "./public-response-notice";
+import SearchBar from "./search-bar";
 
-const inquiriesData = [
-    {
-        creditor: "CBNA/THD",
-        bureau: "EQFX",
-        cdtr: "Not Found",
-        date: "Nov 10, 2023",
-        reason: "Under 15 US Code 1681b permissible purpose...",
-        instruction: "Please Delete Immediately",
-    },
-    {
-        creditor: "JPMCB CARD",
-        bureau: "EXP",
-        cdtr: "CDTR",
-        date: "Feb 21, 2023",
-        reason: "Under 15 US Code 1681b permissible purpose...",
-        instruction: "Please Delete Immediately",
-    },
-    {
-        creditor: "SALLIE MAE B",
-        bureau: "TU",
-        cdtr: "CDTR",
-        date: "Oct 24, 2023",
-        reason: "Under 15 US Code 1681b permissible purpose...",
-        instruction: "Please Delete Immediately",
-    },
-    {
-        creditor: "SYNCB/LOWES",
-        bureau: "TU",
-        cdtr: "CDTR",
-        date: "Nov 8, 2023",
-        reason: "Under 15 US Code 1681b permissible purpose...",
-        instruction: "Please Delete Immediately",
-    },
-];
+type BureauSelection = Record<string, boolean>;
+interface AccountBureauSelections {
+    [accountId: string]: BureauSelection;
+}
 
-export default function DisputeTypes() {
-    const [selectedDisputeType, setSelectedDisputeType] = useState<string | null>(null);
+interface DisputeTypesProps {
+    hideDisputeActions?: boolean;
+    onOpenChange: (open: boolean) => void;
+    [key: string]: any;
+}
+
+export default function DisputeTypes({ hideDisputeActions = false, onOpenChange, ...props }: DisputeTypesProps) {
+    const [selectedDisputeType, setSelectedDisputeType] = useState<string | null>("Derogatory");
     const [selectedInquiries, setSelectedInquiries] = useState<Record<string, boolean>>({});
     const [selectedFilter, setSelectedFilter] = useState<string>("All");
+    const [disputeRound, setDisputeRound] = useState('Dispute Round #1');
+
+
+    const [selectedReason, setSelectedReason] = useState('');
+    const [selectedInstruction, setSelectedInstruction] = useState('');
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
+    const [bureauSelections, setBureauSelections] = useState<AccountBureauSelections>({});
+    const [customSelections, setCustomSelections] = useState<{
+        [accountId: string]: {
+            reason?: string;
+            instruction?: string;
+            cdtr?: boolean;
+        };
+    }>({})
+    
 
     const handleDisputeTypeSelect = (type: string) => {
         setSelectedDisputeType(type);
@@ -61,11 +57,95 @@ export default function DisputeTypes() {
         }));
     };
 
+    const handleSelectAccount = (accountId: string) => {
+        setSelectedAccounts(prev =>
+            prev.includes(accountId)
+                ? prev.filter(id => id !== accountId)
+                : [...prev, accountId]
+        );
+    };
+
+    const handleSelectAll = () => {
+        if (selectedAccounts.length === ACCOUNTS.length) {
+            setSelectedAccounts([]);
+        } else {
+            setSelectedAccounts(ACCOUNTS.map(account => account.accountId));
+        }
+    };
     const filteredInquiries =
         selectedFilter === "All"
             ? inquiriesData
             : inquiriesData.filter((item) => item.bureau === selectedFilter);
 
+    const renderBureauCheckboxes = (account: typeof ACCOUNTS[0]) => {
+        const selections = bureauSelections[account.accountId] || { tu: false, exp: false, eqfx: false };
+        const customSelection = customSelections[account.accountId] || {};
+
+        return (
+            <div className="space-y-2">
+                <div className="grid grid-cols-3 gap-2">
+                    <div>
+                        <div className="text-xs text-gray-500">TU</div>
+                        <Checkbox
+                            checked={selections.tu}
+                            onCheckedChange={() => handleBureauToggle(account.accountId, 'tu')}
+                            disabled={account.bureaus.tu === 'Not Reported'}
+                            className={account.bureaus.tu === 'In-Dispute' ? 'bg-blue-100' : ''}
+                        />
+                    </div>
+                    <div>
+                        <div className="text-xs text-gray-500">EXP</div>
+                        <Checkbox
+                            checked={selections.exp}
+                            onCheckedChange={() => handleBureauToggle(account.accountId, 'exp')}
+                            disabled={account.bureaus.exp === 'Not Reported'}
+                            className={account.bureaus.exp === 'In-Dispute' ? 'bg-blue-100' : ''}
+                        />
+                    </div>
+                    <div>
+                        <div className="text-xs text-gray-500">EQFX</div>
+                        <Checkbox
+                            checked={selections.eqfx}
+                            onCheckedChange={() => handleBureauToggle(account.accountId, 'eqfx')}
+                            disabled={account.bureaus.eqfx === 'Not Reported'}
+                            className={account.bureaus.eqfx === 'In-Dispute' ? 'bg-blue-100' : ''}
+                        />
+                    </div>
+                </div>
+                <div>
+                    <div className="text-xs text-gray-500">CDTR</div>
+                    <Checkbox
+                        checked={customSelection.cdtr}
+                        onCheckedChange={() => handleBureauToggle(account.accountId, 'cdtr')}
+                    />
+                </div>
+            </div>
+        );
+    };
+    const handleBureauToggle = (accountId: string, option: keyof BureauSelection | 'cdtr') => {
+        if (option === 'cdtr') {
+          setCustomSelections(prev => ({
+            ...prev,
+            [accountId]: {
+              ...prev[accountId],
+              cdtr: !prev[accountId]?.cdtr
+            }
+          }));
+        } else {
+          setBureauSelections(prev => ({
+            ...prev,
+            [accountId]: {
+              ...prev[accountId] || { tu: false, exp: false, eqfx: false },
+              [option]: !prev[accountId]?.[option]
+            }
+          }));
+        }
+      };
+
+    const filteredAccounts = (dataSource: any)=> dataSource.filter((account: any) =>
+        (account.furnisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            account.accountId.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-6 gap-4">
@@ -94,8 +174,10 @@ export default function DisputeTypes() {
 
             {selectedDisputeType === "Personal Information" && (
                 <PersonalInformationDisputeDialog
-                    open={true}
-                    onOpenChange={() => setSelectedDisputeType(null)}
+                    open={selectedDisputeType !== null}
+                    onOpenChange={(open) => {
+                        if (!open) setSelectedDisputeType(null);
+                    }}
                 />
             )}
 
@@ -117,10 +199,84 @@ export default function DisputeTypes() {
                     <div className="text-sm text-gray-600">Public Records</div>
                 </div>
             </div>
+            {
+                selectedDisputeType === "Inquiries" && (
+                    <InquirySection
+                        selectedFilter={selectedFilter}
+                        setSelectedFilter={setSelectedFilter}
+                        inquiriesData={inquiriesData}
+                        selectedInquiries={selectedInquiries}
+                        setSelectedInquiries={setSelectedInquiries}
+                        filteredInquiries={filteredInquiries}
+                        toggleInquirySelection={toggleInquirySelection}
+                        setSelectedDisputeType={setSelectedDisputeType}
+                    />
+                )
+            }
 
-            {selectedDisputeType === "Inquiries" && (
-                <div className="border rounded-lg p-6">
-                    <div className="flex gap-2 items-center mb-4">
+            {selectedDisputeType === "Derogatory" && (
+                <>
+                    {!hideDisputeActions && (
+                        <DisputeActions
+                            disputeRound={disputeRound}
+                            setDisputeRound={setDisputeRound}
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            reasons={AVAILABLE_REASONS}
+                            instructions={AVAILABLE_INSTRUCTIONS}
+                            bureauSelections={bureauSelections}
+                        />
+                    )}
+                    <DisputeTableWrapper
+                        {...props}
+                        accounts={ACCOUNTS}
+                        data={filteredAccounts}
+                        selectedAccounts={selectedAccounts}
+                        handleSelectAll={handleSelectAll}
+                        handleSelectAccount={handleSelectAccount}
+                        renderBureauCheckboxes={renderBureauCheckboxes}
+                        customSelections={customSelections}
+                    />
+                    <DisputeFooter
+                        onClose={() => onOpenChange(false)}
+                        actionText="Create Letters"
+                        disabled={false}
+                    />
+                </>
+            )}
+
+            {
+                selectedDisputeType === "Late Payments" && (
+                    <>
+                        {!hideDisputeActions && (
+                            <DisputeActions
+                                disputeRound={disputeRound}
+                                setDisputeRound={setDisputeRound}
+                                searchTerm={searchTerm}
+                                setSearchTerm={setSearchTerm}
+                                reasons={AVAILABLE_REASONS}
+                                instructions={AVAILABLE_INSTRUCTIONS}
+                                bureauSelections={bureauSelections}
+                            />
+                            )}
+                        <DisputeTableWrapper
+                            {...props}
+                            accounts={LATE_PAYMENTS}
+                            data={filteredAccounts}
+                            selectedAccounts={selectedAccounts}
+                            handleSelectAll={handleSelectAll}
+                            handleSelectAccount={handleSelectAccount}
+                            renderBureauCheckboxes={renderBureauCheckboxes}
+                            customSelections={customSelections}
+                        />
+                    </>
+                )
+            }
+            {selectedDisputeType === "Public Records" && <PublicRecordsNotice />}
+
+            {selectedDisputeType === "All Accounts" && (
+                <>
+                    <div className="flex justify-between items-center mt-8 space-x-4">
                         <Button
                             variant="outline"
                             className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
@@ -128,86 +284,28 @@ export default function DisputeTypes() {
                             Dispute All
                         </Button>
 
-                        <RadioGroup
-                            value={selectedFilter}
-                            onValueChange={setSelectedFilter}
-                            className="flex"
-                        >
-                            <Label className="flex items-center space-x-2">
-                                <RadioGroupItem value="All" />
-                                <span>All ({inquiriesData.length})</span>
-                            </Label>
-                            <Label className="flex items-center space-x-2">
-                                <RadioGroupItem value="TU" />
-                                <span>TU ({inquiriesData.filter((i) => i.bureau === "TU").length})</span>
-                            </Label>
-                            <Label className="flex items-center space-x-2">
-                                <RadioGroupItem value="EXP" />
-                                <span>EXP ({inquiriesData.filter((i) => i.bureau === "EXP").length})</span>
-                            </Label>
-                            <Label className="flex items-center space-x-2">
-                                <RadioGroupItem value="EQFX" />
-                                <span>EQFX ({inquiriesData.filter((i) => i.bureau === "EQFX").length})</span>
-                            </Label>
-                        </RadioGroup>
+                        {selectedAccounts.length > 0 && (
+                            <div className="flex space-x-4">
+                                <SelectDisputeReason selectedReason={selectedReason} setSelectedReason={setSelectedReason} />
+                                <SelectDisputeInstruction selectedInstruction={selectedInstruction} setSelectedInstruction={setSelectedInstruction} />
+                            </div>
+                        )}
+
+                        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
                     </div>
 
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="border-b">
-                                <TableHead className="text-slate-400 pl-6 text-left">
-                                    <Checkbox
-                                        checked={Object.values(selectedInquiries).every(Boolean)}
-                                        onCheckedChange={() => {
-                                            const allChecked = Object.values(selectedInquiries).every(Boolean);
-                                            setSelectedInquiries(
-                                                Object.fromEntries(filteredInquiries.map((_, i) => [i, !allChecked]))
-                                            );
-                                        }}
-                                    />
-                                </TableHead>
-                                <TableHead className="text-slate-400 text-left">Creditor</TableHead>
-                                <TableHead className="text-slate-400 text-left">Credit Bureau</TableHead>
-                                <TableHead className="text-slate-400 text-left">CDTR</TableHead>
-                                <TableHead className="text-slate-400 text-left">Date</TableHead>
-                                <TableHead className="text-slate-400 text-left">Reason</TableHead>
-                                <TableHead className="text-slate-400 text-left">Instruction</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {filteredInquiries.map((item, index) => (
-                                <TableRow key={index} className="border-b">
-                                    <TableCell>
-                                        <Checkbox
-                                            checked={selectedInquiries[index] || false}
-                                            onCheckedChange={() => toggleInquirySelection(index)}
-                                        />
-                                    </TableCell>
-                                    <TableCell>{item.creditor}</TableCell>
-                                    <TableCell className={item.bureau === "EQFX" ? "text-red-400" : item.bureau === "EXP" ? "text-blue-400" : "text-cyan-400"}>
-                                        {item.bureau}
-                                    </TableCell>
-                                    <TableCell className="text-gray-500">{item.cdtr}</TableCell>
-                                    <TableCell>{item.date}</TableCell>
-                                    <TableCell className="text-gray-500">{item.reason}</TableCell>
-                                    <TableCell className="text-gray-500">{item.instruction}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-
-                    <div className="flex justify-end space-x-4 mt-6">
-                        <Button variant="outline" onClick={() => setSelectedDisputeType(null)}>
-                            Close
-                        </Button>
-                        <Button
-                            className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                            disabled={!Object.values(selectedInquiries).some(Boolean)}
-                        >
-                            Create Inquiry Dispute
-                        </Button>
+                    <div className="border rounded-md overflow-hidden shadow-sm mt-4">
+                        <DisputeTable
+                            ACCOUNTS={[...ACCOUNTS, ...LATE_PAYMENTS]}
+                            filteredAccounts={filteredAccounts([...ACCOUNTS, ...LATE_PAYMENTS])}
+                            selectedAccounts={selectedAccounts}
+                            handleSelectAll={handleSelectAll}
+                            handleSelectAccount={handleSelectAccount}
+                            renderBureauCheckboxes={renderBureauCheckboxes}
+                            customSelections={customSelections}
+                        />
                     </div>
-                </div>
+                </>
             )}
         </div>
     );
