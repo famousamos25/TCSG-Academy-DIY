@@ -1,9 +1,28 @@
 "use client"
 
 import { Search } from "lucide-react"
-import { LetterSelectionCard } from "./letter-selection-card"
-
-export function LetterSelectionDestination () {
+import { LetterDestinationData } from "@/constants/letter-destination-data"
+import React, { useEffect, useState } from "react"
+import { LetterSelectionDestinationcard, letterSelectionDestinationProps } from "./letter-selection-destination-card"
+interface LetterDestinationProps {
+   filter: string;
+   handleEmit: (e: string) => void
+}
+export function LetterSelectionDestination ({filter, handleEmit}: LetterDestinationProps) {
+    const [data] = useState<letterSelectionDestinationProps[]>(LetterDestinationData)
+    const [filteredData,setFilteredData] = useState<letterSelectionDestinationProps[]>(LetterDestinationData)
+    const [search,setSearch] = useState<string>("")
+    const [propsFilter,setPropsFilter] = useState<string>('')
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value
+        setSearch(value)
+        search != "" ? setFilteredData(data.filter(d=>d.name?.toLowerCase()?.includes(value.toLowerCase()))) : setFilteredData(data)
+    }
+    useEffect(()=>{
+      if(filter != '' && filter != undefined){
+          setPropsFilter(filter)
+      }
+    },[filter])
     return (
         <div className="flex flex-col border-[1px] border-gray-500 rounded-md">
        <div className="flex flex-col mb-1 p-4">
@@ -18,6 +37,8 @@ export function LetterSelectionDestination () {
                <Search className="flex h-4 w-4"/>
                <input className="border-0 focus:outline-none ml-1 w-4/5" 
                type="text"
+               value={search}
+               onChange={handleChange}
                placeholder="Search for a bureau or credit name" 
                />
                </div>
@@ -25,7 +46,9 @@ export function LetterSelectionDestination () {
          </div>
        </div>
        <div className="max-h-[45vh] overflow-y-auto px-4 py-0">
-        {[1,2].map(i => (<LetterSelectionCard  key={i} lane={2}/>))}
+         {propsFilter && 
+            filteredData.filter(d=> d.type.toLowerCase().includes(propsFilter.toLowerCase())).map((f,i)=> (<LetterSelectionDestinationcard  key={i} data={f} handleClick={handleEmit}/>))
+         }
        </div>
     </div>
     )

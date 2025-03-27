@@ -1,32 +1,32 @@
 export const LetterSelectionData = [
     {
         name: "Account Sold Letter #1",
-        type: "Credit Bureaus",
+        type: "Credit Bureau",
         round: "Dispute Round #1"
     },
     {
         name: "Account Sold Letter #2",
-        type: "Credit Bureaus",
+        type: "Credit Bureau",
         round: "Dispute Round #2"
     },
     {
         name: "Account Sold Letter #3",
-        type: "Credit Bureaus",
+        type: "Credit Bureau",
         round: "Dispute Round #3"
     },
     {
         name: "Account Sold Letter #4",
-        type: "Credit Bureaus",
+        type: "Credit Bureau",
         round: "Dispute Round #4"
     },
     {
         name: "Account Sold Letter #5",
-        type: "Credit Bureaus",
+        type: "Credit Bureau",
         round: "Dispute Round #5"
     },
     {
         name: "Account Sold Letter #6",
-        type: "Credit Bureaus",
+        type: "Credit Bureau",
         round: "Dispute Round #6"
     },
     {

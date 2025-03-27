@@ -6,12 +6,21 @@ import { X } from "lucide-react"
 import { LetterSelection } from "./letter-selection"
 import { LetterSelectionDestination } from "./letter-selection-destination"
 import { LetterAccountSelection } from "./letter-account-selection"
+import { useState } from "react"
 
 interface OtherdisputeDialogProps {
     open: boolean
     onOpenChange: () =>void;
 }
 export function OtherdisputeDialog ({open,onOpenChange}:OtherdisputeDialogProps) {
+    const handleFilters = (e:string) => {
+       setLetterFilter(e)
+    }
+    const handleAccountFilter = (e: string) => {
+      setAccountFilter(e)
+    }
+    const [letterFilter, setLetterFilter] = useState<string>('')
+    const [accountFilter, setAccountFilter] = useState<string> ('')
     return (
         <Dialog open={open}>
         <DialogContent className="min-w-[95vw] max-h-[90vh] p-4">
@@ -23,13 +32,13 @@ export function OtherdisputeDialog ({open,onOpenChange}:OtherdisputeDialogProps)
           </DialogHeader>
           <div className="flex flex-col md:flex-row w-full">
             <div className="w-full md:w-1/3 mx-1">
-              <LetterSelection />
+              <LetterSelection emitFilter = {(e)=> handleFilters(e)} />
             </div>
             <div className="w-full md:w-1/3 mx-1">
-            <LetterSelectionDestination />
+            <LetterSelectionDestination  filter = {letterFilter} handleEmit={(e) => handleAccountFilter(e)} />
             </div>
             <div className="w-full md:w-1/3 mx-1">
-            <LetterAccountSelection />
+            <LetterAccountSelection filter = {accountFilter} />
             </div>
           </div>
           <DialogFooter>
