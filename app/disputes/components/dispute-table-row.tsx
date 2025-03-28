@@ -19,6 +19,7 @@ export default function DisputeTableRow() {
     const toggleDispute = (key: string) => {
         setSelectedDisputes(prev => ({ ...prev, [key]: !prev[key] }));
     };
+
     return (
         <>
             {disputeData.map((item, rowIndex) => (
@@ -41,9 +42,14 @@ export default function DisputeTableRow() {
                                             {entry.updated && (
                                                 <span className="text-xs text-gray-400 ml-6">(Date Updated: {entry.updated})</span>
                                             )}
-                                            {selectedDisputes[key] ? (
-                                                <span className="text-green-500 text-sm ml-6">Dispute</span>
-                                            ) : null}
+                                            {selectedDisputes[key] && (
+                                                <span
+                                                    className="text-green-500 text-sm ml-6 cursor-pointer hover:underline"
+                                                    onClick={() => toggleDispute(key)}
+                                                >
+                                                    Dispute
+                                                </span>
+                                            )}
                                         </div>
                                     );
                                 })
@@ -56,9 +62,14 @@ export default function DisputeTableRow() {
                                         />
                                         <span>{item[bureau]}</span>
                                     </div>
-                                    {selectedDisputes[`${rowIndex}-${bureau}`] ? (
-                                        <span className="text-green-500 text-sm ml-6">Dispute</span>
-                                    ) : null}
+                                    {selectedDisputes[`${rowIndex}-${bureau}`] && (
+                                        <span
+                                            className="text-green-500 text-sm ml-6 cursor-pointer"
+                                            onClick={() => toggleDispute(`${rowIndex}-${bureau}`)}
+                                        >
+                                            Dispute
+                                        </span>
+                                    )}
                                 </div>
                             )}
                         </TableCell>
@@ -66,6 +77,7 @@ export default function DisputeTableRow() {
                 </TableRow>
             ))}
         </>
-    )
+    );
 }
+
 

@@ -151,9 +151,12 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             <div className="grid grid-cols-6 gap-4">
                 {DISPUTE_TYPES.map((type) => (
                     <div
-                        key={type.name}
-                        className={`border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md hover:border-gray-300`}
-                        onClick={() => handleDisputeTypeSelect(type.name)}
+                    key={type.name}
+                    className={`
+                      border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md hover:border-gray-300
+                      ${type.name === "Derogatory" ? "border-2 border-green-500 shadow-lg" : ""}
+                    `}
+                    onClick={() => handleDisputeTypeSelect(type.name)}
                     >
                         <div className="mb-2 flex align-center justify-center">
                             <Badge className="bg-green-100 text-green-800 hover:bg-green-100 gap-1">
@@ -176,7 +179,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                 <PersonalInformationDisputeDialog
                     open={selectedDisputeType !== null}
                     onOpenChange={(open) => {
-                        if (!open) setSelectedDisputeType(null);
+                        if (!open) setSelectedDisputeType("Derogatory");
                     }}
                 />
             )}
