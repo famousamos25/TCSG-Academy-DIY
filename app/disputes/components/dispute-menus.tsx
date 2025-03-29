@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { ConsumerLawDisputesDialog } from './consumer-law-disputes-dialog';
 import { SecurityFreezeDialog } from './security-freeze-dialog';
 import { OtherdisputeDialog } from './other-dispute-dialog';
+import { DisputeLettersDialog } from './dispute-letters';
 
 interface Props { }
 
@@ -35,6 +36,9 @@ const DisputeMenus = ({ }: Props) => {
               						group-hover:bg-green-100 group-hover:text-green-500 transition-all">
 							{item.icon}
 						</div>
+						{/* {item.type === "disputed-letters" &&
+						<span className='bg-green-400 p-1 rounded-md'><p className='text-green-600 text-[10px]'>5 Letters</p></span>
+						} */}
 						<span className="text-gray-600 text-sm">{item.title}</span>
 					</div>
 				))}
@@ -70,9 +74,17 @@ const DisputeMenus = ({ }: Props) => {
 			}
 
             {
-				selectedMenu === "other" && (
+				selectedMenu === "other" && (     
 					<OtherdisputeDialog
 						open={selectedMenu === "other"}
+						onOpenChange={() => setSelectedMenu(null)}
+					/>
+				)
+			}
+			 {
+				selectedMenu === "disputed-letters" && (     
+					<DisputeLettersDialog
+						open={selectedMenu === "disputed-letters"}
 						onOpenChange={() => setSelectedMenu(null)}
 					/>
 				)
