@@ -14,7 +14,7 @@ export function LetterSelectionDestinationcard ({ data, handleClick }: LetterSel
     const [isActive, setIsActive] = useState(false);
     return (
         <div>
-            <div className={`flex w-full border-[1px] border-gray-500 p-3 my-2 rounded-md cursor-pointer ${isActive ? 'border-[1px] border-green-600' : ''}`}
+            <div className={`flex w-full border-[1px] border-gray-300 p-3 my-2 rounded-md cursor-pointer ${isActive ? 'border-[1px] border-green-600' : ''}`}
             onClick={() => setIsActive(!isActive)}>
            <div className="flex flex-col w-2/3 text-sm" onClick={()=>handleClick(data.name)}>
                   <div className="flex">

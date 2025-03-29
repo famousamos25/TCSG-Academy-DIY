@@ -1,9 +1,9 @@
 "use client"
 
-import { Search } from "lucide-react"
-import { LetterDestinationData } from "@/constants/letter-destination-data"
-import React, { useEffect, useState } from "react"
-import { LetterSelectionDestinationcard, letterSelectionDestinationProps } from "./letter-selection-destination-card"
+import { LetterDestinationData } from "@/constants/letter-destination-data";
+import { Search } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { LetterSelectionDestinationcard, letterSelectionDestinationProps } from "./letter-selection-destination-card";
 interface LetterDestinationProps {
    filter: string;
    handleEmit: (e: string) => void
@@ -24,7 +24,7 @@ export function LetterSelectionDestination ({filter, handleEmit}: LetterDestinat
       }
     },[filter])
     return (
-        <div className="flex flex-col border-[1px] border-gray-500 rounded-md">
+        <div className="flex flex-col border-[1px] border-gray-300 rounded-md">
        <div className="flex flex-col mb-1 p-4">
           <h2 className="font-semibold text-lg">2.Where do you want to send this letter?</h2>
           <h3 className="text-md opacity-90">Please choose one:</h3>

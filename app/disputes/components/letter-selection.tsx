@@ -1,8 +1,8 @@
 "use client";
-import { ChevronDown, Search, X } from "lucide-react";
-import { LetterSelectionCard, letterSelectionCardData, } from "./letter-selection-card";
 import { LetterSelectionData } from "@/constants/letter-selection-data";
+import { ChevronDown, Search, X } from "lucide-react";
 import { useState } from "react";
+import { LetterSelectionCard, letterSelectionCardData, } from "./letter-selection-card";
 interface LetterSelectionProps {
   emitFilter: (e:string) => void
 }
@@ -41,7 +41,7 @@ export function LetterSelection({ emitFilter } : LetterSelectionProps) {
   };
 
   return (
-    <div className="flex flex-col border-[1px] border-gray-500 rounded-md">
+    <div className="flex flex-col border-[1px] border-b-transparent border-gray-300 rounded-md">
       <div className="flex flex-col mb-1 p-4">
         <h2 className="font-semibold text-lg">1. Which letter would you like to send?</h2>
         <h3 className="text-md opacity-90">Please choose one:</h3>

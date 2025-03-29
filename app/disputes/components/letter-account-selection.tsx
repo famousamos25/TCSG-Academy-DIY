@@ -1,9 +1,9 @@
 "use client"
 
-import { Search } from "lucide-react"
-import { letterAccountSelectionData } from "@/constants/letter-account-selection-data"
-import { useEffect, useState } from "react"
-import { LetterAccountSelectionCard, letterAccountSelectionDataProps } from "./letter-account-selection-card"
+import { letterAccountSelectionData } from "@/constants/letter-account-selection-data";
+import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { LetterAccountSelectionCard, letterAccountSelectionDataProps } from "./letter-account-selection-card";
 interface LetterAccountSelectionProps {
    filter: string
 }
@@ -24,7 +24,7 @@ export function LetterAccountSelection ({ filter } : LetterAccountSelectionProps
      }
    },[filter])
     return (
-        <div className="flex flex-col border-[1px] border-gray-500 rounded-md">
+        <div className="flex flex-col border-[1px] border-gray-300 rounded-md">
         <div className="flex flex-col mb-1 p-4">
            <h2 className="font-semibold text-lg">3. Which accounts is this about?</h2>
            <h3 className="text-md opacity-90">Please choose one or more:</h3>
