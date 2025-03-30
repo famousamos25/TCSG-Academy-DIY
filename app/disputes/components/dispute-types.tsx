@@ -66,12 +66,13 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
     };
 
     const handleSelectAll = () => {
-        if (selectedAccounts.length === ACCOUNTS.length) {
-            setSelectedAccounts([]);
-        } else {
-            setSelectedAccounts(ACCOUNTS.map(account => account.accountId));
-        }
+        setSelectedAccounts(LATE_PAYMENTS.map(acc => acc.accountId)); // Select all accounts
     };
+    
+    const handleDeselectAll = () => {
+        setSelectedAccounts([]); // Deselect all accounts
+    };
+    
     const filteredInquiries =
         selectedFilter === "All"
             ? inquiriesData
@@ -142,21 +143,26 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
         }
       };
 
-    const filteredAccounts = (dataSource: any)=> dataSource.filter((account: any) =>
-        (account.furnisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            account.accountId.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+    const filteredAccounts = (dataSource: any) => {
+        return dataSource.filter((account: any) => {
+            console.log("account",account);
+            return (
+                account.furnisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                account.accountId.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        });
+    };
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-6 gap-4">
                 {DISPUTE_TYPES.map((type) => (
                     <div
-                    key={type.name}
-                    className={`
-                      border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md hover:border-gray-300
-                      ${type.name === "Derogatory" ? "border-2 border-green-500 shadow-lg" : ""}
-                    `}
-                    onClick={() => handleDisputeTypeSelect(type.name)}
+                        key={type.name}
+                        className={`
+                  border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md hover:border-gray-300
+                  ${selectedDisputeType === type.name ? "border-2 border-green-500 shadow-lg" : ""}
+                `}
+                        onClick={() => handleDisputeTypeSelect(type.name)}
                     >
                         <div className="mb-2 flex align-center justify-center">
                             <Badge className="bg-green-100 text-green-800 hover:bg-green-100 gap-1">

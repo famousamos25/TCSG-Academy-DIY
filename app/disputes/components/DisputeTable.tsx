@@ -1,5 +1,10 @@
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
+import { SquarePen } from "lucide-react";
+import { useState } from "react";
+import { Modal } from "./reason-modal";
 
 export interface Account {
     furnisher: string;
@@ -26,12 +31,29 @@ interface DisputeTableProps {
         [accountId: string]: {
             reason?: string;
             instruction?: string;
-            cdtr?: boolean;
         };
     };
 }
 
 const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts, selectedAccounts, handleSelectAll, handleSelectAccount, renderBureauCheckboxes, customSelections }) => {
+    const [modalOpen, setModalOpen] = useState(false);
+    const [editingAccount, setEditingAccount] = useState<Account | null>(null);
+    const [editingField, setEditingField] = useState<"reason" | "instruction" | null>(null);
+    const [editedText, setEditedText] = useState("");
+
+    const openEditModal = (account: Account, field: "reason" | "instruction") => {
+        setEditingAccount(account);
+        setEditingField(field);
+        setEditedText(field === "reason" 
+            ? customSelections[account.accountId]?.reason || account.reason
+            : customSelections[account.accountId]?.instruction || account.instruction
+        );
+        setModalOpen(true);
+    };
+    
+    const handleSave = () => {
+        setModalOpen(false);
+    };
     return (
         <div className="border rounded-md overflow-hidden shadow-sm mt-4">
             <Table>
@@ -68,12 +90,50 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                             </TableCell>
                             <TableCell>{account.accountType}</TableCell>
                             <TableCell>{renderBureauCheckboxes(account)}</TableCell>
-                            <TableCell>{customSelections[account.accountId]?.reason || account.reason}</TableCell>
-                            <TableCell>{customSelections[account.accountId]?.instruction || account.instruction}</TableCell>
+                            <TableCell>
+                                <div className="flex">
+                                    {customSelections[account.accountId]?.reason || account.reason}
+                                    <SquarePen
+                                        className="w-4 h-4 text-green-500 cursor-pointer ml-2"
+                                        onClick={() => openEditModal(account, "reason")}
+                                    />
+                                </div>
+                            </TableCell>
+
+                            <TableCell>
+                                <div className="flex">
+                                    {account.instruction}
+                                    <SquarePen
+                                        className="w-4 h-4 text-green-500 cursor-pointer ml-2"
+                                        onClick={() => openEditModal(account, "instruction")}
+                                    />
+                                </div>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+            {modalOpen && (
+                <Modal onClose={() => setModalOpen(false)} onSave={handleSave}>
+                    <div className="space-y-4">
+                        <label className="block">
+                            <Input
+                                type="text"
+                                value={editedText}
+                                onChange={(e) => setEditedText(e.target.value)}
+                                className="w-full p-2 border rounded-md"
+                            />
+                        </label>
+                        <label className="block">
+                            <Textarea
+                                value={editedText}
+                                onChange={(e) => setEditedText(e.target.value)}
+                                className="w-full p-2 border rounded-md"
+                            />
+                        </label>
+                    </div>
+                </Modal>
+            )}
         </div>
     );
 };
