@@ -29,16 +29,16 @@ const DisputeMenus = ({ }: Props) => {
 					<div
 						key={index}
 						onClick={() => setSelectedMenu(item.type)}
-						className="border-2 border-dashed border-gray-300 p-5 rounded-lg text-center flex flex-col items-center space-y-2
+						className="border-2 border-dashed border-gray-300 p-5 rounded-lg text-center flex flex-col items-center justify-center space-y-2
               					hover:border-green-400 hover:border-solid hover:bg-opacity-10 cursor-pointer transition-all group"
 					>
 						<div className="bg-gray-100 p-1 rounded-lg flex items-center justify-center
               						group-hover:bg-green-100 group-hover:text-green-500 transition-all">
 							{item.icon}
 						</div>
-						{/* {item.type === "disputed-letters" &&
-						<span className='bg-green-400 p-1 rounded-md'><p className='text-green-600 text-[10px]'>5 Letters</p></span>
-						} */}
+						{item.type === "disputed-letters" &&
+						<span className='bg-green-400 py-1 px-2 rounded-md'><p className='text-white text-[10px]'>5 Letters</p></span>
+						}
 						<span className="text-gray-600 text-sm">{item.title}</span>
 					</div>
 				))}
