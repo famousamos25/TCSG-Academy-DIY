@@ -11,12 +11,13 @@ interface LetterSelectionProps {
 export function DisputeLetterSource({ emitName }: LetterSelectionProps) {
   const [data] = useState(disputeLetterSourceData)
   const [show, setShow] = useState<boolean>(false);
+  const [activeCard, setActiveCard] = useState<string | null>(null);
   const handleEmittedname = (name: string) => {
      emitName(name)
   }
 
   return (
-    <div className="flex flex-col border-[1px] border-b-transparent border-gray-300 rounded-md">
+    <div className="flex flex-col border-[1px] border-gray-300 rounded-md">
       <div className="flex flex-col mb-1 p-4">
         <h2 className="flex items-center font-semibold text-lg text-green-500">1.Select the Source <Info className="w-4 h-4 ml-1 cursor-pointer" onClick={() => setShow(!show)} /></h2>
         <h3 className="text-xs font-semibold">Choose the Credit Bureau or Creditor you sent the dispute</h3>
@@ -24,7 +25,12 @@ export function DisputeLetterSource({ emitName }: LetterSelectionProps) {
       <div className="border-b-[0.5px] border-gray-300 h-[0.5px] mb-2"></div>
       <div className="max-h-[45vh] overflow-y-auto px-4 py-0">
         {data.map((l, i) => (
-          <DisputeLetterSourceCard key={i} data={l} emittedName={(name)=>handleEmittedname(name)} />
+          <DisputeLetterSourceCard 
+          key={i} data={l} 
+          emittedName={(name)=>handleEmittedname(name)} 
+          handleClick={()=> setActiveCard(l.name)} 
+          isActive = {l.name === activeCard}
+          />
         ))}
       </div>
       {

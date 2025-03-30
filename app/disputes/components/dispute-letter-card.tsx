@@ -10,13 +10,18 @@ export interface DisputeLetter {
 interface DisputeLettersDialogProps {
   data: DisputeLetter,
   emitFilterName: (name: string) => void;
+  handleClick: () => void;
+  isActive: boolean
 }
-export function DisputeLetterCard ({data, emitFilterName}: DisputeLettersDialogProps) {
+export function DisputeLetterCard ({data, emitFilterName, handleClick, isActive}: DisputeLettersDialogProps) {
     return (
         <div>
-        <div className={`flex w-full items-center border-[1px] border-gray-300 p-3 my-2 rounded-md cursor-pointer`}
+        <div className={`flex w-full items-center border-[1px] border-gray-300 p-3 my-2 rounded-md cursor-pointer ${isActive && 'border-[1px] border-green-500' }`}
         >
-              <div className="flex flex-col w-full text-sm" onClick={()=> emitFilterName(data.source)}>
+              <div className="flex flex-col w-full text-sm" onClick={()=> {
+               emitFilterName(data.source)
+               handleClick()
+              }}>
                  <h2 className="font-bold"
                  >{data.title}</h2>
                  <div className="flex">

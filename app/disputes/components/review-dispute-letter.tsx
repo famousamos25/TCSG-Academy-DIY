@@ -7,21 +7,27 @@ import { Info } from "lucide-react";
 import { DisputeLettersInfoDialog } from "./dispute-letters-info-dialog";
 interface ReviewDisputeLetterProps {
   filterName: string;
+  hideDisputedItems: boolean;
 }
-export function ReviewDisputeLetter({ filterName }: ReviewDisputeLetterProps) {
+export function ReviewDisputeLetter({ filterName, hideDisputedItems }: ReviewDisputeLetterProps) {
   const [data] = useState(reviewDisputesLetterData)
   const [filteredData, setFilteredData] = useState(reviewDisputesLetterData)
   const [show,setShow] = useState<boolean>(false)
   useEffect(()=>{
-    if( filterName !== '' && filterName !== undefined){
+    if(!hideDisputedItems) {
+      if( filterName !== '' && filterName !== undefined){
         setFilteredData(data.filter(d=>d.source.toLowerCase() === filterName.toLowerCase()))
     }
     else {
       setFilteredData([])
     }
-  },[filterName])
+    }
+    else{
+      setFilteredData([])
+    }
+  },[filterName,hideDisputedItems])
   return (
-    <div className="flex flex-col border-[1px] border-b-transparent border-gray-300 rounded-md">
+    <div className="flex flex-col border-[1px] border-gray-300 rounded-md">
       <div className="flex flex-col mb-1 p-4">
         <h2 className="flex items-center font-semibold text-lg text-green-500">3. Review Disputed Items <Info className="w-4 h-4 ml-1 cursor-pointer" onClick={()=>setShow(!show)}/></h2>
         <h3 className="font-semibold text-xs">Review the items that were included in your dispute letter.</h3>
