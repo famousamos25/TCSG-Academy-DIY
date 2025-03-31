@@ -44,7 +44,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             cdtr?: boolean;
         };
     }>({})
-    
+
 
     const handleDisputeTypeSelect = (type: string) => {
         setSelectedDisputeType(type);
@@ -66,13 +66,29 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
     };
 
     const handleSelectAll = () => {
-        setSelectedAccounts(LATE_PAYMENTS.map(acc => acc.accountId)); // Select all accounts
+        setSelectedAccounts(LATE_PAYMENTS.map(acc => acc.accountId));
     };
-    
+
     const handleDeselectAll = () => {
-        setSelectedAccounts([]); // Deselect all accounts
+        setSelectedAccounts([]);
     };
-    
+
+
+    const [allSelected, setAllSelected] = useState(false);
+
+    const toggleSelectAll = () => {
+        setAllSelected((prev) => {
+            const newState = !prev;
+            if (newState) {
+                handleSelectAll();
+            } else {
+                handleDeselectAll();
+            }
+            return newState;
+        });
+    };
+
+
     const filteredInquiries =
         selectedFilter === "All"
             ? inquiriesData
@@ -125,27 +141,27 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
     };
     const handleBureauToggle = (accountId: string, option: keyof BureauSelection | 'cdtr') => {
         if (option === 'cdtr') {
-          setCustomSelections(prev => ({
-            ...prev,
-            [accountId]: {
-              ...prev[accountId],
-              cdtr: !prev[accountId]?.cdtr
-            }
-          }));
+            setCustomSelections(prev => ({
+                ...prev,
+                [accountId]: {
+                    ...prev[accountId],
+                    cdtr: !prev[accountId]?.cdtr
+                }
+            }));
         } else {
-          setBureauSelections(prev => ({
-            ...prev,
-            [accountId]: {
-              ...prev[accountId] || { tu: false, exp: false, eqfx: false },
-              [option]: !prev[accountId]?.[option]
-            }
-          }));
+            setBureauSelections(prev => ({
+                ...prev,
+                [accountId]: {
+                    ...prev[accountId] || { tu: false, exp: false, eqfx: false },
+                    [option]: !prev[accountId]?.[option]
+                }
+            }));
         }
-      };
+    };
 
     const filteredAccounts = (dataSource: any) => {
         return dataSource.filter((account: any) => {
-            console.log("account",account);
+            console.log("account", account);
             return (
                 account.furnisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 account.accountId.toLowerCase().includes(searchTerm.toLowerCase())
@@ -234,6 +250,13 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                             reasons={AVAILABLE_REASONS}
                             instructions={AVAILABLE_INSTRUCTIONS}
                             bureauSelections={bureauSelections}
+                            allSelected={allSelected}
+                            toggleSelectAll={toggleSelectAll}
+                            selectedAccounts={selectedAccounts}
+                            selectedReason={selectedReason}
+                            setSelectedReason={setSelectedReason}
+                            selectedInstruction={selectedInstruction}
+                            setSelectedInstruction={setSelectedInstruction}
                         />
                     )}
                     <DisputeTableWrapper
@@ -245,6 +268,8 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                         handleSelectAccount={handleSelectAccount}
                         renderBureauCheckboxes={renderBureauCheckboxes as any}
                         customSelections={customSelections}
+                        allSelected={allSelected}
+                        toggleSelectAll={toggleSelectAll}
                     />
                     <DisputeFooter
                         onClose={() => onOpenChange(false)}
@@ -254,33 +279,41 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                 </>
             )}
 
-            {
-                selectedDisputeType === "Late Payments" && (
-                    <>
-                        {!hideDisputeActions && (
-                            <DisputeActions
-                                disputeRound={disputeRound}
-                                setDisputeRound={setDisputeRound}
-                                searchTerm={searchTerm}
-                                setSearchTerm={setSearchTerm}
-                                reasons={AVAILABLE_REASONS}
-                                instructions={AVAILABLE_INSTRUCTIONS}
-                                bureauSelections={bureauSelections}
-                            />
-                            )}
-                        <DisputeTableWrapper
-                            {...props}
-                            accounts={LATE_PAYMENTS}
-                            data={filteredAccounts}
+            {selectedDisputeType === "Late Payments" && (
+                <>
+                    {!hideDisputeActions && (
+                        <DisputeActions
+                            disputeRound={disputeRound}
+                            setDisputeRound={setDisputeRound}
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            reasons={AVAILABLE_REASONS}
+                            instructions={AVAILABLE_INSTRUCTIONS}
+                            bureauSelections={bureauSelections}
+                            allSelected={allSelected}
+                            toggleSelectAll={toggleSelectAll}
                             selectedAccounts={selectedAccounts}
-                            handleSelectAll={handleSelectAll}
-                            handleSelectAccount={handleSelectAccount}
-                            renderBureauCheckboxes={renderBureauCheckboxes as any}
-                            customSelections={customSelections}
+                            selectedReason={selectedReason}
+                            setSelectedReason={setSelectedReason}
+                            selectedInstruction={selectedInstruction}
+                            setSelectedInstruction={setSelectedInstruction}
                         />
-                    </>
-                )
-            }
+                    )}
+                    <DisputeTableWrapper
+                        {...props}
+                        accounts={LATE_PAYMENTS}
+                        data={filteredAccounts}
+                        selectedAccounts={selectedAccounts}
+                        handleSelectAll={handleSelectAll}
+                        handleSelectAccount={handleSelectAccount}
+                        renderBureauCheckboxes={renderBureauCheckboxes as any}
+                        customSelections={customSelections}
+                        allSelected={allSelected}
+                        toggleSelectAll={toggleSelectAll}
+                    />
+                </>
+            )}
+
             {selectedDisputeType === "Public Records" && <PublicRecordsNotice />}
 
             {selectedDisputeType === "All Accounts" && (
@@ -310,7 +343,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                             selectedAccounts={selectedAccounts}
                             handleSelectAll={handleSelectAll}
                             handleSelectAccount={handleSelectAccount}
-                            renderBureauCheckboxes={renderBureauCheckboxes}
+                            renderBureauCheckboxes={renderBureauCheckboxes as any}
                             customSelections={customSelections}
                         />
                     </div>
