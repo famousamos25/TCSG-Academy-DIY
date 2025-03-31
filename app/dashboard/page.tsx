@@ -1,51 +1,51 @@
 "use client";
 
-import React, { useState, useRef, useMemo, useEffect } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
-import { VantageScoreTooltip } from "@/components/vantagescore-tooltip";
-import Image from "next/image";
-import { PersonalInfoDialog } from "@/components/personal-info-dialog";
-import { TutorialVideoDialog } from "@/components/tutorial-video-dialog";
+import { BuildCreditProfileDialog } from '@/components/build-credit-profile-dialog';
+import ScoreGauge from '@/components/common/score-gauge';
 import { CreditReportImportDialog } from "@/components/credit-report-import-dialog";
 import { CreditGoals, CreditScoreGoalDialog } from "@/components/credit-score-goal-dialog";
 import { DigitalSignatureDialog } from "@/components/digital-signature-dialog";
+import { PersonalInfoDialog } from "@/components/personal-info-dialog";
 import { ReferralProgramDialog } from "@/components/referral-program-dialog";
-import {
-  Info,
-  ChevronRight,
-  ChevronLeft,
-  Target,
-  Building,
-  Upload,
-  FileText,
-  TrendingUp,
-  Clock,
-  RefreshCw,
-} from "lucide-react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "@/lib/firebase";
-import {
-  collection,
-  query,
-  orderBy,
-  limit,
-  onSnapshot,
-  doc,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
-import { formatDate } from "@/lib/date-utils";
+import { TutorialVideoDialog } from "@/components/tutorial-video-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { VantageScoreTooltip } from "@/components/vantagescore-tooltip";
+import { CHECKLIST_ITEMS, ChecklistItem } from '@/constants/checklist';
 import {
   getScoreColor,
   getScoreLabel,
 } from "@/lib/credit-report";
-import { CHECKLIST_ITEMS, ChecklistItem } from '@/constants/checklist';
-import { BuildCreditProfileDialog } from '@/components/build-credit-profile-dialog';
+import { formatDate } from "@/lib/date-utils";
+import { auth, db } from "@/lib/firebase";
 import { convertKeysToLowerFirst } from '@/lib/utils';
-import ScoreGauge from '@/components/common/score-gauge';
+import {
+  collection,
+  doc,
+  getDoc,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+} from "firebase/firestore";
+import {
+  Building,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  FileText,
+  Info,
+  RefreshCw,
+  Target,
+  TrendingUp,
+  Upload,
+} from "lucide-react";
+import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function DashboardPage() {
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
@@ -167,6 +167,9 @@ export default function DashboardPage() {
                   : item
               )
             );
+          }
+          else {
+            setCreditScoreGoalOpen(true);
           }
         } catch (error) {
           console.error("Error fetching credit goals:", error);

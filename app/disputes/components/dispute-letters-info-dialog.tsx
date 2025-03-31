@@ -67,14 +67,14 @@ export function DisputeLettersInfoDialog({ isOpen, onOpenChange, lane }: Dispute
                             <br />
                             <p>Creditfixrr will <strong>automatically</strong> determine whether the disputed <strong>items</strong> are: <strong>VERIFIED, POSITIVE or DELETED from you Credit Report.</strong></p>
                             <br />
-                            <p>If <strong>any</strong> of the disputed <strong>items</strong> are marked <strong>"Verified"</strong> continue to the next round, these <strong>items</strong> will <strong>automatically</strong> be included within your <strong>Next Round</strong> Dispute Letter</p>
+                            <p>If <strong>any</strong> of the disputed <strong>items</strong> are marked <strong>&quot;Verified&quot;</strong> continue to the next round, these <strong>items</strong> will <strong>automatically</strong> be included within your <strong>Next Round</strong> Dispute Letter</p>
                             <br />
                             <p className="font-semibold">Note:</p>
-                            <p><strong>"Verified"</strong> means that the disputed <strong>item</strong> was <strong>"verified"</strong> as correct reporting
+                            <p><strong>&quot;Verified&quot;</strong> means that the disputed <strong>item</strong> was <strong>&quot;verified&quot;</strong> as correct reporting
 
-                                <strong>"Positive"</strong> mean that the disputed <strong>item</strong> was <strong>updated</strong> from <strong>negative</strong> to <strong>positive</strong>. (i.e. <strong>Late Payment</strong> status is updated from <strong>Late</strong> to <strong>Paid on Time</strong>)
+                                <strong>&quot;Positive&quot;</strong> mean that the disputed <strong>item</strong> was <strong>updated</strong> from <strong>negative</strong> to <strong>positive</strong>. (i.e. <strong>Late Payment</strong> status is updated from <strong>Late</strong> to <strong>Paid on Time</strong>)
 
-                                <strong>"Deleted"</strong> means that the disputed <strong>item</strong> was <strong>deleted</strong> from your credit report in this <strong>Dispute Round.</strong></p>
+                                <strong>&quot;Deleted&quot;</strong> means that the disputed <strong>item</strong> was <strong>deleted</strong> from your credit report in this <strong>Dispute Round.</strong></p>
                         </div>
                     }
                 </div>

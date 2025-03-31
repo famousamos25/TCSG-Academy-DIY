@@ -1,33 +1,32 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { VantageScoreTooltip } from '@/components/vantagescore-tooltip';
-import Image from 'next/image';
-import {
-  Upload,
-  Download,
-  CreditCard,
-  User,
-  RefreshCw,
-  AlertCircle,
-  Info
-} from 'lucide-react';
+import ScoreGauge from '@/components/common/score-gauge';
 import { CreditReportImportDialog } from '@/components/credit-report-import-dialog';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '@/lib/firebase';
-import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { VantageScoreTooltip } from '@/components/vantagescore-tooltip';
 import { useToast } from '@/hooks/use-toast';
-import { formatDate, calculateNextRefresh } from '@/lib/date-utils';
 import { getScoreColor } from '@/lib/credit-report';
+import { calculateNextRefresh, formatDate } from '@/lib/date-utils';
+import { auth, db } from '@/lib/firebase';
 import { convertKeysToLowerFirst } from '@/lib/utils';
+import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
+import {
+  AlertCircle,
+  CreditCard,
+  Download,
+  Info,
+  RefreshCw,
+  Upload,
+  User
+} from 'lucide-react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import AccountCard from './components/account-card';
 import CreditSummaryDashboard from './components/credit-summary';
 import PersonalInformation from './components/personal-information';
-import ScoreGauge from '@/components/common/score-gauge';
-import { Separator } from '@/components/ui/separator';
 
 export default function CreditReportPage() {
   const [activeTab, setActiveTab] = useState('accounts');
@@ -230,69 +229,7 @@ export default function CreditReportPage() {
                     if (!info) return;
                     const values: any = Object.values(info)[0];
                     return (
-                      <Card key={idx} className="p-6 overflow-hidden">
-                        <div className="flex_ items-start justify-between mb-4">
-                          <div className="flex items-center flex-wrap justify-between gap-2">
-                            <div>
-                              <div className="flex items-center">
-                                <h3 className="text-xl font-semibold text-brand-navy">
-                                  {values.creditorName}
-                                </h3>
-                                <Badge variant={account.accountStatus === 'Open' ? 'success' : 'secondary'}>
-                                  {values.accountStatus}
-                                </Badge>
-                              </div>
-                              <p className="text-sm text-gray-600 line-clamp-1 runcate flex items-center gap-2">
-                                Account #{values.accountNumber} <br />{values.accountType}
-                              </p>
-                            </div>
-                            <Button className='h-7 border-accent text-accent hover:text-white text-sm' variant={"outline"}>Details</Button>
-
-                          </div>
-                          <div className="text-right">
-                            <div className="text-sm font-bold text-brand-navy">
-                              ${values?.balance}
-                            </div>
-                            <p className="text-sm text-gray-600">Current Balance</p>
-                          </div>
-                        </div>
-
-                        <Separator className='mb-3' />
-                        <div>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Account Number:</span>
-                              <span className='truncate'>{values?.accountNumber}</span>
-                            </div>
-                            {values.creditLimit && (
-                              <div className="flex justify-between">
-                                <span className="text-gray-600">Credit Limit</span>
-                                <span>${values?.creditLimit?.toLocaleString()}</span>
-                              </div>
-                            )}
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Balance:</span>
-                              <span>${values?.balance}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Payment Status:</span>
-                              <span>{values?.paymentStatus}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Account Status:</span>
-                              <span>{values?.accountStatus}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Account Type:</span>
-                              <span>{values?.accountType}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-gray-600">Date Opened:</span>
-                              <span>{values?.dateOpened}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
+                      <AccountCard key={idx} values={values} account={account} />
                     );
                   })}
                 </div>

@@ -24,6 +24,6 @@ export function convertKeysToLowerFirst(obj: any): any {
 
 export const formatAmountWithCurrency = (value: any, format: any) => {
     if (value === null) return 'null';
-    if (format) return `$${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(value)}`;
+    if (format) return `$${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 9 }).format(value)}`;
     return value;
 };
