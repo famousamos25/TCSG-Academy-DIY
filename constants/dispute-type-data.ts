@@ -36,10 +36,11 @@ const LATE_PAYMENTS = [
         bureaus: {
             tu: "In-Dispute",
             exp: "In-Dispute",
-            eqfx: "In-Dispute"
+            eqfx: "In-Dispute",
+            cdtr: "In-Dispute"
         },
-        reason: "CDTR",
-        instruction: "Under 15 USC 1666b Timing of Payments",
+        reason: "Under 15 USC 1666b Timing of Payments",
+        instruction: "Please Update to Never Late",
         status: "Negative",
     },
     {
@@ -49,10 +50,11 @@ const LATE_PAYMENTS = [
         bureaus: {
             tu: "In-Dispute",
             exp: "In-Dispute",
-            eqfx: "In-Dispute"
+            eqfx: "In-Dispute",
+            cdtr: "In-Dispute"
         },
-        reason: "CDTR",
-        instruction: "Under 15 USC 1666b Timing of Payments",
+        reason: "Under 15 USC 1666b Timing of Payments",
+        instruction: "Please Update to Never Late",
         status: "Negative",
     }
 ]
