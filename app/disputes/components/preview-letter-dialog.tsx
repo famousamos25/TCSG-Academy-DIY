@@ -11,10 +11,9 @@ export function PreviewLetterModal({ open, onClose }: PreviewLetterModalProps) {
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl bg-[#f5f8ff] text-white">
-        <Button className="absolute top-4 right-4 text-gray-400 hover:text-white" onClick={() => onClose(false)}>
-          <X size={20} />
-        </Button>
-
+       <div className="flex items-end justify-end">
+       <X className="text-gray-600 w-6 h-6 cursor-pointer" onClick={() => onClose(false)}/>
+       </div>
         <DialogHeader className="text-left">
           <DialogTitle className="text-lg font-semibold text-green-400">Preview Letter</DialogTitle>
         </DialogHeader>

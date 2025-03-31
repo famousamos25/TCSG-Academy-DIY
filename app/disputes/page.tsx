@@ -22,10 +22,12 @@ import {
   Trash2Icon,
   Undo2
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DisputeMenus from './components/dispute-menus';
 import { PreviewLetterModal } from './components/preview-letter-dialog';
 import { UndoStatusDialog } from './components/undo-status-dialog';
+import { SendDisputeDialog } from './components/send-dispute-dialog';
+import { SendDisputesMail } from './components/send-disputes-mail';
 
 const disputesTracker = [
   {
@@ -56,6 +58,7 @@ const disputesTracker = [
 
 const tableDisputes = [
   {
+    id: 1,
     letter: "Security Freeze Attack",
     creditor: { name: "SAFERENT SOLUTIONS, LLC", role: "Data Furnisher" },
     dateSent: "2024-02-20 10:00:00",
@@ -64,6 +67,7 @@ const tableDisputes = [
     status: "Sent",
   },
   {
+    id:2,
     letter: "Security Freeze Attack",
     creditor: { name: "CHEX SYSTEMS, INC.", role: "Data Furnisher" },
     dateSent: "2024-03-15 14:30:00",
@@ -72,6 +76,7 @@ const tableDisputes = [
     status: "Unsent",
   },
   {
+    id:3,
     letter: "Credit Report Dispute",
     creditor: { name: "EQUIFAX INFORMATION SERVICES", role: "Data Furnisher" },
     dateSent: "2024-04-10 08:45:00",
@@ -80,6 +85,7 @@ const tableDisputes = [
     status: "Unsent",
   },
   {
+    id:4,
     letter: "Fraud Alert Request",
     creditor: { name: "EXPERIAN", role: "Data Furnisher" },
     dateSent: "2024-05-05 16:20:00",
@@ -88,6 +94,7 @@ const tableDisputes = [
     status: "Sent",
   },
   {
+    id:5,
     letter: "Identity Theft Dispute",
     creditor: { name: "TRANSUNION", role: "Data Furnisher" },
     dateSent: "2024-06-12 11:10:00",
@@ -102,7 +109,10 @@ export default function DisputesPage() {
   const [selected, setSelected] = useState<boolean[]>(new Array(tableDisputes.length).fill(false));
   const [allSelected, setAllSelected] = useState(false);
   const [disputes, setDisputes] = useState(tableDisputes);
+  const [filteredDisputes, setFilteredDisputes] = useState(tableDisputes)
   const [showModal, setShowModal] = useState(false);
+  const [showSendDisputeModal, setShowSendDisputeModal] = useState<boolean>(false);
+  const [showSendDisputesMail, setShowSendDisputesMail] = useState<boolean>(false);
   const [selectedDispute, setSelectedDispute] = useState<number | null>(null);
   const [showPreview, setShowPreview] = useState(false)
 
@@ -111,17 +121,28 @@ export default function DisputesPage() {
     setShowModal(true);
   };
 
-  const confirmUnsend = () => {
-    if (selectedDispute !== null) {
-      setDisputes((prevDisputes) =>
-        prevDisputes.map((dispute, i) =>
-          i === selectedDispute ? { ...dispute, status: "Unsent" } : dispute
-        )
-      );
+  const handleStatusUpdate = (status: string) =>{
+    if(selectedDispute !== null){
+          if(status == 'unsent'){
+            setFilteredDisputes((prevDisputes) =>
+              prevDisputes.map((dispute, i) =>
+                i === selectedDispute ? { ...dispute, status: "Unsent" } : dispute
+            )
+           );
+           setShowModal(!showModal)
+           setFilteredDisputes(disputes.filter(d=>d.status.toLowerCase() === status.toLowerCase()))
+          }
+          if(status == 'sent'){
+            setFilteredDisputes((prevDisputes) =>
+              prevDisputes.map((dispute, i) =>
+                i === selectedDispute ? { ...dispute, status: "sent" } : dispute
+            )
+           );
+           setFilteredDisputes(disputes.filter(d=>d.status.toLowerCase() === status.toLowerCase()))
+           setShowSendDisputeModal(!showSendDisputeModal)
+          }
     }
-    setShowModal(false);
-    setSelectedDispute(null);
-  };
+  }
 
   const handleSelectAll = () => {
     const newState = !allSelected;
@@ -141,10 +162,18 @@ export default function DisputesPage() {
     }
   };
 
-  const filteredDisputes = selectedStatus
-  ? disputes.filter(dispute => dispute.status === selectedStatus)
-  : disputes;
+  const updateSelectedStatus = (status: string) =>{
+    setSelectedStatus(status)
+    setFilteredDisputes(disputes.filter(dispute => dispute.status === status))
+  }
 
+  const openSendDisputeModal = (id:number) => {
+    setSelectedDispute(id);
+    setShowSendDisputeModal(!showSendDisputeModal)
+  }
+  useEffect(()=>{
+    setFilteredDisputes(disputes.filter(dispute => dispute.status === selectedStatus))
+  },[])
 
   return (
     <div className="container mx-auto p-6">
@@ -161,8 +190,8 @@ export default function DisputesPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               {disputesTracker.map((item, index) => (
                 <div
-                  key={index}
-                  onClick={() => setSelectedStatus(item.status)}
+                  key={index}    
+                  onClick={() => updateSelectedStatus(item.status)}
                   className={`border ${item.borderColor} p-4 rounded-lg flex flex-col cursor-pointer ${
                     selectedStatus === item.status ? "bg-gray-100 dark:bg-gray-800" : ""
                   }`}
@@ -255,14 +284,20 @@ export default function DisputesPage() {
                       </>
                     ) : (
                       <>
-                        <button className="text-green-400" title="Send">
+                        <button className="text-green-400" title="Send"
+                         onClick={()=> openSendDisputeModal(dispute.id)}
+                        >
                           <Send size={18} />
                         </button>
-                        <button className="text-green-400" title="View">
+                        <button className="text-green-400" title="View"
+                         onClick={() => setShowPreview(true)}
+                        >
                           <EyeIcon size={18} />
                         </button>
-                        <button className="text-green-400" title="Mail">
-                          <MailIcon size={18} />
+                        <button className="text-green-400" title="Mail"
+                        >
+                          <MailIcon size={18}                          
+                          onClick={() => setShowSendDisputesMail(!showSendDisputesMail)} />
                         </button>
                         <button className="text-green-400" title="Download">
                           <LucideDownload size={18} />
@@ -285,10 +320,20 @@ export default function DisputesPage() {
         <UndoStatusDialog 
           open={showModal} 
           onOpenChange={setShowModal} 
-          onConfirm={confirmUnsend} 
+          onConfirm={() => handleStatusUpdate('unsent')} 
       />
             <PreviewLetterModal open={showPreview} onClose={setShowPreview} />
       </div>
+      { showSendDisputeModal && <SendDisputeDialog 
+      isOpen = {showSendDisputeModal} 
+      handleClose = {() => setShowSendDisputeModal(!showSendDisputeModal)} 
+      handleSave = {() => handleStatusUpdate('sent')}
+      />}
+      
+      { showSendDisputesMail && <SendDisputesMail 
+      isOpen = {showSendDisputesMail} 
+      handleClose = {() => setShowSendDisputesMail(!showSendDisputesMail)} 
+      />}
     </div>
   );
 }
