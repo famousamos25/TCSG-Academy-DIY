@@ -9,11 +9,14 @@ import { X } from "lucide-react"
 import { DerogatoryLetter } from "./derogatory-letter"
 import { MailServiceOptionsCard } from "./mail-service-options-card"
 import { PriceCalculatorCard } from "./price-calculator-card"
+import { useState } from "react"
+import { TopUpDialog } from "./top-up-dialog"
 interface SendDisputesMailProps {
   isOpen: boolean
   handleClose: () => void;
 }
 export function SendDisputesMail({isOpen, handleClose} : SendDisputesMailProps) {
+  const [show,setShow] = useState<boolean>(false);
   return (
     <Dialog open= {isOpen}>
       <DialogContent className="flex flex-col items-start justify-start min-w-[95vw] h-[90vh] px-6 py-0">
@@ -34,11 +37,15 @@ export function SendDisputesMail({isOpen, handleClose} : SendDisputesMailProps) 
           </div>
           <div className="flex items-start px-3 mt-4"> 
            <button className="bg-green-500 text-white text-xs border-[1px] border-green-500 rounded-sm px-3 py-1 cursor-pointer mr-2"> Cancel </button>
-           <button className="text-green-500 text-xs border-[1px] border-green-500 rounded-sm px-3 py-1 cursor-pointer mx-2"> Topup</button>
+           <button className="text-green-500 text-xs border-[1px] border-green-500 rounded-sm px-3 py-1 cursor-pointer mx-2" onClick={()=> setShow(!show)}> Topup</button>
            <button className="bg-green-500 text-white text-xs border-[1px] border-green-500 rounded-sm px-3 py-1 cursor-pointer mx-2"> Pay & Mail </button>
            </div>
           </div>
         </div>
+        {
+          show && 
+          <TopUpDialog  isOpen={show} handleClose={()=> setShow(!show)}/>
+        }
       </DialogContent>
     </Dialog>
   )
