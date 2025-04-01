@@ -1,6 +1,9 @@
 "use client"
 
-export function TopUpForm() {
+interface TopUpFormProps {
+    hanldeClose: () => void;
+}
+export function TopUpForm({hanldeClose}: TopUpFormProps) {
     return (
         <div>
             <div className="flex flex-col px-2">
@@ -32,8 +35,8 @@ export function TopUpForm() {
                 <p className="text-sm">I have read and agreed with the terms of <span className="text-green-500">service and privacy policy</span></p>
             </div>
             <div className="flex items-center justify-center px-3 my-4">
-                <button className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 rounded-sm px-3 py-1 cursor-pointer mr-2"> Top up </button>
-                <button className="bg-muted rounded-sm px-3 py-1 cursor-pointer mx-2"> Cancel</button>
+                <button className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90 rounded-sm px-3 py-1 cursor-pointer mr-2" onClick={hanldeClose}> Top up </button>
+                <button className="bg-muted rounded-sm px-3 py-1 cursor-pointer mx-2" onClick={hanldeClose}> Cancel</button>
             </div>
         </div>
     )

@@ -28,6 +28,7 @@ import { PreviewLetterModal } from './components/preview-letter-dialog';
 import { UndoStatusDialog } from './components/undo-status-dialog';
 import { SendDisputeDialog } from './components/send-dispute-dialog';
 import { SendDisputesMail } from './components/send-disputes-mail';
+import { DeleteDialog } from './components/delete-dispute-dialog';
 
 const disputesTracker = [
   {
@@ -113,34 +114,36 @@ export default function DisputesPage() {
   const [showModal, setShowModal] = useState(false);
   const [showSendDisputeModal, setShowSendDisputeModal] = useState<boolean>(false);
   const [showSendDisputesMail, setShowSendDisputesMail] = useState<boolean>(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   const [selectedDispute, setSelectedDispute] = useState<number | null>(null);
   const [showPreview, setShowPreview] = useState(false)
+  const [creditorName, setCreditorName] = useState<string>('')
 
-  const openModal = (index: number) => {
-    setSelectedDispute(index);
+  const openModal = (id: number) => {
+    setSelectedDispute(id);
     setShowModal(true);
   };
 
   const handleStatusUpdate = (status: string) =>{
     if(selectedDispute !== null){
-          if(status == 'unsent'){
-            setFilteredDisputes((prevDisputes) =>
-              prevDisputes.map((dispute, i) =>
+          if (status === "unsent") {
+            setFilteredDisputes((prevDisputes) => {
+              const updatedDisputes = prevDisputes.map((dispute, i) =>
                 i === selectedDispute ? { ...dispute, status: "Unsent" } : dispute
-            )
-           );
-           setShowModal(!showModal)
-           setFilteredDisputes(disputes.filter(d=>d.status.toLowerCase() === status.toLowerCase()))
+              );
+              setShowModal(!showModal)
+              return updatedDisputes.filter((d) => d.status !== "Unsent" && d.id === selectedDispute);
+            });
           }
           if(status == 'sent'){
-            setFilteredDisputes((prevDisputes) =>
-              prevDisputes.map((dispute, i) =>
-                i === selectedDispute ? { ...dispute, status: "sent" } : dispute
-            )
-           );
-           setFilteredDisputes(disputes.filter(d=>d.status.toLowerCase() === status.toLowerCase()))
-           setShowSendDisputeModal(!showSendDisputeModal)
-          }
+          setFilteredDisputes((prevDisputes) => {
+            const updatedDisputes = prevDisputes.map((dispute, i) =>
+              i === selectedDispute ? { ...dispute, status: "Sent" } : dispute
+            );
+            setShowSendDisputeModal(!showSendDisputeModal)
+            return updatedDisputes.filter((d) => d.status !== "Sent" && d.id === selectedDispute);
+          });
+        }
     }
   }
 
@@ -171,6 +174,12 @@ export default function DisputesPage() {
     setSelectedDispute(id);
     setShowSendDisputeModal(!showSendDisputeModal)
   }
+
+  const handleDelete = (name: string) => {
+    setCreditorName(name)
+    setShowDeleteDialog(!showDeleteDialog)
+  }
+  
   useEffect(()=>{
     setFilteredDisputes(disputes.filter(dispute => dispute.status === selectedStatus))
   },[])
@@ -267,7 +276,7 @@ export default function DisputesPage() {
                         <button
                           className="text-green-400"
                           title="Mark Un sent"
-                          onClick={() => openModal(index)}
+                          onClick={() => openModal(dispute.id)}
                         >
                           <Undo2 size={18} />
                         </button>
@@ -279,7 +288,7 @@ export default function DisputesPage() {
                           <EyeIcon size={18} />
                         </button>
                         <button className="text-red-400" title="Delete Dispute">
-                          <Trash2Icon size={18} />
+                          <Trash2Icon size={18} onClick={()=> handleDelete(dispute.creditor.name)}/>
                         </button>
                       </>
                     ) : (
@@ -306,7 +315,7 @@ export default function DisputesPage() {
                           <PrinterIcon size={18} />
                         </button>
                         <button className="text-red-400" title="Delete">
-                          <Trash2Icon size={18} />
+                          <Trash2Icon size={18} onClick={()=> handleDelete(dispute.creditor.name)} />
                         </button>
                       </>
                     )}
@@ -333,6 +342,11 @@ export default function DisputesPage() {
       { showSendDisputesMail && <SendDisputesMail 
       isOpen = {showSendDisputesMail} 
       handleClose = {() => setShowSendDisputesMail(!showSendDisputesMail)} 
+      />}
+         { showDeleteDialog && <DeleteDialog 
+      isOpen = {showDeleteDialog} 
+      creditorName = {creditorName}
+      handleClose = {() => setShowDeleteDialog(!showDeleteDialog)} 
       />}
     </div>
   );

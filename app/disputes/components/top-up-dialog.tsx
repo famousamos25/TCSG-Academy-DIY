@@ -34,7 +34,7 @@ export function TopUpDialog({isOpen, handleClose} : SendDisputesMailProps) {
              }
              </div>
             <div>
-              <TopUpForm />
+              <TopUpForm hanldeClose={handleClose} />
             </div>
           </div>
           <div className="w-1/3 flex flex-col p-2">
