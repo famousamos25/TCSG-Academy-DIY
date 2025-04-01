@@ -90,7 +90,7 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
                                                 return displayValue || "-";
                                             });
                                             return (
-                                                <TableRow key={index} className="border-b ">
+                                                <TableRow key={index} className="border-none even:bg-gray-100 ">
                                                     <TableCell className="font-medium pl-6">{item.label}</TableCell>
                                                     <TableCell className="text-center_">
                                                         {keyValues[0]}
@@ -133,7 +133,7 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
                                                 return displayValue || "-";
                                             });
                                             return (
-                                                <TableRow key={index} className="border-b ">
+                                                <TableRow key={index} className="border-none even:bg-gray-100 ">
                                                     <TableCell className="font-medium pl-6">{item.label}</TableCell>
                                                     <TableCell className="text-center_">
                                                         {keyValues[0]}
@@ -152,7 +152,7 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
                             </Table>
                         </div>
                         <div className="mt-5">
-
+                            <h3 className="text-lg font-bold">Creditor Information</h3>
                             <Separator className="my-2" />
                             <Table>
                                 <TableHeader>
@@ -171,7 +171,7 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
                                                 return value || "-";
                                             });
                                             return (
-                                                <TableRow key={index} className="border-b ">
+                                                <TableRow key={index} className="border-none even:bg-gray-100">
                                                     <TableCell className="font-medium pl-6">{item.label}</TableCell>
                                                     <TableCell className="text-center_">
                                                         {keyValues[0]}

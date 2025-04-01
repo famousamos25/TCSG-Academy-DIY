@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 
 const CreditSummaryDashboard = ({ creditData }: any) => {
 
@@ -22,7 +22,7 @@ const CreditSummaryDashboard = ({ creditData }: any) => {
 	];
 
 	const formatValue = (value: any, format: any) => {
-		if (value === null) return 'null';
+		if (value === null || !value) return '-';
 		if (format) return `$${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(value)}`;
 		return value;
 	};

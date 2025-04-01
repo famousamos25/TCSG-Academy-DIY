@@ -213,7 +213,7 @@ export default function CreditReportPage() {
       <Card className="mb-6 border-none">
         <Tabs value={activeTab} className='border-b-none' onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start">
-            <TabsTrigger value="accounts" className="">Accounts</TabsTrigger>
+            <TabsTrigger value="accounts" className="">Accounts ({ creditReport?.data?.accounts?.length || 0 })</TabsTrigger>
             <TabsTrigger value="derogatory" className="">Derogatory</TabsTrigger>
             <TabsTrigger value="inquiries" className="">Inquiries</TabsTrigger>
             <TabsTrigger value="publicRecords" className="">Public Records</TabsTrigger>
