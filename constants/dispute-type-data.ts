@@ -67,10 +67,11 @@ const ACCOUNTS = [
         bureaus: {
             tu: 'Not Reported',
             exp: 'In-Dispute',
-            eqfx: 'Not Reported'
+            eqfx: 'Not Reported',
+            cdtr: "In-Dispute"
         },
-        reason: 'CDTR',
-        instruction: 'Please delete due to a violation of',
+        reason: 'Under 15 U.S. Code § 1681 (a)(4) Consumer Right to Privacy',
+        instruction: 'This is a violation of my consumer rights, please delete immediately',
         status: 'Positive'
     },
     {
@@ -80,10 +81,11 @@ const ACCOUNTS = [
         bureaus: {
             tu: 'In-Dispute',
             exp: 'In-Dispute',
-            eqfx: 'In-Dispute'
+            eqfx: 'In-Dispute',
+            cdtr: "In-Dispute"
         },
-        reason: 'CDTR',
-        instruction: 'Please delete due to a violation of',
+        reason: 'Under 15 USC 1692g. Validation of debts',
+        instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
         status: 'Negative'
     },
     {
@@ -93,10 +95,11 @@ const ACCOUNTS = [
         bureaus: {
             tu: 'Not Reported',
             exp: 'In-Dispute',
-            eqfx: 'In-Dispute'
+            eqfx: 'In-Dispute',
+            cdtr: "In-Dispute"
         },
-        reason: 'CDTR',
-        instruction: 'Please delete due to a violation of',
+        reason: 'Under 15 USC 1692g. Validation of debts',
+        instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
         status: 'Negative'
     },
     {
@@ -106,10 +109,11 @@ const ACCOUNTS = [
         bureaus: {
             tu: 'Not Reported',
             exp: 'In-Dispute',
-            eqfx: 'In-Dispute'
+            eqfx: 'In-Dispute',
+            cdtr: "In-Dispute"
         },
-        reason: 'CDTR',
-        instruction: 'Please delete due to a violation of',
+        reason: 'Under 15 USC 1692g. Validation of debts',
+        instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
         status: 'Negative'
     },
     {
@@ -119,10 +123,11 @@ const ACCOUNTS = [
         bureaus: {
             tu: 'Not Reported',
             exp: 'Not Reported',
-            eqfx: 'In-Dispute'
+            eqfx: 'In-Dispute',
+            cdtr: "In-Dispute"
         },
-        reason: 'CDTR Not Found',
-        instruction: 'Please delete due to a violation of',
+        reason: 'Under 15 USC 1692g. Validation of debts',
+        instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
         status: 'Negative'
     }
 ];
@@ -131,7 +136,7 @@ const INQUIRIES_DATA = [
     {
         creditor: "CBNA/THD",
         bureau: "EQFX",
-        cdtr: "Not Found",
+        cdtr: "CDTR",
         date: "Nov 10, 2023",
         reason: "Under 15 US Code 1681b permissible purpose...",
         instruction: "Please Delete Immediately",
