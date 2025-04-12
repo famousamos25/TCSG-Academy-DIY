@@ -43,8 +43,8 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             instruction?: string;
             cdtr?: boolean;
         };
-    }>({})
-    
+    }>({});
+
 
     const handleDisputeTypeSelect = (type: string) => {
         setSelectedDisputeType(type);
@@ -68,11 +68,11 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
     const handleSelectAll = () => {
         setSelectedAccounts(LATE_PAYMENTS.map(acc => acc.accountId)); // Select all accounts
     };
-    
+
     const handleDeselectAll = () => {
         setSelectedAccounts([]); // Deselect all accounts
     };
-    
+
     const filteredInquiries =
         selectedFilter === "All"
             ? inquiriesData
@@ -84,7 +84,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
 
         return (
             <div className="space-y-2">
-                <div className="grid grid-cols-3 gap-2">
+                <div className="flex items-start flex-nowrap gap-2">
                     <div>
                         <div className="text-xs text-gray-500">TU</div>
                         <Checkbox
@@ -112,40 +112,40 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                             className={account.bureaus.eqfx === 'In-Dispute' ? 'bg-blue-100' : ''}
                         />
                     </div>
-                </div>
-                <div>
-                    <div className="text-xs text-gray-500">CDTR</div>
-                    <Checkbox
-                        checked={customSelection.cdtr}
-                        onCheckedChange={() => handleBureauToggle(account.accountId, 'cdtr')}
-                    />
+                    <div>
+                        <div className="text-xs text-gray-500">CDTR</div>
+                        <Checkbox
+                            checked={customSelection.cdtr}
+                            onCheckedChange={() => handleBureauToggle(account.accountId, 'cdtr')}
+                        />
+                    </div>
                 </div>
             </div>
         );
     };
     const handleBureauToggle = (accountId: string, option: keyof BureauSelection | 'cdtr') => {
         if (option === 'cdtr') {
-          setCustomSelections(prev => ({
-            ...prev,
-            [accountId]: {
-              ...prev[accountId],
-              cdtr: !prev[accountId]?.cdtr
-            }
-          }));
+            setCustomSelections(prev => ({
+                ...prev,
+                [accountId]: {
+                    ...prev[accountId],
+                    cdtr: !prev[accountId]?.cdtr
+                }
+            }));
         } else {
-          setBureauSelections(prev => ({
-            ...prev,
-            [accountId]: {
-              ...prev[accountId] || { tu: false, exp: false, eqfx: false },
-              [option]: !prev[accountId]?.[option]
-            }
-          }));
+            setBureauSelections(prev => ({
+                ...prev,
+                [accountId]: {
+                    ...prev[accountId] || { tu: false, exp: false, eqfx: false },
+                    [option]: !prev[accountId]?.[option]
+                }
+            }));
         }
-      };
+    };
 
     const filteredAccounts = (dataSource: any) => {
         return dataSource.filter((account: any) => {
-            console.log("account",account);
+            console.log("account", account);
             return (
                 account.furnisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 account.accountId.toLowerCase().includes(searchTerm.toLowerCase())
@@ -267,7 +267,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                                 instructions={AVAILABLE_INSTRUCTIONS}
                                 bureauSelections={bureauSelections}
                             />
-                            )}
+                        )}
                         <DisputeTableWrapper
                             {...props}
                             accounts={LATE_PAYMENTS}

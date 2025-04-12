@@ -13,7 +13,7 @@ export function ConsumerLawDisputesDialog({ open, onOpenChange, hideDisputeActio
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className=" w-full max-w-[1200px] xl:max-w-[1400px] max-h-[90vh] p-0 overflow-hidden">
+      <DialogContent className=" w-full max-w-[95vw] max-h-[90vh] p-0 overflow-hidden">
         <DialogHeader className="p-6 pb-4 border-b">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-semibold">Create New Dispute(s)</DialogTitle>

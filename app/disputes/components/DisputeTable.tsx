@@ -55,7 +55,7 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
         setModalOpen(false);
     };
     return (
-        <div className="border rounded-md overflow-hidden shadow-sm mt-4">
+        <div className="border rounded-md overflow-hidden shadow-sm mt-4 ">
             <Table>
                 <TableHeader className="bg-gray-50">
                     <TableRow>
@@ -91,7 +91,7 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                             <TableCell>{account.accountType}</TableCell>
                             <TableCell>{renderBureauCheckboxes(account)}</TableCell>
                             <TableCell>
-                                <div className="flex">
+                                <div className="flex flex-nowrap">
                                     {customSelections[account.accountId]?.reason || account.reason}
                                     <SquarePen
                                         className="w-4 h-4 text-green-500 cursor-pointer ml-2"
@@ -101,7 +101,7 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                             </TableCell>
 
                             <TableCell>
-                                <div className="flex">
+                                <div className="flex flex-nowrap whitespace-nowrap">
                                     {account.instruction}
                                     <SquarePen
                                         className="w-4 h-4 text-green-500 cursor-pointer ml-2"
