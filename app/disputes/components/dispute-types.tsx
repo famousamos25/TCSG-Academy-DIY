@@ -43,7 +43,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             instruction?: string;
             cdtr?: boolean;
         };
-    }>({});
+    }>({})
 
 
     const handleDisputeTypeSelect = (type: string) => {
@@ -66,12 +66,28 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
     };
 
     const handleSelectAll = () => {
-        setSelectedAccounts(LATE_PAYMENTS.map(acc => acc.accountId)); // Select all accounts
+        setSelectedAccounts(LATE_PAYMENTS.map(acc => acc.accountId));
     };
 
     const handleDeselectAll = () => {
-        setSelectedAccounts([]); // Deselect all accounts
+        setSelectedAccounts([]);
     };
+
+
+    const [allSelected, setAllSelected] = useState(false);
+
+    const toggleSelectAll = () => {
+        setAllSelected((prev) => {
+            const newState = !prev;
+            if (newState) {
+                handleSelectAll();
+            } else {
+                handleDeselectAll();
+            }
+            return newState;
+        });
+    };
+
 
     const filteredInquiries =
         selectedFilter === "All"
@@ -234,6 +250,13 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                             reasons={AVAILABLE_REASONS}
                             instructions={AVAILABLE_INSTRUCTIONS}
                             bureauSelections={bureauSelections}
+                            allSelected={allSelected}
+                            toggleSelectAll={toggleSelectAll}
+                            selectedAccounts={selectedAccounts}
+                            selectedReason={selectedReason}
+                            setSelectedReason={setSelectedReason}
+                            selectedInstruction={selectedInstruction}
+                            setSelectedInstruction={setSelectedInstruction}
                         />
                     )}
                     <DisputeTableWrapper
@@ -245,6 +268,8 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                         handleSelectAccount={handleSelectAccount}
                         renderBureauCheckboxes={renderBureauCheckboxes as any}
                         customSelections={customSelections}
+                        allSelected={allSelected}
+                        toggleSelectAll={toggleSelectAll}
                     />
                     <DisputeFooter
                         onClose={() => onOpenChange(false)}
@@ -254,33 +279,41 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                 </>
             )}
 
-            {
-                selectedDisputeType === "Late Payments" && (
-                    <>
-                        {!hideDisputeActions && (
-                            <DisputeActions
-                                disputeRound={disputeRound}
-                                setDisputeRound={setDisputeRound}
-                                searchTerm={searchTerm}
-                                setSearchTerm={setSearchTerm}
-                                reasons={AVAILABLE_REASONS}
-                                instructions={AVAILABLE_INSTRUCTIONS}
-                                bureauSelections={bureauSelections}
-                            />
-                        )}
-                        <DisputeTableWrapper
-                            {...props}
-                            accounts={LATE_PAYMENTS}
-                            data={filteredAccounts}
+            {selectedDisputeType === "Late Payments" && (
+                <>
+                    {!hideDisputeActions && (
+                        <DisputeActions
+                            disputeRound={disputeRound}
+                            setDisputeRound={setDisputeRound}
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            reasons={AVAILABLE_REASONS}
+                            instructions={AVAILABLE_INSTRUCTIONS}
+                            bureauSelections={bureauSelections}
+                            allSelected={allSelected}
+                            toggleSelectAll={toggleSelectAll}
                             selectedAccounts={selectedAccounts}
-                            handleSelectAll={handleSelectAll}
-                            handleSelectAccount={handleSelectAccount}
-                            renderBureauCheckboxes={renderBureauCheckboxes as any}
-                            customSelections={customSelections}
+                            selectedReason={selectedReason}
+                            setSelectedReason={setSelectedReason}
+                            selectedInstruction={selectedInstruction}
+                            setSelectedInstruction={setSelectedInstruction}
                         />
-                    </>
-                )
-            }
+                    )}
+                    <DisputeTableWrapper
+                        {...props}
+                        accounts={LATE_PAYMENTS}
+                        data={filteredAccounts}
+                        selectedAccounts={selectedAccounts}
+                        handleSelectAll={handleSelectAll}
+                        handleSelectAccount={handleSelectAccount}
+                        renderBureauCheckboxes={renderBureauCheckboxes as any}
+                        customSelections={customSelections}
+                        allSelected={allSelected}
+                        toggleSelectAll={toggleSelectAll}
+                    />
+                </>
+            )}
+
             {selectedDisputeType === "Public Records" && <PublicRecordsNotice />}
 
             {selectedDisputeType === "All Accounts" && (
@@ -310,7 +343,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                             selectedAccounts={selectedAccounts}
                             handleSelectAll={handleSelectAll}
                             handleSelectAccount={handleSelectAccount}
-                            renderBureauCheckboxes={renderBureauCheckboxes}
+                            renderBureauCheckboxes={renderBureauCheckboxes as any}
                             customSelections={customSelections}
                         />
                     </div>
