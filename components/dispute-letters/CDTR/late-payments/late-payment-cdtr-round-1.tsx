@@ -7,9 +7,7 @@ interface Props {
     clientCity: string,
     clientState: string,
     clientZIPCode: string,
-    ssn: string;
-    dob: string;
-    creditBureau: string;
+    creditorName: string;
     creditorAddress: string;
     creditorCity: string;
     creditorState: string;
@@ -32,9 +30,7 @@ const LatePaymentCDTRRound1 = (info: Props) => {
         clientCity,
         clientState,
         clientZIPCode,
-        ssn,
-        dob,
-        creditBureau,
+        creditorName,
         creditorAddress,
         creditorCity,
         creditorState,
@@ -62,7 +58,7 @@ const LatePaymentCDTRRound1 = (info: Props) => {
 
                 {/* Credit Bureau Information */}
                 <div className="space-y-0.5">
-                    <p className="font-medium">{creditBureau}</p>
+                    <p className="font-medium">{creditorName}</p>
                     <p>{creditorAddress}</p>
                     <p>{`${creditorCity}, ${creditorState}, ${creditorZIPCode}`}</p>
                 </div>
@@ -71,7 +67,7 @@ const LatePaymentCDTRRound1 = (info: Props) => {
                 </p>
 
                 {/* Greeting */}
-                <p>Dear {creditBureau},</p>
+                <p>Dear {creditorName},</p>
 
                 {/* Body */}
                 <p className="py-1">
