@@ -17,13 +17,7 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account, creditors 
     if (!info) return;
     const values: any = info;
 
-    console.log("account", account);
-
-
     const accountsInfo = account;
-
-    console.log("accountsInfo", accountsInfo);
-
     const accountDetailMappings = [
         { key: "creditorName", label: "Account Name", type: "" },
         { key: "accountNumber", label: "Account Number", type: "" },
@@ -38,7 +32,7 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account, creditors 
 
     const balanceMappings = [
         { key: "balance", label: "Balance", type: "amount" },
-        { key: "creditLimit", label: "Credit Limit", type: "" },
+        { key: "creditLimit", label: "Credit Limit", type: "amount" },
         { key: "highBalance", label: "Highest Credit", type: "amount" },
         { key: "amountPastDue", label: "Past Due", type: "amount" },
         { key: "monthlyPayment", label: "Monthly Payment", type: "" },
@@ -129,7 +123,7 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account, creditors 
                                                 const isDate = item.type === "date";
                                                 const isAmount = item.type === "amount";
                                                 const formattedValue = (isDate && value) ? new Date(value).toLocaleDateString() : value;
-                                                const formattedAmount = isAmount ? formatAmountWithCurrency(value, "currency") : value;
+                                                const formattedAmount = (isAmount && value && value !== "0") ? formatAmountWithCurrency(value, "currency") : "--";
                                                 const displayValue = isDate ? formattedValue : isAmount ? formattedAmount : value;
                                                 return displayValue || "-";
                                             });

@@ -1,32 +1,32 @@
 "use client";
 
-import React, { useState } from "react";
+import { importMyFreeScoreNow } from '@/app/creditreport/api/myfreescorenow-import';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
+import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
+import { encrypt } from "@/lib/encryption";
+import { auth, db } from "@/lib/firebase";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import {
-  RefreshCw,
+  ArrowLeft,
   CheckCircle2,
   ExternalLink,
   Lock,
+  RefreshCw,
   User,
-  ArrowLeft,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
+import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "@/lib/firebase";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { encrypt } from "@/lib/encryption";
-import { importMyFreeScoreNow } from '@/app/creditreport/api/myfreescorenow-import';
 
 interface CreditReportImportDialogProps {
   open: boolean;
@@ -124,8 +124,6 @@ const CreditReportImportDialog = ({
         interval = setInterval(() => {
           setProgress((prev) => (prev >= 90 ? prev : prev + 10));
         }, 500);
-
-        console.log("Importing credit report...", credentials);
 
         
         const result = await importMyFreeScoreNow(user.uid, credentials);

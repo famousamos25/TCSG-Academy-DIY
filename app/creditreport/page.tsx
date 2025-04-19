@@ -34,7 +34,7 @@ export default function CreditReportPage() {
   const [loading, setLoading] = useState(true);
   const [user] = useAuthState(auth);
   const { toast } = useToast();
-  const [creditReport, setCreditReport] = useState<any>(null);  
+  const [creditReport, setCreditReport] = useState<any>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -115,7 +115,13 @@ export default function CreditReportPage() {
     );
   }
 
-  console.log('creditReport:', creditReport);
+  const derogatoryAccounts = creditReport?.data?.accounts.filter((account: any) => {
+    if (account?.some((acc: any) => acc?.paymentStatus === 'Collection/Chargeoff')) return true;
+    if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("collection"))) return true;
+
+    return false;
+  });
+  const derogatoryCount = derogatoryAccounts?.length || 0;
 
   return (
     <div className="container mx-auto p-6">
@@ -213,8 +219,8 @@ export default function CreditReportPage() {
       <Card className="mb-6 border-none">
         <Tabs value={activeTab} className='border-b-none' onValueChange={setActiveTab}>
           <TabsList className="w-full justify-start">
-            <TabsTrigger value="accounts" className="">Accounts ({ creditReport?.data?.accounts?.length || 0 })</TabsTrigger>
-            <TabsTrigger value="derogatory" className="">Derogatory</TabsTrigger>
+            <TabsTrigger value="accounts" className="">Accounts ({creditReport?.data?.accounts?.length || 0})</TabsTrigger>
+            <TabsTrigger value="derogatory" className="">Derogatory ({derogatoryCount})</TabsTrigger>
             <TabsTrigger value="inquiries" className="">Inquiries</TabsTrigger>
             <TabsTrigger value="publicRecords" className="">Public Records</TabsTrigger>
             <TabsTrigger value="latePayments" className="">Late Payments</TabsTrigger>
@@ -225,7 +231,37 @@ export default function CreditReportPage() {
               <>
                 <div className="space-y-6_ grid grid-cols-3 gap-4">
                   {creditReport.data.accounts.map((account: any, idx: number) => {
-                    const info = account[0];                    
+                    const info = account[0];
+                    if (!info) return;
+                    return (
+                      <AccountCard key={idx} values={info} account={account} creditors={creditReport?.data?.creditors ?? []} />
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <CreditCard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Accounts Found</h3>
+                <p className="text-gray-600 mb-6">
+                  Import your credit report to view your account information
+                </p>
+                <Button
+                  className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
+                  onClick={() => setImportDialogOpen(true)}
+                >
+                  <Upload className="h-4 w-4 mr-2" />
+                  Import Credit Report
+                </Button>
+              </div>
+            )}
+          </TabsContent>
+          <TabsContent value="derogatory" className="p-6">
+            {hasImportedReport ? (
+              <>
+                <div className="space-y-6_ grid grid-cols-3 gap-4">
+                  {derogatoryAccounts.map((account: any, idx: number) => {
+                    const info = account[0];
                     if (!info) return;
                     return (
                       <AccountCard key={idx} values={info} account={account} creditors={creditReport?.data?.creditors ?? []} />
