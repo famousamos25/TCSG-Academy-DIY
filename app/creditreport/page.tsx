@@ -13,7 +13,6 @@ import { auth, db } from '@/lib/firebase';
 import { convertKeysToLowerFirst } from '@/lib/utils';
 import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
 import {
-  AlertCircle,
   CreditCard,
   Download,
   Info,
@@ -26,6 +25,7 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import AccountCard from './components/account-card';
 import CreditSummaryDashboard from './components/credit-summary';
+import InquiryCard from './components/inquiry-card';
 import PersonalInformation from './components/personal-information';
 
 export default function CreditReportPage() {
@@ -118,10 +118,17 @@ export default function CreditReportPage() {
   const derogatoryAccounts = creditReport?.data?.accounts.filter((account: any) => {
     if (account?.some((acc: any) => acc?.paymentStatus === 'Collection/Chargeoff')) return true;
     if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("collection"))) return true;
+    if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("chargeoff"))) return true;
 
     return false;
   });
   const derogatoryCount = derogatoryAccounts?.length || 0;
+
+  const latePaymentAccounts = creditReport?.data?.accounts.filter((account: any) => {
+    if (account?.some((acc: any) => acc?.paymentStatus?.toLowerCase()?.includes("late") && acc?.accountStatus?.toLowerCase() !== "derogatory")) return true;
+    return false;
+  });
+  const latePaymentCount = latePaymentAccounts?.length || 0;
 
   return (
     <div className="container mx-auto p-6">
@@ -222,8 +229,8 @@ export default function CreditReportPage() {
             <TabsTrigger value="accounts" className="">Accounts ({creditReport?.data?.accounts?.length || 0})</TabsTrigger>
             <TabsTrigger value="derogatory" className="">Derogatory ({derogatoryCount})</TabsTrigger>
             <TabsTrigger value="inquiries" className="">Inquiries</TabsTrigger>
-            <TabsTrigger value="publicRecords" className="">Public Records</TabsTrigger>
-            <TabsTrigger value="latePayments" className="">Late Payments</TabsTrigger>
+            <TabsTrigger value="publicRecords" className="">Public Records ({creditReport?.data?.publicRecords?.length ?? 0})</TabsTrigger>
+            <TabsTrigger value="latePayments" className="">Late Payments ({latePaymentCount})</TabsTrigger>
           </TabsList>
 
           <TabsContent value="accounts" className="p-6">
@@ -256,6 +263,7 @@ export default function CreditReportPage() {
               </div>
             )}
           </TabsContent>
+
           <TabsContent value="derogatory" className="p-6">
             {hasImportedReport ? (
               <>
@@ -272,36 +280,59 @@ export default function CreditReportPage() {
             ) : (
               <div className="text-center py-12">
                 <CreditCard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No Accounts Found</h3>
-                <p className="text-gray-600 mb-6">
-                  Import your credit report to view your account information
-                </p>
-                <Button
-                  className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                  onClick={() => setImportDialogOpen(true)}
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  Import Credit Report
-                </Button>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Derogatory Accounts Found</h3>
+              </div>
+            )}
+          </TabsContent>
+         
+          <TabsContent value="latePayments" className="p-6">
+            {hasImportedReport ? (
+              <>
+                <div className="space-y-6_ grid grid-cols-3 gap-4">
+                  {latePaymentAccounts.map((account: any, idx: number) => {
+                    const info = account[0];
+                    if (!info) return;
+                    return (
+                      <AccountCard key={idx} values={info} account={account} creditors={creditReport?.data?.creditors ?? []} />
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <CreditCard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Late payment Accounts Found</h3>
               </div>
             )}
           </TabsContent>
 
           <TabsContent value="inquiries" className="p-6">
-            <div className="text-center py-12">
-              <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Inquiries Found</h3>
-              <p className="text-gray-600 mb-6">
-                Import your credit report to view your credit inquiries
-              </p>
-              <Button
-                className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                onClick={() => setImportDialogOpen(true)}
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                Import Credit Report
-              </Button>
-            </div>
+            {
+              creditReport?.data?.inquiries?.length > 0 ? (
+                <div className="space-y-6_ grid grid-cols-3 gap-4">
+                  {creditReport.data.inquiries.map((inquiry: any, idx: number) => {
+                    return (
+                      <InquiryCard key={idx} inquiry={inquiry} creditors={creditReport?.data?.creditors ?? []} />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <CreditCard className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No Inquiries Found</h3>
+                  <p className="text-gray-600 mb-6">
+                    Import your credit report to view your inquiries
+                  </p>
+                  <Button
+                    className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
+                    onClick={() => setImportDialogOpen(true)}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Import Credit Report
+                  </Button>
+                </div>
+              )
+            }
           </TabsContent>
 
           <TabsContent value="personalInfo" className="p-6">
@@ -318,6 +349,14 @@ export default function CreditReportPage() {
                 <Upload className="h-4 w-4 mr-2" />
                 Import Credit Report
               </Button>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="publicRecords" className="p-6">
+            <div className="text-center py-12">
+              <p>
+                You Don&apos;t Have Any Public Records.
+              </p>
             </div>
           </TabsContent>
         </Tabs>

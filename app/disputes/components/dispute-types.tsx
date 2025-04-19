@@ -161,7 +161,6 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
 
     const filteredAccounts = (dataSource: any) => {
         return dataSource.filter((account: any) => {
-            console.log("account", account);
             return (
                 account.furnisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 account.accountId.toLowerCase().includes(searchTerm.toLowerCase())

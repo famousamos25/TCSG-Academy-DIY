@@ -13,3 +13,12 @@ export interface Address {
   unparsedStreet: string;
   postalCode: string;
 }
+
+export interface Inquiry {
+  bureau: string;
+  inquiryDate: string;
+  inquiryType: string;
+  subscriberNumber: string;
+  subscriberName: string;
+  industryCode: string;
+}
