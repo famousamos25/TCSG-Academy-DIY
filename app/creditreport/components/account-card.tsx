@@ -4,15 +4,17 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Creditor } from '@/types/credit-report';
 import { useState } from 'react';
 import { AccountDetailsDialog } from './account-details-dialog';
 
 interface Props { 
 	values: any;
 	account: any;
+	creditors: Creditor[]
 }
 
-const AccountCard = ({ values, account }: Props) => {
+const AccountCard = ({ values, account, creditors,  }: Props) => {
 	const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
 
 	return (
@@ -89,6 +91,7 @@ const AccountCard = ({ values, account }: Props) => {
 						isOpen={isDetailDialogOpen}
 						onOpenChange={() => setIsDetailDialogOpen(false)}
 						account={account}
+						creditors={creditors}
 					/>
 				)
 			}

@@ -34,7 +34,7 @@ export default function CreditReportPage() {
   const [loading, setLoading] = useState(true);
   const [user] = useAuthState(auth);
   const { toast } = useToast();
-  const [creditReport, setCreditReport] = useState<any>(null);
+  const [creditReport, setCreditReport] = useState<any>(null);  
 
   useEffect(() => {
     if (!user) return;
@@ -225,11 +225,10 @@ export default function CreditReportPage() {
               <>
                 <div className="space-y-6_ grid grid-cols-3 gap-4">
                   {creditReport.data.accounts.map((account: any, idx: number) => {
-                    const info = account[0];
+                    const info = account[0];                    
                     if (!info) return;
-                    const values: any = Object.values(info)[0];
                     return (
-                      <AccountCard key={idx} values={values} account={account} />
+                      <AccountCard key={idx} values={info} account={account} creditors={creditReport?.data?.creditors ?? []} />
                     );
                   })}
                 </div>

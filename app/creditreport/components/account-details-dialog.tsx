@@ -3,26 +3,24 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatAmountWithCurrency } from '@/lib/utils';
+import { Creditor } from '@/types/credit-report';
 import { X } from 'lucide-react';
 import PaymentHistory from './payment-history';
 interface AccountDetailsDialogProps {
     isOpen: boolean;
     onOpenChange: () => void;
     account: any;
+    creditors: Creditor[];
 }
-export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountDetailsDialogProps) {
+export function AccountDetailsDialog({ isOpen, onOpenChange, account, creditors }: AccountDetailsDialogProps) {
     const info = account[0];
     if (!info) return;
-    const values: any = Object.values(info)[0];
+    const values: any = info;
 
-    const accountsInfo = account.map((item: any) => {
-        const key = Object.keys(item)[0];
-        const values = Object.values(item)[0] as any;
-        return {
-            key,
-            ...values
-        };
-    });
+    console.log("account", account);
+
+
+    const accountsInfo = account;
 
     console.log("accountsInfo", accountsInfo);
 
@@ -34,20 +32,22 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
         { key: "accountType", label: "Account Type", type: "" },
         { key: "dateOpened", label: "Date Opened", type: "date" },
         { key: "dateReported", label: "Date Last Reported", type: "date" },
+        { key: "dateLastPayment", label: "Date of Late Payment", type: "date" },
+        { key: "creditType", label: "Type Detail", type: "" },
     ];
 
     const balanceMappings = [
         { key: "balance", label: "Balance", type: "amount" },
         { key: "creditLimit", label: "Credit Limit", type: "" },
-        { key: "highestCredit", label: "Highest Credit", type: "" },
-        { key: "pastDue", label: "Past Due", type: "date" },
+        { key: "highBalance", label: "Highest Credit", type: "amount" },
+        { key: "amountPastDue", label: "Past Due", type: "amount" },
         { key: "monthlyPayment", label: "Monthly Payment", type: "" },
         { key: "paymentStatus", label: "Payment Status", type: "" },
     ];
 
     const creditorMappings = [
         { key: "address", label: "Address", type: "" },
-        { key: "phoneNumber", label: "Phone Number", type: "" },
+        { key: "telephone", label: "Phone Number", type: "" },
     ];
 
     return (
@@ -80,8 +80,8 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
                                 <TableBody>
                                     {
                                         accountDetailMappings.map((item, index) => {
-                                            const keyValues = ["transUnion", "experian", "equifax"].map((key) => {
-                                                const value = accountsInfo?.find((info: any) => info.key === key)?.[item.key];
+                                            const bureaus = ["transUnion", "experian", "equifax"].map((bureau) => {
+                                                const value = accountsInfo?.find((info: any) => info.bureau?.toLowerCase() === bureau?.toLowerCase())?.[item.key];
                                                 const isDate = item.type === "date";
                                                 const isAmount = item.type === "amount";
                                                 const formattedValue = (isDate && value) ? new Date(value).toLocaleDateString() : value;
@@ -89,17 +89,18 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
                                                 const displayValue = isDate ? formattedValue : isAmount ? formattedAmount : value;
                                                 return displayValue || "-";
                                             });
+
                                             return (
                                                 <TableRow key={index} className="border-none even:bg-gray-100 ">
                                                     <TableCell className="font-medium pl-6">{item.label}</TableCell>
                                                     <TableCell className="text-center_">
-                                                        {keyValues[0]}
+                                                        {bureaus[0]}
                                                     </TableCell>
                                                     <TableCell className="text-center_">
-                                                        {keyValues[1]}
+                                                        {bureaus[1]}
                                                     </TableCell>
                                                     <TableCell className="text-center_">
-                                                        {keyValues[2]}
+                                                        {bureaus[2]}
                                                     </TableCell>
                                                 </TableRow>
                                             );
@@ -123,8 +124,8 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
                                 <TableBody>
                                     {
                                         balanceMappings.map((item, index) => {
-                                            const keyValues = ["transUnion", "experian", "equifax"].map((key) => {
-                                                const value = accountsInfo?.find((info: any) => info.key === key)?.[item.key];
+                                            const keyValues = ["transUnion", "experian", "equifax"].map((bureau) => {
+                                                const value = accountsInfo?.find((info: any) => info.bureau?.toLowerCase() === bureau?.toLowerCase())?.[item.key];
                                                 const isDate = item.type === "date";
                                                 const isAmount = item.type === "amount";
                                                 const formattedValue = (isDate && value) ? new Date(value).toLocaleDateString() : value;
@@ -166,9 +167,24 @@ export function AccountDetailsDialog({ isOpen, onOpenChange, account }: AccountD
                                 <TableBody>
                                     {
                                         creditorMappings.map((item, index) => {
-                                            const keyValues = ["transUnion", "experian", "equifax"].map((key) => {
-                                                const value = accountsInfo?.find((info: any) => info.key === key)?.[item.key];
-                                                return value || "-";
+                                            const keyValues = ["transUnion", "experian", "equifax"].map((bureau) => {
+                                                const account = accountsInfo?.find((info: any) => info.bureau?.toLowerCase() === bureau?.toLowerCase());
+
+                                                let creditor = creditors?.find((creditor) => creditor.subscriberCode === account?.subscriberCode);
+                                                if (!creditor) {
+                                                    creditor = creditors?.find((creditor) => creditor.name === account?.creditorName);
+                                                }
+
+                                                if (item.key === "address" && creditor?.address) {
+                                                    const address = creditor?.address;
+                                                    return `${address?.unparsedStreet?.trim()}, ${address?.city?.trim()}, ${address?.stateCode?.trim()} ${address?.postalCode?.trim()}`;
+                                                }
+
+                                                if (item.key === "telephone") {
+                                                    return creditor?.telephone || "-";
+                                                }
+
+                                                return "-";
                                             });
                                             return (
                                                 <TableRow key={index} className="border-none even:bg-gray-100">

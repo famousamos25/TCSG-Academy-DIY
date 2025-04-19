@@ -1,6 +1,6 @@
 import { db } from '@/lib/firebase';
 import { convertKeysToLowerFirst } from '@/lib/utils';
-import { doc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 
 
 export async function importMyFreeScoreNow(userId: string, credentials: { username: string, password: string; }) {
@@ -12,8 +12,6 @@ export async function importMyFreeScoreNow(userId: string, credentials: { userna
 
     // Get data
     const data = await getCreditReport(credentials);
-    console.log('Credit report data:', data);
-
     // Create a new batch
     const batch = writeBatch(db);
     const timestamp = serverTimestamp();
@@ -112,19 +110,17 @@ const getCreditReport = async (credentials: { username: string, password: string
 
 const getAccessToken = async (credentials: { username: string, password: string; }) => {
   try {
-    console.log('Credentials to login:', credentials);
-
     const response = await fetch(`https://api.myfreescorenow.com/api/auth/login?email=${credentials.username}&password=${credentials.password}`,
-     {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: credentials.username,
-        password: credentials.password
-      }),
-    });
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: credentials.username,
+          password: credentials.password
+        }),
+      });
 
     if (!response.ok) {
       throw new Error('Failed to authenticate user');
@@ -206,38 +202,59 @@ const analyseData = (sourceData: any) => {
       if (Array.isArray(partition?.Tradeline)) {
         return partition?.Tradeline.map((tradeLine: any) => {
           return {
-            [tradeLine?.bureau]: {
-              accountNumber: tradeLine?.accountNumber,
-              balance: tradeLine?.currentBalance,
-              bureau: tradeLine?.bureau,
-              creditorName: tradeLine?.creditorName,
-              dateReported: tradeLine?.dateReported,
-              accountType: tradeLine?.GrantedTrade?.AccountType?.abbreviation,
-              creditType: tradeLine?.GrantedTrade?.CreditType?.abbreviation,
-              creditLimit: tradeLine?.GrantedTrade?.CreditLimit,
-              paymentHistory: tradeLine?.GrantedTrade?.PayStatusHistory,
-              paymentStatus: tradeLine?.PayStatus?.abbreviation,
-              accountStatus: tradeLine?.OpenClosed?.abbreviation,
-              dateOpened: tradeLine?.dateAccountStatus,
-            }
+            bureau: tradeLine?.bureau,
+            subscriberCode: tradeLine?.subscriberCode,
+            creditorName: tradeLine?.creditorName,
+            accountNumber: tradeLine?.accountNumber,
+            balance: tradeLine?.currentBalance,
+            highBalance: tradeLine?.highBalance,
+            accountStatus: tradeLine?.AccountCondition?.description,
+            dateAccountStatus: tradeLine?.dateAccountStatus,
+            accountDescription: tradeLine?.AccountDesignator?.description,
+            accountType: tradeLine?.GrantedTrade?.AccountType?.description,
+            creditType: tradeLine?.GrantedTrade?.CreditType?.description,
+            disputeFlag: tradeLine?.DisputeFlag?.description,
+            verificationIndicator: tradeLine?.VerificationIndicator?.description,
+            dateOpened: tradeLine?.dateOpened,
+            dateReported: tradeLine?.dateReported,
+            dateVerified: tradeLine?.dateVerified,
+            dateLastPayment: tradeLine?.GrantedTrade?.dateLastPayment,
+
+            creditLimit: tradeLine?.GrantedTrade?.CreditLimit,
+            amountPastDue: tradeLine?.GrantedTrade?.amountPastDue,
+            monthlyPayment: tradeLine?.GrantedTrade?.monthlyPayment,
+            paymentFrequency: tradeLine?.GrantedTrade?.PaymentFrequency?.description,
+            paymentHistory: tradeLine?.GrantedTrade?.PayStatusHistory,
+            paymentStatus: tradeLine?.PayStatus?.description,
           };
         });
       }
+      const tradeLine = partition?.Tradeline;
       return [{
-        [partition?.Tradeline?.bureau]: {
-          accountNumber: partition?.Tradeline?.accountNumber,
-          balance: partition?.Tradeline?.currentBalance,
-          bureau: partition?.Tradeline?.bureau,
-          creditorName: partition?.Tradeline?.creditorName,
-          dateReported: partition?.Tradeline?.dateReported,
-          accountType: partition?.Tradeline?.GrantedTrade?.AccountType?.abbreviation,
-          creditType: partition?.Tradeline?.GrantedTrade?.CreditType?.abbreviation,
-          creditLimit: partition?.Tradeline?.GrantedTrade?.CreditLimit,
-          paymentHistory: partition?.Tradeline?.GrantedTrade?.PayStatusHistory,
-          paymentStatus: partition?.Tradeline?.PayStatus?.abbreviation,
-          accountStatus: partition?.Tradeline?.OpenClosed?.abbreviation,
-          dateOpened: partition?.Tradeline?.dateAccountStatus,
-        }
+        bureau: tradeLine?.bureau,
+        creditorName: tradeLine?.creditorName,
+        accountNumber: tradeLine?.accountNumber,
+        subscriberCode: tradeLine?.subscriberCode,
+        balance: tradeLine?.currentBalance,
+        highBalance: tradeLine?.highBalance,
+        accountStatus: tradeLine?.AccountCondition?.description,
+        dateAccountStatus: tradeLine?.dateAccountStatus,
+        accountDescription: tradeLine?.AccountDesignator?.description,
+        accountType: tradeLine?.GrantedTrade?.AccountType?.description,
+        creditType: tradeLine?.GrantedTrade?.CreditType?.description,
+        disputeFlag: tradeLine?.DisputeFlag?.description,
+        verificationIndicator: tradeLine?.VerificationIndicator?.description,
+        dateOpened: tradeLine?.dateOpened,
+        dateReported: tradeLine?.dateReported,
+        dateVerified: tradeLine?.dateVerified,
+        dateLastPayment: tradeLine?.GrantedTrade?.dateLastPayment,
+
+        creditLimit: tradeLine?.GrantedTrade?.CreditLimit,
+        amountPastDue: tradeLine?.GrantedTrade?.amountPastDue,
+        monthlyPayment: tradeLine?.GrantedTrade?.monthlyPayment,
+        paymentFrequency: tradeLine?.GrantedTrade?.PaymentFrequency?.description,
+        paymentHistory: tradeLine?.GrantedTrade?.PayStatusHistory,
+        paymentStatus: tradeLine?.PayStatus?.description,
       }];
     });
 
@@ -253,6 +270,22 @@ const analyseData = (sourceData: any) => {
       };
     });
 
+    resData.creditors = TrueLinkCreditReportType?.Subscriber.map((subscriber: any) => ({
+      name: subscriber?.name,
+      subscriberCode: subscriber?.subscriberCode,
+      telephone: subscriber?.telephone,
+      address: subscriber?.CreditAddress,
+      industryCode: subscriber?.IndustryCode?.description,
+      source: subscriber?.Source?.Bureau?.abbreviation,
+    }))
+
+    try {
+      const publicRecords = TrueLinkCreditReportType?.PublicRecordPartition ?? TrueLinkCreditReportType?.PulblicRecordPartition ?? [];
+      resData.publicRecords = publicRecords?.map((item: any) => item.PublicRecord).flat();
+    } catch (error) {
+      console.error('Error extracting public records:', error);
+      resData.publicRecords = [];
+    }
     return resData;
   } catch (error) {
     return null;
