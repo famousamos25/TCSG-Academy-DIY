@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { FURNISHER_DATA } from '@/constants/furnisher-data';
@@ -60,7 +60,7 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
           </div>
         </DialogHeader>
 
-        <div className="space-y-6 max-h-[calc(90vh-120px)] overflow-y-auto pr-1">
+        <div className="space-y-6 max-h-[calc(90vh-160px)] overflow-y-auto pr-1">
           <div className="bg-white p-4 border rounded-md">
             <div className="text-2xl font-bold">{selectedFurnishers.length}</div>
             <div className="text-sm text-gray-600">Furnisher Accounts</div>
@@ -163,7 +163,8 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
             />
           }
 
-          <div className="flex justify-end space-x-4">
+        </div>
+          <DialogFooter className="flex justify-end space-x-4">
             <Button 
               variant="outline" 
               onClick={() => onOpenChange(false)}
@@ -176,8 +177,7 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
             >
               Create Security Freeze Dispute
             </Button>
-          </div>
-        </div>
+          </DialogFooter>
       </DialogContent>
     </Dialog>
   );
