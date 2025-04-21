@@ -1,6 +1,35 @@
 "use client";
 
-import DelegatoryRound1 from '@/components/dispute-letters/delegatory/delegatory-round-1';
+import DerogatoryCDTRRound1 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-1';
+import DerogatoryCDTRRound2 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-2';
+import DerogatoryCDTRRound3 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-3';
+import DerogatoryCDTRRound4 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-4';
+import DerogatoryCDTRRound5 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-5';
+import DerogatoryCDTRRound6 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-6';
+import InquiryCDTRRound1 from '@/components/dispute-letters/CDTR/inquiry/inquiry-letter-cdtr-round-1';
+import InquiryCDTRRound3 from '@/components/dispute-letters/CDTR/inquiry/inquiry-letter-cdtr-round-3';
+import InquiryCDTRRound2 from '@/components/dispute-letters/CDTR/inquiry/inquiry-letter-cdtr.round-2';
+import LatePaymentCDTRRound1 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-1';
+import LatePaymentCDTRRound2 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-2';
+import LatePaymentCDTRRound3 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-3';
+import LatePaymentCDTRRound4 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-4';
+import LatePaymentCDTRRound5 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-5';
+import LatePaymentCDTRRound6 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-6';
+import DerogatoryRound1 from '@/components/dispute-letters/derogatory/derogatory-round-1';
+import DerogatoryRound2 from '@/components/dispute-letters/derogatory/derogatory-round-2';
+import DerogatoryRound3 from '@/components/dispute-letters/derogatory/derogatory-round-3';
+import DerogatoryRound4 from '@/components/dispute-letters/derogatory/derogatory-round-4';
+import DerogatoryRound5 from '@/components/dispute-letters/derogatory/derogatory-round-5';
+import DerogatoryRound6 from '@/components/dispute-letters/derogatory/derogatory-round-6';
+import InquiryRound1 from '@/components/dispute-letters/inquiry/inquiry-letter-round-1';
+import InquiryRound2 from '@/components/dispute-letters/inquiry/inquiry-letter-round-2';
+import InquiryRound3 from '@/components/dispute-letters/inquiry/inquiry-letter-round-3';
+import LatePaymentRound1 from '@/components/dispute-letters/late-payments/late-payment-round-1';
+import LatePaymentRound2 from '@/components/dispute-letters/late-payments/late-payment-round-2';
+import LatePaymentRound3 from '@/components/dispute-letters/late-payments/late-payment-round-3';
+import LatePaymentRound4 from '@/components/dispute-letters/late-payments/late-payment-round-4';
+import LatePaymentRound5 from '@/components/dispute-letters/late-payments/late-payment-round-5';
+import LatePaymentRound6 from '@/components/dispute-letters/late-payments/late-payment-round-6';
 import AccountSoldLetter1 from '@/components/dispute-letters/other-disputes/account-sold-letter-1';
 import AccountSoldLetter2 from '@/components/dispute-letters/other-disputes/account-sold-letter-2';
 import AccountSoldLetter3 from '@/components/dispute-letters/other-disputes/account-sold-letter-3';
@@ -33,6 +62,7 @@ import { ASL2Data } from '@/data/dispute-letters/account-sold-letter-2';
 import { ASL3Data } from '@/data/dispute-letters/account-sold-letter-3';
 import { ASL4Data } from '@/data/dispute-letters/account-sold-letter-4';
 import { ASL5Data } from '@/data/dispute-letters/account-sold-letter-5';
+import { agencies } from '@/data/dispute-letters/agencies';
 import { AUL1Data } from '@/data/dispute-letters/authorize-user-letter-1';
 import { AUL2Data } from '@/data/dispute-letters/authorize-user-letter-2';
 import { AUL3Data } from '@/data/dispute-letters/authorize-user-letter-3';
@@ -52,56 +82,7 @@ import { CAUL4Data } from '@/data/dispute-letters/creditor-auth-user-letter-4';
 import { CAUL5Data } from '@/data/dispute-letters/creditor-auth-user-letter-5';
 import { CAUL6Data } from '@/data/dispute-letters/creditor-auth-user-letter-6';
 import { CCRL1Data } from '@/data/dispute-letters/creditor-car-rep-letter1';
-import DelegatoryCDTRRound1 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-1';
-import DelegatoryCDTRRound2 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-2';
-import DelegatoryCDTRRound3 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-3';
-import DelegatoryCDTRRound4 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-4';
-import DelegatoryCDTRRound5 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-5';
-import DelegatoryCDTRRound6 from '@/components/dispute-letters/CDTR/derogatory-cdtr-round-6';
-import InquiryCDTRRound1 from '@/components/dispute-letters/CDTR/inquiry/inquiry-letter-cdtr-round-1';
-import InquiryCDTRRound3 from '@/components/dispute-letters/CDTR/inquiry/inquiry-letter-cdtr-round-3';
-import InquiryCDTRRound2 from '@/components/dispute-letters/CDTR/inquiry/inquiry-letter-cdtr.round-2';
-import LatePaymentCDTRRound1 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-1';
-import LatePaymentCDTRRound2 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-2';
-import LatePaymentCDTRRound3 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-3';
-import LatePaymentCDTRRound4 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-4';
-import LatePaymentCDTRRound5 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-5';
-import LatePaymentCDTRRound6 from '@/components/dispute-letters/CDTR/late-payments/late-payment-cdtr-round-6';
-import DelegatoryRound1 from '@/components/dispute-letters/derogatory/derogatory-round-1';
-import DelegatoryRound2 from '@/components/dispute-letters/derogatory/derogatory-round-2';
-import DelegatoryRound3 from '@/components/dispute-letters/derogatory/derogatory-round-3';
-import DelegatoryRound5 from '@/components/dispute-letters/derogatory/derogatory-round-5';
-import DelegatoryRound6 from '@/components/dispute-letters/derogatory/derogatory-round-6';
-import DelegatoryRound4 from '@/components/dispute-letters/derogatory/derogatory-round-4';
-import InquiryRound1 from '@/components/dispute-letters/inquiry/inquiry-letter-round-1';
-import InquiryRound2 from '@/components/dispute-letters/inquiry/inquiry-letter-round-2';
-import InquiryRound3 from '@/components/dispute-letters/inquiry/inquiry-letter-round-3';
-import LatePaymentRound1 from '@/components/dispute-letters/late-payments/late-payment-round-1';
-import LatePaymentRound2 from '@/components/dispute-letters/late-payments/late-payment-round-2';
-import LatePaymentRound3 from '@/components/dispute-letters/late-payments/late-payment-round-3';
-import LatePaymentRound4 from '@/components/dispute-letters/late-payments/late-payment-round-4';
-import LatePaymentRound5 from '@/components/dispute-letters/late-payments/late-payment-round-5';
-import LatePaymentRound6 from '@/components/dispute-letters/late-payments/late-payment-round-6';
-import { agencies } from '@/data/dispute-letters/agencies';
 
-import { DR1Data } from '@/data/dispute-letters/delegatory-round-1';
-import { PIData } from '@/data/personal-information';
-import { SFData } from '@/data/security-freeze';
-import { ReactNode } from 'react';
-import { DR2Data } from '@/data/dispute-letters/derogatory-round-2';
-import { DR3Data } from '@/data/dispute-letters/derogatory-round-3';
-import { DR4Data } from '@/data/dispute-letters/derogatory-round-4';
-import { DR5Data } from '@/data/dispute-letters/derogatory-round-5';
-import { DR6Data } from '@/data/dispute-letters/derogatory-round-6';
-import { IR1Data } from '@/data/inquiry/inquiry-round-1';
-import { IR2Data } from '@/data/inquiry/inquiry-round-2';
-import { IR3Data } from '@/data/inquiry/inquiry-round-3';
-import { LP1Data } from '@/data/late-payment/late-payment-round-1';
-import { LP2Data } from '@/data/late-payment/late-payment-round-2';
-import { LP3Data } from '@/data/late-payment/late-payment-round-3';
-import { LP4Data } from '@/data/late-payment/late-payment-round-4';
-import { LP5Data } from '@/data/late-payment/late-payment-round-5';
-import { LP6Data } from '@/data/late-payment/late-payment-round-6';
 import { CDTRDR1Data } from '@/data/CDTR/derogatory-cdtr-round-1';
 import { CDTRDR2Data } from '@/data/CDTR/derogatory-cdtr-round-2';
 import { CDTRDR3Data } from '@/data/CDTR/derogatory-cdtr-round-3';
@@ -117,12 +98,30 @@ import { LPCDTRR3Data } from '@/data/CDTR/late-payment/late-payment-cdtr-round-3
 import { LPCDTRR4Data } from '@/data/CDTR/late-payment/late-payment-cdtr-round-4';
 import { LPCDTRR5Data } from '@/data/CDTR/late-payment/late-payment-cdtr-round-5';
 import { LPCDTRR6Data } from '@/data/CDTR/late-payment/late-payment-cdtr-round-6';
+import { DR1Data } from '@/data/dispute-letters/derogatory-round-1';
+import { DR2Data } from '@/data/dispute-letters/derogatory-round-2';
+import { DR3Data } from '@/data/dispute-letters/derogatory-round-3';
+import { DR4Data } from '@/data/dispute-letters/derogatory-round-4';
+import { DR5Data } from '@/data/dispute-letters/derogatory-round-5';
+import { DR6Data } from '@/data/dispute-letters/derogatory-round-6';
+import { IR1Data } from '@/data/inquiry/inquiry-round-1';
+import { IR2Data } from '@/data/inquiry/inquiry-round-2';
+import { IR3Data } from '@/data/inquiry/inquiry-round-3';
+import { LP1Data } from '@/data/late-payment/late-payment-round-1';
+import { LP2Data } from '@/data/late-payment/late-payment-round-2';
+import { LP3Data } from '@/data/late-payment/late-payment-round-3';
+import { LP4Data } from '@/data/late-payment/late-payment-round-4';
+import { LP5Data } from '@/data/late-payment/late-payment-round-5';
+import { LP6Data } from '@/data/late-payment/late-payment-round-6';
+import { PIData } from '@/data/personal-information';
+import { SFData } from '@/data/security-freeze';
+import { ReactNode } from 'react';
 
 interface Props { }
 const page = ({ }: Props) => {
 
 	const letterTypes: { type: string; component: ReactNode; }[] = [
-		{ type: "delegatoryRound1", component: <DelegatoryRound1 {...DR1Data} /> },
+		{ type: "DerogatoryRound1", component: <DerogatoryRound1 {...DR1Data} /> },
 		{ type: "accountSoldLetter1", component: <AccountSoldLetter1 {...ASL1Data} /> },
 		{ type: "accountSoldLetter2", component: <AccountSoldLetter2 {...ASL2Data} /> },
 		{ type: "accountSoldLetter3", component: <AccountSoldLetter3 {...ASL3Data} /> },
@@ -150,11 +149,11 @@ const page = ({ }: Props) => {
 		{ type: "creditorCarRepossessionLetter1", component: <CreditorCarRepossessionLetter1 {...CCRL1Data} /> },
 		{ type: "securityFreeze", component: <SecurityFreeze {...SFData} /> },
 		{ type: "personalInformation", component: <PersonalInformation {...PIData} /> },
-		{ type: "delegatoryRound2", component: <DelegatoryRound2 {...DR2Data} /> },
-		{ type: "delegatoryRound3", component: <DelegatoryRound3 {...DR3Data} /> },
-		{ type: "delegatoryRound4", component: <DelegatoryRound4 {...DR4Data} /> },
-		{ type: "delegatoryRound5", component: <DelegatoryRound5 {...DR5Data} /> },
-		{ type: "delegatoryRound6", component: <DelegatoryRound6 {...DR6Data} /> },
+		{ type: "DerogatoryRound2", component: <DerogatoryRound2 {...DR2Data} /> },
+		{ type: "DerogatoryRound3", component: <DerogatoryRound3 {...DR3Data} /> },
+		{ type: "DerogatoryRound4", component: <DerogatoryRound4 {...DR4Data} /> },
+		{ type: "DerogatoryRound5", component: <DerogatoryRound5 {...DR5Data} /> },
+		{ type: "DerogatoryRound6", component: <DerogatoryRound6 {...DR6Data} /> },
 		{ type: "InquiryRound1", component: <InquiryRound1 {...IR1Data} /> },
 		{ type: "InquiryRound2", component: <InquiryRound2 {...IR2Data} /> },
 		{ type: "InquiryRound3", component: <InquiryRound3 {...IR3Data} /> },
@@ -164,12 +163,12 @@ const page = ({ }: Props) => {
 		{ type: "LatePaymentRound4", component: <LatePaymentRound4 {...LP4Data} /> },
 		{ type: "LatePaymentRound5", component: <LatePaymentRound5 {...LP5Data} /> },
 		{ type: "LatePaymentRound6", component: <LatePaymentRound6 agencies={agencies} {...LP6Data} /> },
-		{ type: "DelegatoryCDTRRound1", component: <DelegatoryCDTRRound1 {...CDTRDR1Data} /> },
-		{ type: "DelegatoryCDTRRound2", component: <DelegatoryCDTRRound2 {...CDTRDR2Data} /> },
-		{ type: "DelegatoryCDTRRound3", component: <DelegatoryCDTRRound3 {...CDTRDR3Data} /> },
-		{ type: "DelegatoryCDTRRound4", component: <DelegatoryCDTRRound4 {...CDTRDR4Data} /> },
-		{ type: "DelegatoryCDTRRound5", component: <DelegatoryCDTRRound5 {...CDTRDR5Data} /> },
-		{ type: "DelegatoryCDTRRound6", component: <DelegatoryCDTRRound6 {...CDTRDR6Data} /> },
+		{ type: "DerogatoryCDTRRound1", component: <DerogatoryCDTRRound1 {...CDTRDR1Data} /> },
+		{ type: "DerogatoryCDTRRound2", component: <DerogatoryCDTRRound2 {...CDTRDR2Data} /> },
+		{ type: "DerogatoryCDTRRound3", component: <DerogatoryCDTRRound3 {...CDTRDR3Data} /> },
+		{ type: "DerogatoryCDTRRound4", component: <DerogatoryCDTRRound4 {...CDTRDR4Data} /> },
+		{ type: "DerogatoryCDTRRound5", component: <DerogatoryCDTRRound5 {...CDTRDR5Data} /> },
+		{ type: "DerogatoryCDTRRound6", component: <DerogatoryCDTRRound6 {...CDTRDR6Data} /> },
 		{ type: "InquiryCDTRRound1", component: <InquiryCDTRRound1 {...ICDTRR1Data} /> },
 		{ type: "InquiryCDTRRound2", component: <InquiryCDTRRound2 {...ICDTRR2Data} /> },
 		{ type: "InquiryCDTRRound3", component: <InquiryCDTRRound3 {...ICDTRR3Data} /> },

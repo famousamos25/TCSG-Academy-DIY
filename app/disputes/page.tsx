@@ -1,5 +1,6 @@
 'use client';
 
+import { ConfirmModal } from '@/components/common/confirm-modal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -10,7 +11,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import useDisputeLetters from '@/hooks/useDisputeLetters';
+import { db } from '@/lib/firebase';
+import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import {
   Circle,
   CircleDot,
@@ -22,13 +27,13 @@ import {
   Trash2Icon,
   Undo2
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
+import { DeleteDialog } from './components/delete-dispute-dialog';
 import DisputeMenus from './components/dispute-menus';
 import { PreviewLetterModal } from './components/preview-letter-dialog';
-import { UndoStatusDialog } from './components/undo-status-dialog';
-import { SendDisputeDialog } from './components/send-dispute-dialog';
 import { SendDisputesMail } from './components/send-disputes-mail';
-import { DeleteDialog } from './components/delete-dispute-dialog';
+import { UndoStatusDialog } from './components/undo-status-dialog';
 
 const disputesTracker = [
   {
@@ -57,95 +62,53 @@ const disputesTracker = [
   },
 ];
 
-const tableDisputes = [
-  {
-    id: 1,
-    letter: "Security Freeze Attack",
-    creditor: { name: "SAFERENT SOLUTIONS, LLC", role: "Data Furnisher" },
-    dateSent: "2024-02-20 10:00:00",
-    disputeRound: "Dispute Round #1",
-    disputedItems: 1,
-    status: "Sent",
-  },
-  {
-    id:2,
-    letter: "Security Freeze Attack",
-    creditor: { name: "CHEX SYSTEMS, INC.", role: "Data Furnisher" },
-    dateSent: "2024-03-15 14:30:00",
-    disputeRound: "Dispute Round #1",
-    disputedItems: 2,
-    status: "Unsent",
-  },
-  {
-    id:3,
-    letter: "Credit Report Dispute",
-    creditor: { name: "EQUIFAX INFORMATION SERVICES", role: "Data Furnisher" },
-    dateSent: "2024-04-10 08:45:00",
-    disputeRound: "Dispute Round #2",
-    disputedItems: 3,
-    status: "Unsent",
-  },
-  {
-    id:4,
-    letter: "Fraud Alert Request",
-    creditor: { name: "EXPERIAN", role: "Data Furnisher" },
-    dateSent: "2024-05-05 16:20:00",
-    disputeRound: "Dispute Round #3",
-    disputedItems: 1,
-    status: "Sent",
-  },
-  {
-    id:5,
-    letter: "Identity Theft Dispute",
-    creditor: { name: "TRANSUNION", role: "Data Furnisher" },
-    dateSent: "2024-06-12 11:10:00",
-    disputeRound: "Dispute Round #1",
-    disputedItems: 2,
-    status: "Completed",
-  },
-];
-
 export default function DisputesPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("Unsent");
-  const [selected, setSelected] = useState<boolean[]>(new Array(tableDisputes.length).fill(false));
+  const [selected, setSelected] = useState<boolean[]>([]);
   const [allSelected, setAllSelected] = useState(false);
-  const [disputes, setDisputes] = useState(tableDisputes);
-  const [filteredDisputes, setFilteredDisputes] = useState(tableDisputes)
+
   const [showModal, setShowModal] = useState(false);
-  const [showSendDisputeModal, setShowSendDisputeModal] = useState<boolean>(false);
   const [showSendDisputesMail, setShowSendDisputesMail] = useState<boolean>(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
-  const [selectedDispute, setSelectedDispute] = useState<number | null>(null);
-  const [showPreview, setShowPreview] = useState(false)
-  const [creditorName, setCreditorName] = useState<string>('')
+  const [showPreview, setShowPreview] = useState(false);
+  const [creditorName, setCreditorName] = useState<string>('');
 
-  const openModal = (id: number) => {
-    setSelectedDispute(id);
+  const openModal = (id: string) => {
     setShowModal(true);
   };
 
-  const handleStatusUpdate = (status: string) =>{
-    if(selectedDispute !== null){
-          if (status === "unsent") {
-            setFilteredDisputes((prevDisputes) => {
-              const updatedDisputes = prevDisputes.map((dispute, i) =>
-                i === selectedDispute ? { ...dispute, status: "Unsent" } : dispute
-              );
-              setShowModal(!showModal)
-              return updatedDisputes.filter((d) => d.status !== "Unsent" && d.id === selectedDispute);
-            });
-          }
-          if(status == 'sent'){
-          setFilteredDisputes((prevDisputes) => {
-            const updatedDisputes = prevDisputes.map((dispute, i) =>
-              i === selectedDispute ? { ...dispute, status: "Sent" } : dispute
-            );
-            setShowSendDisputeModal(!showSendDisputeModal)
-            return updatedDisputes.filter((d) => d.status !== "Sent" && d.id === selectedDispute);
-          });
-        }
-    }
-  }
+  const filters = useMemo(() => {
+    if (selectedStatus === "Unsent") return { letterSent: false };
+    if (selectedStatus === "Sent") return { letterSent: true };
+    if (selectedStatus === "Completed") return { letterCompleted: true };
+    return {};
+  }, [selectedStatus]);
+
+
+  const { letters, stats } = useDisputeLetters(filters);
+
+  const handleStatusUpdate = (status: string) => {
+    // if(selectedDispute !== null){
+    //       if (status === "unsent") {
+    //         setFilteredDisputes((prevDisputes) => {
+    //           const updatedDisputes = prevDisputes.map((dispute, i) =>
+    //             i === selectedDispute ? { ...dispute, status: "Unsent" } : dispute
+    //           );
+    //           setShowModal(!showModal)
+    //           return updatedDisputes.filter((d) => d.status !== "Unsent" && d.id === selectedDispute);
+    //         });
+    //       }
+    //       if(status == 'sent'){
+    //       setFilteredDisputes((prevDisputes) => {
+    //         const updatedDisputes = prevDisputes.map((dispute, i) =>
+    //           i === selectedDispute ? { ...dispute, status: "Sent" } : dispute
+    //         );
+    //         setShowSendDisputeModal(!showSendDisputeModal)
+    //         return updatedDisputes.filter((d) => d.status !== "Sent" && d.id === selectedDispute);
+    //       });
+    //     }
+    // }
+  };
 
   const handleSelectAll = () => {
     const newState = !allSelected;
@@ -165,24 +128,51 @@ export default function DisputesPage() {
     }
   };
 
-  const updateSelectedStatus = (status: string) =>{
-    setSelectedStatus(status)
-    setFilteredDisputes(disputes.filter(dispute => dispute.status === status))
-  }
+  const updateSelectedStatus = (status: string) => {
+    setSelectedStatus(status);
+  };
 
-  const openSendDisputeModal = (id:number) => {
-    setSelectedDispute(id);
-    setShowSendDisputeModal(!showSendDisputeModal)
-  }
+  const handleMarkAsSent = async (id: string) => {
+    try {
+      const letterRef = doc(db, 'letters', id);
 
-  const handleDelete = (name: string) => {
-    setCreditorName(name)
-    setShowDeleteDialog(!showDeleteDialog)
-  }
-  
-  useEffect(()=>{
-    setFilteredDisputes(disputes.filter(dispute => dispute.status === selectedStatus))
-  },[])
+      await updateDoc(letterRef, {
+        letterSent: true,
+      });
+
+      toast("Success", {
+        description: "Letter marked as sent successfully.",
+        duration: 3000
+      });
+    } catch (error) {
+      toast("Failed", {
+        description: "An error occurred while marking the letter as sent.",
+        duration: 3000
+      });
+    }
+  };
+
+  const handleDeleteLetter = async (id: string) => {
+    try {
+      const letterRef = doc(db, 'letters', id);
+
+      await deleteDoc(letterRef);
+
+      toast("Success", {
+        description: "Letter deleted successfully.",
+        duration: 3000
+      });
+    } catch (error) {
+      toast("Failed", {
+        description: "An error occurred while deleting the letter.",
+        duration: 3000
+      });
+    }
+  };
+
+  useEffect(() => {
+    // setFilteredDisputes(disputes.filter(dispute => dispute.status === selectedStatus))
+  }, []);
 
   return (
     <div className="container mx-auto p-6">
@@ -199,11 +189,16 @@ export default function DisputesPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               {disputesTracker.map((item, index) => (
                 <div
-                  key={index}    
+                  key={index}
                   onClick={() => updateSelectedStatus(item.status)}
-                  className={`border ${item.borderColor} p-4 rounded-lg flex flex-col cursor-pointer ${
-                    selectedStatus === item.status ? "bg-gray-100 dark:bg-gray-800" : ""
-                  }`}
+                  className={
+                    cn(
+                      `border p-4 rounded-lg flex flex-col cursor-pointer "`,
+                      item.borderColor,
+                      {
+                        "bg-gray-100 dark:bg-gray-800": selectedStatus === item.status
+                      }
+                    )}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
@@ -211,7 +206,11 @@ export default function DisputesPage() {
                       <span className="font-semibold">{item.title}</span>
                     </div>
                     <span className="text-xl font-bold">
-                      {tableDisputes.filter(d => d.status === item.status).length}
+                      {
+                        item.status === "Unsent" ? stats.unsent :
+                          item.status === "Sent" ? stats.sent :
+                            item.status === "Completed" ? stats.completed : 0
+                      }
                     </span>
                   </div>
                   <p className="text-sm text-gray-400 mt-1 ml-7">{item.description}</p>
@@ -232,14 +231,14 @@ export default function DisputesPage() {
                 </TableHead>
                 <TableHead className="py-2 px-4">Dispute Letter</TableHead>
                 <TableHead className="py-2 px-4">Creditor Name</TableHead>
-                <TableHead className="py-2 px-4">Date Sent</TableHead>
+                <TableHead className="py-2 px-4">Date Created</TableHead>
                 <TableHead className="py-2 px-4">Dispute Round</TableHead>
                 <TableHead className="py-2 px-4">Disputed Items</TableHead>
                 <TableHead className="py-2 px-4">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredDisputes.map((dispute, index) => (
+              {letters.map((dispute, index) => (
                 <TableRow key={index} className="border-b">
                   <TableCell className="py-2 px-4">
                     <Checkbox
@@ -248,30 +247,30 @@ export default function DisputesPage() {
                       onCheckedChange={() => handleSelectRow(index)}
                     />
                   </TableCell>
-                  <TableCell className="py-2 px-4 text-gray-500 text-sm">{dispute.letter}</TableCell>
+                  <TableCell className="py-2 px-4 text-gray-500 text-sm">{dispute.letterName}</TableCell>
                   <TableCell className="py-2 px-4">
-                    <span className="text-blue-400">{dispute.creditor.name}</span>
+                    <span className="text-blue-400">{dispute.creditBureauName}</span>
                     <br />
-                    <span className="text-gray-400 text-sm">{dispute.creditor.role}</span>
+                    <span className="text-gray-400 text-sm">{dispute.shortDescription}</span>
                   </TableCell>
                   <TableCell className="py-2 px-4">
                     <div className="flex flex-col items-start">
                       <span className="text-gray-500 font-semibold">
-                        {format(new Date(dispute.dateSent), 'MMM dd, yyyy')}
+                        {format(new Date(dispute.createdAt), 'MMM dd, yyyy')}
                       </span>
                       <span className="text-gray-500 text-sm">
-                        {format(new Date(dispute.dateSent), 'hh:mm:ss aaa')}
+                        {format(new Date(dispute.createdAt), 'hh:mm:ss aaa')}
                       </span>
                     </div>
                   </TableCell>
                   <TableCell className="py-2 px-4">
                     <span className="border border-green-500 text-green-500 px-2 py-1 rounded">
-                      {dispute.disputeRound}
+                      Dispute Round #{dispute.letterRound}
                     </span>
                   </TableCell>
-                  <TableCell className="py-2 px-4">{dispute.disputedItems}</TableCell>
-                  <TableCell className="py-2 px-4 flex space-x-2">
-                    {dispute.status === "Sent" ? (
+                  <TableCell className="py-2 px-4">{dispute.accounts?.length}</TableCell>
+                  <TableCell className="py-2 px-4 space-x-2">
+                    {dispute.letterSent ? (
                       <>
                         <button
                           className="text-green-400"
@@ -280,33 +279,34 @@ export default function DisputesPage() {
                         >
                           <Undo2 size={18} />
                         </button>
-                        <button 
-                          className="text-green-400" 
+                        <button
+                          className="text-green-400"
                           title="Preview Letter"
                           onClick={() => setShowPreview(true)}
-                          >
+                        >
                           <EyeIcon size={18} />
-                        </button>
-                        <button className="text-red-400" title="Delete Dispute">
-                          <Trash2Icon size={18} onClick={()=> handleDelete(dispute.creditor.name)}/>
                         </button>
                       </>
                     ) : (
                       <>
-                        <button className="text-green-400" title="Send"
-                         onClick={()=> openSendDisputeModal(dispute.id)}
+                        <ConfirmModal
+                          title='Are you sure?'
+                          description='Please ensure each letter is marked as sent only after it has been mailed.'
+                          onConfirm={() => handleMarkAsSent(dispute.id)}
                         >
-                          <Send size={18} />
-                        </button>
+                          <button className="text-green-400" title="Send">
+                            <Send size={18} />
+                          </button>
+                        </ConfirmModal>
                         <button className="text-green-400" title="View"
-                         onClick={() => setShowPreview(true)}
+                          onClick={() => setShowPreview(true)}
                         >
                           <EyeIcon size={18} />
                         </button>
                         <button className="text-green-400" title="Mail"
                         >
-                          <MailIcon size={18}                          
-                          onClick={() => setShowSendDisputesMail(!showSendDisputesMail)} />
+                          <MailIcon size={18}
+                            onClick={() => setShowSendDisputesMail(!showSendDisputesMail)} />
                         </button>
                         <button className="text-green-400" title="Download">
                           <LucideDownload size={18} />
@@ -314,11 +314,17 @@ export default function DisputesPage() {
                         <button className="text-green-400" title="Print">
                           <PrinterIcon size={18} />
                         </button>
-                        <button className="text-red-400" title="Delete">
-                          <Trash2Icon size={18} onClick={()=> handleDelete(dispute.creditor.name)} />
-                        </button>
                       </>
                     )}
+                    <ConfirmModal
+                      title='Are you sure?'
+                      description={`Do You want To Delete <b>${dispute.creditBureauName}</b>`}
+                      onConfirm={() => handleDeleteLetter(dispute.id)}
+                    >
+                      <button className="text-red-400" title="Delete">
+                        <Trash2Icon size={18}/>
+                      </button>
+                    </ConfirmModal>
                   </TableCell>
 
                 </TableRow>
@@ -326,27 +332,22 @@ export default function DisputesPage() {
             </TableBody>
           </Table>
         </Card>
-        <UndoStatusDialog 
-          open={showModal} 
-          onOpenChange={setShowModal} 
-          onConfirm={() => handleStatusUpdate('unsent')} 
-      />
-            <PreviewLetterModal open={showPreview} onClose={setShowPreview} />
+        <UndoStatusDialog
+          open={showModal}
+          onOpenChange={setShowModal}
+          onConfirm={() => handleStatusUpdate('unsent')}
+        />
+        <PreviewLetterModal open={showPreview} onClose={setShowPreview} />
       </div>
-      { showSendDisputeModal && <SendDisputeDialog 
-      isOpen = {showSendDisputeModal} 
-      handleClose = {() => setShowSendDisputeModal(!showSendDisputeModal)} 
-      handleSave = {() => handleStatusUpdate('sent')}
+
+      {showSendDisputesMail && <SendDisputesMail
+        isOpen={showSendDisputesMail}
+        handleClose={() => setShowSendDisputesMail(!showSendDisputesMail)}
       />}
-      
-      { showSendDisputesMail && <SendDisputesMail 
-      isOpen = {showSendDisputesMail} 
-      handleClose = {() => setShowSendDisputesMail(!showSendDisputesMail)} 
-      />}
-         { showDeleteDialog && <DeleteDialog 
-      isOpen = {showDeleteDialog} 
-      creditorName = {creditorName}
-      handleClose = {() => setShowDeleteDialog(!showDeleteDialog)} 
+      {showDeleteDialog && <DeleteDialog
+        isOpen={showDeleteDialog}
+        creditorName={creditorName}
+        handleClose={() => setShowDeleteDialog(!showDeleteDialog)}
       />}
     </div>
   );

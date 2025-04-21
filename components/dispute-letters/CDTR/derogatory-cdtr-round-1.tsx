@@ -22,7 +22,7 @@ interface Props {
 	proofOfAddress: string;
 }
 
-const DelegatoryCDTRRound1 = (info: Props) => {
+const DerogatoryCDTRRound1 = (info: Props) => {
 
 	const {
 		clientName,
@@ -126,4 +126,4 @@ const DelegatoryCDTRRound1 = (info: Props) => {
 	);
 };
 
-export default DelegatoryCDTRRound1;
+export default DerogatoryCDTRRound1;

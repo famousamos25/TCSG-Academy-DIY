@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { wait } from '@/lib/utils';
 import { Loader } from "lucide-react";
+import { ReactNode, useState } from "react";
 
 type ConfirmDeleteModalProps = {
     children: React.ReactNode;
     onConfirm: () => Promise<void>;
     title?: string;
-    description?: string;
+    description?: ReactNode;
 };
 
 export function ConfirmModal({
@@ -18,13 +19,15 @@ export function ConfirmModal({
     title = "Confirm Action",
     description = "Are you sure you want to continue? This action cannot be undone."
 }: ConfirmDeleteModalProps) {
-    const [isDeleting, setIsDeleting] = useState(false);
+    const [isPending, setIsPending] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     const handleConfirm = async () => {
-        setIsDeleting(true);
+        setIsPending(true);
         await onConfirm();
-        setIsDeleting(false);
+        await wait(2000)
+        setIsPending(false);
+        setIsOpen(false);
     };
 
     return (
@@ -38,13 +41,16 @@ export function ConfirmModal({
                         <DialogTitle>{title}</DialogTitle>
                     </div>
                 </DialogHeader>
-                <p className="text-sm text-gray-600">{description}</p>
+                <p
+                    className="text-sm text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: description ?? "" }}
+                />
                 <DialogFooter className="flex justify-between mt-4">
-                    <Button variant="secondary" onClick={() => setIsOpen(false)} disabled={isDeleting}>
+                    <Button variant="secondary" onClick={() => setIsOpen(false)} disabled={isPending}>
                         Cancel
                     </Button>
-                    <Button onClick={handleConfirm} disabled={isDeleting}>
-                        {isDeleting ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}
+                    <Button onClick={handleConfirm} disabled={isPending}>
+                        {isPending ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}
                     </Button>
                 </DialogFooter>
             </DialogContent>

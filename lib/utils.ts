@@ -1,5 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
+import { customAlphabet } from 'nanoid';
 import { twMerge } from 'tailwind-merge';
+
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -27,3 +29,13 @@ export const formatAmountWithCurrency = (value: any, format: any) => {
     if (format) return `$${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 9 }).format(value)}`;
     return value;
 };
+
+export const randomId = (length = 21) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const nanoid = customAlphabet(characters, length);
+   return nanoid();
+};
+
+export const wait = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}

@@ -1,10 +1,11 @@
 "use client";
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ACCOUNTS, AVAILABLE_INSTRUCTIONS, AVAILABLE_REASONS, LATE_PAYMENTS, INQUIRIES_DATA as inquiriesData } from "@/constants/dispute-type-data";
 import { DISPUTE_TYPES } from "@/constants/dispute-types";
-import { Badge, FileText, NetworkIcon } from "lucide-react";
+import { FileText, NetworkIcon } from "lucide-react";
 import { useState } from "react";
 import { DisputeActions, DisputeFooter, DisputeTableWrapper, InquirySection } from "./dispute-actions";
 import { SelectDisputeInstruction, SelectDisputeReason } from "./dispute-reason-instructions";
@@ -181,7 +182,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                     >
                         <div className="mb-2 flex align-center justify-center">
                             <Badge className="bg-green-100 text-green-800 hover:bg-green-100 gap-1">
-                                Attack Guide
+                                Dispute Guide
                                 <NetworkIcon size={16} className="transform rotate-90" />
                             </Badge>
                         </div>

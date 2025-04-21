@@ -24,7 +24,7 @@ interface Props {
 	proofOfAddress: string;
 }
 
-const DelegatoryRound6 = (info: Props) => {
+const DerogatoryRound6 = (info: Props) => {
 
 	const {
 		clientName,
@@ -131,4 +131,4 @@ const DelegatoryRound6 = (info: Props) => {
 	);
 };
 
-export default DelegatoryRound6;
+export default DerogatoryRound6;

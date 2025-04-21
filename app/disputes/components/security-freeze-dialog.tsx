@@ -6,8 +6,14 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Input } from '@/components/ui/input';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { FURNISHER_DATA } from '@/constants/furnisher-data';
-import { ExternalLink, Eye, X } from 'lucide-react';
+import { auth, db } from '@/lib/firebase';
+import { randomId } from '@/lib/utils';
+import { DisputeLetter } from '@/types/dispute-center';
+import { doc, setDoc } from 'firebase/firestore';
+import { ExternalLink, Eye, Loader, X } from 'lucide-react';
 import { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'sonner';
 import { SecurityFreezeDetailDialog } from './security-freeze-detail-dialog';
 
 interface SecurityFreezeDialogProps {
@@ -19,8 +25,63 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFurnishers, setSelectedFurnishers] = useState<string[]>([]);
   const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<boolean>(false);
-   
-  const filteredFurnishers = FURNISHER_DATA.filter(furnisher => 
+  const [isCreatingSecurityFreezeDispute, setIsCreatingSecurityFreezeDispute] = useState(false);
+
+  const [user] = useAuthState(auth);
+
+  const handleCreateSecurityFreezeDispute = async () => {
+    setIsCreatingSecurityFreezeDispute(true);
+
+
+    try {
+      if (selectedFurnishers.length === 0) {
+        toast('Error', {
+          description: 'Please select at least one furnisher.',
+          duration: 3000
+        });
+        setIsCreatingSecurityFreezeDispute(false);
+        return;
+      }
+
+      const selectedFurnisherData = FURNISHER_DATA.filter(f => selectedFurnishers.includes(f.name));
+
+      const dataMapped: DisputeLetter[] = selectedFurnisherData.map(f => ({
+        id: randomId(),
+        letterName: 'Security Freeze Attack',
+        creditBureauName: f.name,
+        shortDescription: 'Data Furnisher',
+        createdAt: new Date().toISOString(),
+        letterRound: 1,
+        userId: user?.uid || '',
+        letterSent: false,
+        letterCompleted: false,
+        inquiries: [],
+        accounts: [],
+      }));
+
+      await Promise.all(dataMapped.map(async (letter) => {
+        const letterRef = await doc(db, 'letters', letter.id);
+        await setDoc(letterRef, letter);
+      }));
+
+      // Handle success
+      toast('Success', {
+        description: 'Your Security Freeze Dispute has been created successfully.',
+        duration: 3000
+      });
+      setSelectedFurnishers([]);
+      onOpenChange(false);
+    } catch (error) {
+      toast("Failed", {
+        description: "An error occurred while creating the Security Freeze Dispute.",
+        duration: 3000
+      });
+    } finally {
+      setIsCreatingSecurityFreezeDispute(false);
+    }
+  };
+
+  const filteredFurnishers = FURNISHER_DATA.filter(furnisher =>
     furnisher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     furnisher.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -30,15 +91,15 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
   };
 
   const handleDeselectAll = () => {
-     if(selectedFurnishers.length > 0){
-       setSelectedFurnishers([]);
-     }
+    if (selectedFurnishers.length > 0) {
+      setSelectedFurnishers([]);
+    }
   };
 
   const toggleFurnisher = (name: string) => {
-    setSelectedFurnishers(prev => 
-      prev.includes(name) 
-        ? prev.filter(f => f !== name) 
+    setSelectedFurnishers(prev =>
+      prev.includes(name)
+        ? prev.filter(f => f !== name)
         : [...prev, name]
     );
   };
@@ -49,9 +110,9 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-semibold">Security Freeze Dispute</DialogTitle>
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => onOpenChange(false)}
               className="text-gray-500 hover:text-gray-700"
             >
@@ -67,20 +128,20 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
           </div>
 
           <div className="flex flex-wrap gap-4">
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
               onClick={handleSelectAll}
             >
               Select All Data Furnisher
             </Button>
-            {selectedFurnishers.length > 0 && 
-              <Button 
-              variant="outline" 
-              className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
-              onClick={handleDeselectAll}
+            {selectedFurnishers.length > 0 &&
+              <Button
+                variant="outline"
+                className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
+                onClick={handleDeselectAll}
               >
-              Deselect All Data Furnisher
+                Deselect All Data Furnisher
               </Button>
             }
             <div className="flex-1 min-w-[200px]">
@@ -110,7 +171,7 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
                   {filteredFurnishers.map((furnisher, index) => (
                     <tr key={index} className="border-b hover:bg-gray-50">
                       <td className="p-4">
-                        <Checkbox 
+                        <Checkbox
                           checked={selectedFurnishers.includes(furnisher.name)}
                           onCheckedChange={() => toggleFurnisher(furnisher.name)}
                         />
@@ -119,9 +180,9 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
                       <td className="p-4 truncate" title={furnisher.category}>{furnisher.category}</td>
                       <td className="p-4">
                         <div className="flex items-center space-x-1">
-                          <a 
-                            href={furnisher.website} 
-                            target="_blank" 
+                          <a
+                            href={furnisher.website}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="text-blue-600 hover:underline truncate"
                             title={furnisher.website}
@@ -139,7 +200,7 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
                           <TooltipProvider delayDuration={0}>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-600" onClick={()=>setIsDetailDialogOpen(!isDetailDialogOpen)}>
+                                <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-600" onClick={() => setIsDetailDialogOpen(!isDetailDialogOpen)}>
                                   <Eye className="h-4 w-4" />
                                 </Button>
                               </TooltipTrigger>
@@ -157,27 +218,31 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
             </div>
           </div>
           {isDetailDialogOpen &&
-            <SecurityFreezeDetailDialog 
-              isOpen={isDetailDialogOpen} 
-              onOpenChange={() => setIsDetailDialogOpen(!isDetailDialogOpen)} 
+            <SecurityFreezeDetailDialog
+              isOpen={isDetailDialogOpen}
+              onOpenChange={() => setIsDetailDialogOpen(!isDetailDialogOpen)}
             />
           }
 
         </div>
-          <DialogFooter className="flex justify-end space-x-4">
-            <Button 
-              variant="outline" 
-              onClick={() => onOpenChange(false)}
-            >
-              Close
-            </Button>
-            <Button 
-              className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-              disabled={selectedFurnishers.length === 0}
-            >
-              Create Security Freeze Dispute
-            </Button>
-          </DialogFooter>
+        <DialogFooter className="flex justify-end space-x-4">
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
+            Close
+          </Button>
+          <Button
+            className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
+            disabled={selectedFurnishers.length === 0 || isCreatingSecurityFreezeDispute}
+            onClick={handleCreateSecurityFreezeDispute}
+          >
+            {
+              isCreatingSecurityFreezeDispute && <Loader className="animate-spin h-4 w-4 mr-2" />
+            }
+            Create Security Freeze Dispute
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
