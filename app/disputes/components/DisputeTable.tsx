@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { SquarePen } from "lucide-react";
 import { useState } from "react";
+import FurnisherDetailsModal from "./furnisher-detail-modal";
 import { Modal } from "./reason-modal";
 
 export interface Account {
@@ -15,6 +16,7 @@ export interface Account {
         exp: string;
         eqfx: string;
     };
+    creditor: string;
     reason: string;
     instruction: string;
     status: string;
@@ -26,7 +28,7 @@ interface DisputeTableProps {
     selectedAccounts: string[];
     handleSelectAll: () => void;
     handleSelectAccount: (accountId: string) => void;
-    renderBureauCheckboxes: (account: Account) => JSX.Element;
+    renderBureauCheckboxes: (account: Account, onBureauToggle: () => void) => JSX.Element;
     customSelections: {
         [accountId: string]: {
             reason?: string;
@@ -37,20 +39,28 @@ interface DisputeTableProps {
 
 const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts, selectedAccounts, handleSelectAll, handleSelectAccount, renderBureauCheckboxes, customSelections }) => {
     const [modalOpen, setModalOpen] = useState(false);
+    const [furnisherDetailsOpen, setFurnisherDetailsOpen] = useState(false);
+    const [selectedFurnisher, setSelectedFurnisher] = useState<Account | null>(null);
     const [editingAccount, setEditingAccount] = useState<Account | null>(null);
-    const [editingField, setEditingField] = useState<"reason" | "instruction" | null>(null);
+    const [editingField, setEditingField] = useState<"reason" | "instruction" | "creditor" | null>(null);
     const [editedText, setEditedText] = useState("");
 
-    const openEditModal = (account: Account, field: "reason" | "instruction") => {
+    const openEditModal = (account: Account, field: "reason" | "instruction" | "creditor") => {
         setEditingAccount(account);
         setEditingField(field);
-        setEditedText(field === "reason" 
-            ? customSelections[account.accountId]?.reason || account.reason
-            : customSelections[account.accountId]?.instruction || account.instruction
-        );
+        let value = "";
+        if (field === "reason") {
+            value = customSelections[account.accountId]?.reason || account.reason;
+        } else if (field === "instruction") {
+            value = customSelections[account.accountId]?.instruction || account.instruction;
+        } else if (field === "creditor") {
+            value = account.creditor;
+        }
+        setEditedText(value);
+
         setModalOpen(true);
     };
-    
+
     const handleSave = () => {
         setModalOpen(false);
     };
@@ -68,6 +78,7 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                         <TableHead>FURNISHER</TableHead>
                         <TableHead>ACCOUNT TYPE</TableHead>
                         <TableHead>BUREAUS</TableHead>
+                        <TableHead></TableHead>
                         <TableHead>REASON</TableHead>
                         <TableHead>INSTRUCTION</TableHead>
                     </TableRow>
@@ -82,14 +93,38 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                                 />
                             </TableCell>
                             <TableCell>
-                                <div className="font-medium">{account.furnisher}</div>
+                                <div className="font-medium cursor-pointer"
+                                     onClick={() => {
+                                        setSelectedFurnisher(account);
+                                        setFurnisherDetailsOpen(true);
+                                      }}
+                                      
+>
+                                    {account.furnisher}
+                                </div>
                                 <div className="text-sm text-gray-500">{account.accountId}</div>
                                 <div className={`text-xs ${account.status === 'Positive' ? 'text-green-600' : 'text-red-600'}`}>
                                     {account.status}
                                 </div>
                             </TableCell>
                             <TableCell>{account.accountType}</TableCell>
-                            <TableCell>{renderBureauCheckboxes(account)}</TableCell>
+                            <TableCell>
+                                {renderBureauCheckboxes(account, () => handleSelectAccount(account.accountId))}
+                            </TableCell>
+                            <TableCell>
+                                <div className="flex flex-nowrap whitespace-nowrap items-center">
+                                    <Checkbox />
+                                    <p className="ml-2">CDTR</p>
+                                    <SquarePen
+                                        className="w-4 h-4 text-green-500 cursor-pointer ml-2"
+                                        onClick={() => openEditModal(account, "creditor")}
+                                    />
+                                </div>
+
+                                {!account.creditor && (
+                                    <p className="text-sm text-red-500 mt-1">Not found</p>
+                                )}
+                            </TableCell>
                             <TableCell>
                                 <div className="flex flex-nowrap">
                                     {customSelections[account.accountId]?.reason || account.reason}
@@ -101,8 +136,8 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                             </TableCell>
 
                             <TableCell>
-                                <div className="flex flex-nowrap whitespace-nowrap">
-                                    {account.instruction}
+                                <div className="flex flex-nowrap whitespace-nowrap items-center max-w-[350px] overflow-hidden text-ellipsis">
+                                    <span className="truncate">{account.instruction}</span>
                                     <SquarePen
                                         className="w-4 h-4 text-green-500 cursor-pointer ml-2"
                                         onClick={() => openEditModal(account, "instruction")}
@@ -113,6 +148,12 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                     ))}
                 </TableBody>
             </Table>
+            {furnisherDetailsOpen && selectedFurnisher && (
+                <FurnisherDetailsModal
+                    account={selectedFurnisher}
+                    onClose={() => setFurnisherDetailsOpen(false)}
+                />
+            )}
             {modalOpen && (
                 <Modal onClose={() => setModalOpen(false)} onSave={handleSave}>
                     <div className="space-y-4">
@@ -124,13 +165,16 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                                 className="w-full p-2 border rounded-md"
                             />
                         </label>
-                        <label className="block">
-                            <Textarea
-                                value={editedText}
-                                onChange={(e) => setEditedText(e.target.value)}
-                                className="w-full p-2 border rounded-md"
-                            />
-                        </label>
+
+                        {editingField !== "creditor" && (
+                            <label className="block">
+                                <Textarea
+                                    value={editedText}
+                                    onChange={(e) => setEditedText(e.target.value)}
+                                    className="w-full p-2 border rounded-md"
+                                />
+                            </label>
+                        )}
                     </div>
                 </Modal>
             )}
