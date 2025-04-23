@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { X } from 'lucide-react';
 import DisputeTableRow from './dispute-table-row';
+import { useState } from 'react';
+import { CreatePersonalInfoDisputeDialog } from './create-personal-info-dispute';
 
 interface PersonalInformationDisputeDialogProps {
     open: boolean;
@@ -10,6 +12,7 @@ interface PersonalInformationDisputeDialogProps {
 }
 
 export default function PersonalInformationDisputeDialog({ open, onOpenChange }: PersonalInformationDisputeDialogProps) {
+  const [show, setShow] = useState<boolean>(false)
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -40,12 +43,16 @@ export default function PersonalInformationDisputeDialog({ open, onOpenChange }:
                     </Table>
                     <div className="flex justify-end space-x-4 mt-6">
                         <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
-                        <Button className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90">
+                        <Button className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90" onClick={()=>setShow(!show)}>
                             Create Personal Information Dispute
                         </Button>
                     </div>
                 </div>
             </DialogContent>
+            {
+                show &&
+                <CreatePersonalInfoDisputeDialog isOpen={show} handleClose={() =>setShow(!show)}/>
+            }
         </Dialog>
     );
 }
