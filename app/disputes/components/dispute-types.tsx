@@ -9,7 +9,7 @@ import { FileText, NetworkIcon } from "lucide-react";
 import { useState } from "react";
 import { DisputeActions, DisputeFooter, DisputeTableWrapper, InquirySection } from "./dispute-actions";
 import { SelectDisputeInstruction, SelectDisputeReason } from "./dispute-reason-instructions";
-import DisputeTable from "./DisputeTable";
+import DisputeTable, { Account } from "./DisputeTable";
 import PersonalInformationDisputeDialog from "./personal-information-dispute";
 import PublicRecordsNotice from "./public-response-notice";
 import SearchBar from "./search-bar";
@@ -95,47 +95,49 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             ? inquiriesData
             : inquiriesData.filter((item) => item.bureau === selectedFilter);
 
-    const renderBureauCheckboxes = (account: typeof ACCOUNTS[0]) => {
-        const selections = bureauSelections[account.accountId] || { tu: false, exp: false, eqfx: false };
-        const customSelection = customSelections[account.accountId] || {};
+    const renderBureauCheckboxes = (
+        account: Account,
+        onBureauToggle: () => void
+    ) => {
+        const selections = bureauSelections[account.accountId] || {
+            tu: false,
+            exp: false,
+            eqfx: false
+        };
+
+        const handleToggle = (bureau: 'tu' | 'exp' | 'eqfx') => {
+            handleBureauToggle(account.accountId, bureau);
+            onBureauToggle();
+        };
+
+        const renderBureau = (label: string, key: 'tu' | 'exp' | 'eqfx') => {
+            const status = account.bureaus[key];
+            if (status === 'Not Reported') {
+                return (
+                    <div className="text-xs text-gray-400">
+                        <span className={key === 'eqfx' ? 'text-red-500' : 'text-gray-500'}>{label}</span>
+                        <div className="text-[10px]">Not Reported</div>
+                    </div>
+                );
+            }
+
+            return (
+                <div>
+                    <div className="text-xs text-gray-500">{label}</div>
+                    <Checkbox
+                        checked={selections[key]}
+                        onCheckedChange={() => handleToggle(key)}
+                    />
+                </div>
+            );
+        };
 
         return (
             <div className="space-y-2">
                 <div className="flex items-start flex-nowrap gap-2">
-                    <div>
-                        <div className="text-xs text-gray-500">TU</div>
-                        <Checkbox
-                            checked={selections.tu}
-                            onCheckedChange={() => handleBureauToggle(account.accountId, 'tu')}
-                            disabled={account.bureaus.tu === 'Not Reported'}
-                            className={account.bureaus.tu === 'In-Dispute' ? 'bg-blue-100' : ''}
-                        />
-                    </div>
-                    <div>
-                        <div className="text-xs text-gray-500">EXP</div>
-                        <Checkbox
-                            checked={selections.exp}
-                            onCheckedChange={() => handleBureauToggle(account.accountId, 'exp')}
-                            disabled={account.bureaus.exp === 'Not Reported'}
-                            className={account.bureaus.exp === 'In-Dispute' ? 'bg-blue-100' : ''}
-                        />
-                    </div>
-                    <div>
-                        <div className="text-xs text-gray-500">EQFX</div>
-                        <Checkbox
-                            checked={selections.eqfx}
-                            onCheckedChange={() => handleBureauToggle(account.accountId, 'eqfx')}
-                            disabled={account.bureaus.eqfx === 'Not Reported'}
-                            className={account.bureaus.eqfx === 'In-Dispute' ? 'bg-blue-100' : ''}
-                        />
-                    </div>
-                    <div>
-                        <div className="text-xs text-gray-500">CDTR</div>
-                        <Checkbox
-                            checked={customSelection.cdtr}
-                            onCheckedChange={() => handleBureauToggle(account.accountId, 'cdtr')}
-                        />
-                    </div>
+                    {renderBureau("TU", "tu")}
+                    {renderBureau("EXP", "exp")}
+                    {renderBureau("EQFX", "eqfx")}
                 </div>
             </div>
         );
@@ -168,10 +170,46 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             );
         });
     };
+
+    const derivedDisputeTypes = DISPUTE_TYPES.map(type => {
+        let count = 0;
+    
+        switch (type.type) {
+            case 'derogatory':
+                count = ACCOUNTS.length;
+                break;
+            case 'late-payments':
+                count = LATE_PAYMENTS.length;
+                break;
+            case 'inquiries':
+                count = inquiriesData.length;
+                break;
+            case 'personal-info':
+                count = 0;
+                break;
+            case 'public-records':
+                count = 0;
+                break;
+            case 'all-accounts':
+                count = ACCOUNTS.length + LATE_PAYMENTS.length;
+                break;
+            default:
+                count = type.count || 0;
+        }
+    
+        const getLabel = (label: string) => {
+            if (count === 0) return 'You have none';
+            return `You have ${count} ${label}`;
+        };
+    
+        const description = getLabel(type.name);
+    
+        return { ...type, count, description };
+    });
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-6 gap-4">
-                {DISPUTE_TYPES.map((type) => (
+                {derivedDisputeTypes.map((type: any) => (
                     <div
                         key={type.name}
                         className={`
@@ -190,7 +228,9 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                             <FileText className="h-6 w-6 mb-2 text-brand-navy" />
                             <div className="text-center">
                                 <div className="font-medium">{type.name}</div>
-                                <div className="text-xs text-gray-600">{type.description}</div>
+                                <div className="text-xs text-gray-600">
+                                    {type.name !== "Personal Information" && type.description}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -208,19 +248,28 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
 
             <div className="grid grid-cols-4 gap-4 mt-6">
                 <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-                    <div className="text-xl font-bold">0</div>
+                    <div className="text-xl font-bold">
+                        {/* count from derived dispute type */}
+                        {derivedDisputeTypes.find(name => name.name === "Inquiries")?.count || 0}
+                    </div>
                     <div className="text-sm text-gray-600">Inquiries</div>
                 </div>
                 <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-                    <div className="text-xl font-bold">0</div>
+                    <div className="text-xl font-bold">
+                        {derivedDisputeTypes.find(name => name.name === "Derogatory")?.count || 0}
+                    </div>
                     <div className="text-sm text-gray-600">Derogatory Accounts</div>
                 </div>
                 <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-                    <div className="text-xl font-bold">0</div>
+                    <div className="text-xl font-bold">
+                        {derivedDisputeTypes.find(name => name.name === "Late Payments")?.count || 0}
+                    </div>
                     <div className="text-sm text-gray-600">Late Payment Accounts</div>
                 </div>
                 <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-                    <div className="text-xl font-bold">0</div>
+                    <div className="text-xl font-bold">
+                        {derivedDisputeTypes.find(name => name.name === "Public Records")?.count || 0}
+                    </div>
                     <div className="text-sm text-gray-600">Public Records</div>
                 </div>
             </div>

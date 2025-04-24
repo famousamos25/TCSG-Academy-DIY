@@ -68,8 +68,8 @@ const ACCOUNTS = [
             tu: 'Not Reported',
             exp: 'In-Dispute',
             eqfx: 'Not Reported',
-            cdtr: "In-Dispute"
         },
+        creditor: 'UTILITY SELFREPORTED',
         reason: 'Under 15 U.S. Code § 1681 (a)(4) Consumer Right to Privacy',
         instruction: 'This is a violation of my consumer rights, please delete immediately',
         status: 'Positive'
@@ -82,8 +82,8 @@ const ACCOUNTS = [
             tu: 'In-Dispute',
             exp: 'In-Dispute',
             eqfx: 'In-Dispute',
-            cdtr: "In-Dispute"
         },
+        creditor: 'FB&T/MERCURY',
         reason: 'Under 15 USC 1692g. Validation of debts',
         instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
         status: 'Negative'
@@ -96,8 +96,8 @@ const ACCOUNTS = [
             tu: 'Not Reported',
             exp: 'In-Dispute',
             eqfx: 'In-Dispute',
-            cdtr: "In-Dispute"
         },
+        creditor: 'LVNV FUNDING LLC',
         reason: 'Under 15 USC 1692g. Validation of debts',
         instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
         status: 'Negative'
@@ -110,8 +110,8 @@ const ACCOUNTS = [
             tu: 'Not Reported',
             exp: 'In-Dispute',
             eqfx: 'In-Dispute',
-            cdtr: "In-Dispute"
         },
+        creditor: 'LVNV FUNDING LLC',
         reason: 'Under 15 USC 1692g. Validation of debts',
         instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
         status: 'Negative'
@@ -124,8 +124,8 @@ const ACCOUNTS = [
             tu: 'Not Reported',
             exp: 'Not Reported',
             eqfx: 'In-Dispute',
-            cdtr: "In-Dispute"
         },
+        creditor: '',
         reason: 'Under 15 USC 1692g. Validation of debts',
         instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
         status: 'Negative'
