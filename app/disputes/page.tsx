@@ -22,7 +22,6 @@ import {
   EyeIcon,
   LucideDownload,
   MailIcon,
-  PrinterIcon,
   Send,
   Trash2Icon,
   Undo2
@@ -32,6 +31,7 @@ import { toast } from 'sonner';
 import { DeleteDialog } from './components/delete-dispute-dialog';
 import DisputeMenus from './components/dispute-menus';
 import { PreviewLetterModal } from './components/preview-letter-dialog';
+import { PrintLetter } from './components/print-letter';
 import { SendDisputesMail } from './components/send-disputes-mail';
 import { UndoStatusDialog } from './components/undo-status-dialog';
 
@@ -71,9 +71,9 @@ export default function DisputesPage() {
   const [showSendDisputesMail, setShowSendDisputesMail] = useState<boolean>(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   const [showPreview, setShowPreview] = useState(false);
-  const [creditorName, setCreditorName] = useState<string>('');
+  const [creditorName] = useState<string>('');
 
-  const openModal = (id: string) => {
+  const openModal = () => {
     setShowModal(true);
   };
 
@@ -87,12 +87,7 @@ export default function DisputesPage() {
 
   const { letters, stats } = useDisputeLetters(filters);
 
-  console.log("letters", letters);
-  console.log("stats", stats);
-  
-  
-
-  const handleStatusUpdate = (status: string) => {
+  const handleStatusUpdate = () => {
     // if(selectedDispute !== null){
     //       if (status === "unsent") {
     //         setFilteredDisputes((prevDisputes) => {
@@ -243,7 +238,7 @@ export default function DisputesPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {letters.map((dispute, index) => (
+              {letters.map((letter, index) => (
                 <TableRow key={index} className="border-b">
                   <TableCell className="py-2 px-4">
                     <Checkbox
@@ -252,35 +247,35 @@ export default function DisputesPage() {
                       onCheckedChange={() => handleSelectRow(index)}
                     />
                   </TableCell>
-                  <TableCell className="py-2 px-4 text-gray-500 text-sm">{dispute.letterName}</TableCell>
+                  <TableCell className="py-2 px-4 text-gray-500 text-sm">{letter.letterName}</TableCell>
                   <TableCell className="py-2 px-4">
-                    <span className="text-blue-400">{dispute.creditBureauName}</span>
+                    <span className="text-blue-400">{letter.creditBureauName}</span>
                     <br />
-                    <span className="text-gray-400 text-sm">{dispute.shortDescription}</span>
+                    <span className="text-gray-400 text-sm">{letter.shortDescription}</span>
                   </TableCell>
                   <TableCell className="py-2 px-4">
                     <div className="flex flex-col items-start">
                       <span className="text-gray-500 font-semibold">
-                        {format(new Date(dispute.createdAt), 'MMM dd, yyyy')}
+                        {format(new Date(letter.createdAt), 'MMM dd, yyyy')}
                       </span>
                       <span className="text-gray-500 text-sm">
-                        {format(new Date(dispute.createdAt), 'hh:mm:ss aaa')}
+                        {format(new Date(letter.createdAt), 'hh:mm:ss aaa')}
                       </span>
                     </div>
                   </TableCell>
                   <TableCell className="py-2 px-4">
                     <span className="border border-green-500 text-green-500 px-2 py-1 rounded">
-                      Dispute Round #{dispute.letterRound}
+                      Dispute Round #{letter.letterRound}
                     </span>
                   </TableCell>
-                  <TableCell className="py-2 px-4">{dispute.accounts?.length}</TableCell>
+                  <TableCell className="py-2 px-4">{letter.accounts?.length}</TableCell>
                   <TableCell className="py-2 px-4 space-x-2">
-                    {dispute.letterSent ? (
+                    {letter.letterSent ? (
                       <>
                         <button
                           className="text-green-400"
                           title="Mark Un sent"
-                          onClick={() => openModal(dispute.id)}
+                          onClick={() => openModal()}
                         >
                           <Undo2 size={18} />
                         </button>
@@ -297,17 +292,19 @@ export default function DisputesPage() {
                         <ConfirmModal
                           title='Are you sure?'
                           description='Please ensure each letter is marked as sent only after it has been mailed.'
-                          onConfirm={() => handleMarkAsSent(dispute.id)}
+                          onConfirm={() => handleMarkAsSent(letter.id)}
                         >
                           <button className="text-green-400" title="Send">
                             <Send size={18} />
                           </button>
                         </ConfirmModal>
-                        <button className="text-green-400" title="View"
-                          onClick={() => setShowPreview(true)}
-                        >
-                          <EyeIcon size={18} />
-                        </button>
+                        <PreviewLetterModal letter={letter} >
+                          <button className="text-green-400" title="View"
+                            onClick={() => setShowPreview(true)}
+                          >
+                            <EyeIcon size={18} />
+                          </button>
+                        </PreviewLetterModal>
                         <button className="text-green-400" title="Mail"
                         >
                           <MailIcon size={18}
@@ -316,18 +313,16 @@ export default function DisputesPage() {
                         <button className="text-green-400" title="Download">
                           <LucideDownload size={18} />
                         </button>
-                        <button className="text-green-400" title="Print">
-                          <PrinterIcon size={18} />
-                        </button>
+                        <PrintLetter letter={letter} />
                       </>
                     )}
                     <ConfirmModal
                       title='Are you sure?'
-                      description={`Do You want To Delete <b>${dispute.creditBureauName}</b>`}
-                      onConfirm={() => handleDeleteLetter(dispute.id)}
+                      description={`Do You want To Delete <b>${letter.creditBureauName}</b>`}
+                      onConfirm={() => handleDeleteLetter(letter.id)}
                     >
                       <button className="text-red-400" title="Delete">
-                        <Trash2Icon size={18}/>
+                        <Trash2Icon size={18} />
                       </button>
                     </ConfirmModal>
                   </TableCell>
@@ -340,9 +335,9 @@ export default function DisputesPage() {
         <UndoStatusDialog
           open={showModal}
           onOpenChange={setShowModal}
-          onConfirm={() => handleStatusUpdate('unsent')}
+          onConfirm={() => handleStatusUpdate()}
         />
-        <PreviewLetterModal open={showPreview} onClose={setShowPreview} />
+
       </div>
 
       {showSendDisputesMail && <SendDisputesMail

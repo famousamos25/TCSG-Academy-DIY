@@ -48,6 +48,7 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
       const dataMapped: DisputeLetter[] = selectedFurnisherData.map(f => ({
         id: randomId(),
         letterName: 'Security Freeze Attack',
+        letterType: "securityFreeze",
         creditBureauName: f.name,
         shortDescription: 'Data Furnisher',
         createdAt: new Date().toISOString(),

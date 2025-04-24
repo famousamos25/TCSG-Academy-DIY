@@ -1,5 +1,6 @@
 
 export interface DisputeLetter {
+	letterType: string;
 	id: string;
 	letterName: string;
 	creditBureauName: string;
