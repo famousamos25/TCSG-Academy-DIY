@@ -387,7 +387,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
 
                     <div className="border rounded-md overflow-hidden shadow-sm mt-4">
                         <DisputeTable
-                            ACCOUNTS={[...ACCOUNTS, ...LATE_PAYMENTS]}
+                            ACCOUNTS={[...ACCOUNTS, ...LATE_PAYMENTS] as any} // TODO remove any and use correct type
                             filteredAccounts={filteredAccounts([...ACCOUNTS, ...LATE_PAYMENTS])}
                             selectedAccounts={selectedAccounts}
                             handleSelectAll={handleSelectAll}
