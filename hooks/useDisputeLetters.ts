@@ -12,7 +12,7 @@ const useDisputeLetters = (filters: Record<string, any>) => {
 	const [stats, setStats] = useState({ sent: 0, unsent: 0, completed: 0 });
 
 	const [user] = useAuthState(auth);
-	
+
 	useEffect(() => {
 		const fetchLetters = async () => {
 			try {
@@ -44,7 +44,7 @@ const useDisputeLetters = (filters: Record<string, any>) => {
 			}
 		};
 
-		if(user?.uid) fetchLetters();
+		if (user?.uid) fetchLetters();
 	}, [filters, user?.uid]);
 
 	useEffect(() => {
@@ -52,7 +52,8 @@ const useDisputeLetters = (filters: Record<string, any>) => {
 			try {
 				const lettersRef = collection(db, 'letters');
 
-				onSnapshot(lettersRef, (snapshot) => {
+				const q: Query<DocumentData, DocumentData> = query(lettersRef, where('userId', '==', user?.uid));
+				onSnapshot(q, (snapshot) => {
 					const allLetters = snapshot.docs.map(doc => ({
 						id: doc.id,
 						...doc.data(),
@@ -72,7 +73,7 @@ const useDisputeLetters = (filters: Record<string, any>) => {
 		};
 
 		fetchLetters();
-	}, []);
+	}, [user?.uid]);
 
 	return {
 		letters,

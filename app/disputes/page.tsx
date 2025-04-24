@@ -87,6 +87,11 @@ export default function DisputesPage() {
 
   const { letters, stats } = useDisputeLetters(filters);
 
+  console.log("letters", letters);
+  console.log("stats", stats);
+  
+  
+
   const handleStatusUpdate = (status: string) => {
     // if(selectedDispute !== null){
     //       if (status === "unsent") {
