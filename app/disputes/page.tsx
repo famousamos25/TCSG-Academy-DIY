@@ -20,7 +20,6 @@ import {
   Circle,
   CircleDot,
   EyeIcon,
-  LucideDownload,
   MailIcon,
   Send,
   Trash2Icon,
@@ -30,6 +29,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { DeleteDialog } from './components/delete-dispute-dialog';
 import DisputeMenus from './components/dispute-menus';
+import { DownloadLetter } from './components/download-letter';
 import { PreviewLetterModal } from './components/preview-letter-dialog';
 import { PrintLetter } from './components/print-letter';
 import { SendDisputesMail } from './components/send-disputes-mail';
@@ -310,9 +310,7 @@ export default function DisputesPage() {
                           <MailIcon size={18}
                             onClick={() => setShowSendDisputesMail(!showSendDisputesMail)} />
                         </button>
-                        <button className="text-green-400" title="Download">
-                          <LucideDownload size={18} />
-                        </button>
+                        <DownloadLetter letter={letter} />
                         <PrintLetter letter={letter} />
                       </>
                     )}
