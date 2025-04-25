@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { X } from 'lucide-react';
-import DisputeTableRow from './dispute-table-row';
+import DisputeTableRow, { Bureau, FormattedDispute } from './dispute-table-row';
 import { useState } from 'react';
 import { CreatePersonalInfoDisputeDialog } from './create-personal-info-dispute';
 
@@ -13,6 +13,13 @@ interface PersonalInformationDisputeDialogProps {
 
 export default function PersonalInformationDisputeDialog({ open, onOpenChange }: PersonalInformationDisputeDialogProps) {
   const [show, setShow] = useState<boolean>(false)
+  const [selectedDisputes, setSelectedDisputes] = useState<Record<string, boolean>>({});
+  const [formattedDisputes, setFormattedDisputes] = useState<Record<Bureau, FormattedDispute[]>>()
+
+  const handleSelectionChange = (updated: Record<Bureau, FormattedDispute[]>, raw: Record<string, boolean>) => {
+    setSelectedDisputes(raw);
+    setFormattedDisputes(updated);
+  };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -37,13 +44,16 @@ export default function PersonalInformationDisputeDialog({ open, onOpenChange }:
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <DisputeTableRow />
+                        <DisputeTableRow onSelectionChange={handleSelectionChange} selectedDisputes={selectedDisputes} />
 
                         </TableBody>
                     </Table>
                     <div className="flex justify-end space-x-4 mt-6">
                         <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
-                        <Button className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90" onClick={()=>setShow(!show)}>
+                        <Button className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90" 
+                        onClick={()=>setShow(!show)}
+                        disabled = {!Object.values(selectedDisputes).some(value => value)}
+                        >
                             Create Personal Information Dispute
                         </Button>
                     </div>
@@ -51,7 +61,7 @@ export default function PersonalInformationDisputeDialog({ open, onOpenChange }:
             </DialogContent>
             {
                 show &&
-                <CreatePersonalInfoDisputeDialog isOpen={show} handleClose={() =>setShow(!show)}/>
+                <CreatePersonalInfoDisputeDialog isOpen={show} handleClose={() =>setShow(!show)}  formattedDisputes = {formattedDisputes}/>
             }
         </Dialog>
     );
