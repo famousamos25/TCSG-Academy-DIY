@@ -104,11 +104,11 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
         }));
     };
 
-    const handleSelectAccount = (accountId: string) => {
+    const handleSelectAccount = (accountNumber: string) => {
         setSelectedAccounts(prev =>
-            prev.includes(accountId)
-                ? prev.filter(id => id !== accountId)
-                : [...prev, accountId]
+            prev.includes(accountNumber)
+                ? prev.filter(id => id !== accountNumber)
+                : [...prev, accountNumber]
         );
     };
 
@@ -142,55 +142,57 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             : inquiriesData.filter((item) => item.bureau === selectedFilter);
 
     const renderBureauCheckboxes = (
-        account: Account,
+        accounts: Account[],
         onBureauToggle: () => void
     ) => {
-        console.log('Rendering Bureau Checkboxes for Account:', account);
-
-        const selections = bureauSelections[account.accountId] || {
+        const selections = bureauSelections[accounts[0].accountNumber] || {
             tu: false,
             exp: false,
-            eqfx: false
+            eqfx: false,
         };
 
         const handleToggle = (bureau: 'tu' | 'exp' | 'eqfx') => {
-            handleBureauToggle(account.accountId, bureau);
+            handleBureauToggle(accounts[0].accountNumber, bureau);
             onBureauToggle();
         };
 
-        const renderBureau = (label: string, key: 'tu' | 'exp' | 'eqfx') => {
-            const status = account.bureaus?.[key] ?? 'Not Reported';
+        const findBureau = (bureau: "TransUnion" | "Experian" | "Equifax") => {
+            return accounts.find(acc => acc.bureau === bureau);
+        };
 
-            if (status === 'Not Reported') {
-                return (
-                    <div className="text-xs text-gray-400">
-                        <span className={key === 'eqfx' ? 'text-red-500' : 'text-gray-500'}>{label}</span>
-                        <div className="text-[10px]">Not Reported</div>
-                    </div>
-                );
-            }
+        const renderBureau = (label: string, key: 'tu' | 'exp' | 'eqfx', bureauName: "TransUnion" | "Experian" | "Equifax") => {
+            const bureauData = findBureau(bureauName);
 
             return (
-                <div>
-                    <div className="text-xs text-gray-500">{label}</div>
-                    <Checkbox
-                        checked={selections[key]}
-                        onCheckedChange={() => handleToggle(key)}
-                    />
+                <div className="flex flex-col items-center min-w-[60px]">
+                    <div className={`text-xs font-semibold ${key === 'eqfx' ? 'text-red-400' : 'text-cyan-400'}`}>
+                        {label}
+                    </div>
+                    {bureauData ? (
+                        <Checkbox
+                            className="mt-1"
+                            checked={selections[key]}
+                            onCheckedChange={() => handleToggle(key)}
+                        />
+                    ) : (
+                        <div className="text-[10px] text-gray-400 mt-1 whitespace-nowrap">
+                            Not Reported
+                        </div>
+                    )}
                 </div>
             );
         };
 
         return (
-            <div className="space-y-2">
-                <div className="flex items-start flex-nowrap gap-2">
-                    {renderBureau("TU", "tu")}
-                    {renderBureau("EXP", "exp")}
-                    {renderBureau("EQFX", "eqfx")}
-                </div>
+            <div className="flex items-center justify-start gap-6">
+                {renderBureau("TU", "tu", "TransUnion")}
+                {renderBureau("EXP", "exp", "Experian")}
+                {renderBureau("EQFX", "eqfx", "Equifax")}
             </div>
         );
     };
+
+
 
     const handleBureauToggle = (accountId: string, option: keyof BureauSelection | 'cdtr') => {
         if (option === 'cdtr') {
