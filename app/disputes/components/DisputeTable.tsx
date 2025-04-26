@@ -11,16 +11,37 @@ export interface Account {
     furnisher: string;
     accountId: string;
     accountType: string;
-    bureaus: {
-        tu: string;
-        exp: string;
-        eqfx: string;
-    };
-    creditor: string;
+    bureaus: BureauDetail[]; // Array now
     reason: string;
     instruction: string;
     status: string;
 }
+
+export interface BureauDetail {
+    bureau: "TransUnion" | "Experian" | "Equifax";
+    subscriberCode: string;
+    creditorName: string;
+    accountNumber: string;
+    balance: string;
+    highBalance: string;
+    accountStatus: string;
+    dateAccountStatus: string;
+    accountDescription: string;
+    accountType: string;
+    creditType: string;
+    disputeFlag: string;
+    verificationIndicator: string;
+    dateOpened: string;
+    dateReported: string;
+    dateLastPayment: string;
+    creditLimit: string;
+    amountPastDue: string;
+    monthlyPayment: string;
+    paymentFrequency?: string;
+    paymentHistory?: any;
+    paymentStatus: string;
+}
+
 
 interface DisputeTableProps {
     ACCOUNTS: Account[];
@@ -71,8 +92,8 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                     <TableRow>
                         <TableHead className="w-12">
                             <Checkbox
-                                checked={selectedAccounts.length === ACCOUNTS.length && ACCOUNTS.length > 0}
-                                onCheckedChange={handleSelectAll}
+                                // checked={selectedAccounts.length === ACCOUNTS.length && ACCOUNTS.length > 0}
+                                // onCheckedChange={handleSelectAll}
                             />
                         </TableHead>
                         <TableHead>FURNISHER</TableHead>
@@ -84,31 +105,39 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {filteredAccounts.map((account) => (
+                    {filteredAccounts.map((account: any) => {
+                        // take the first account and use it to render the table row
+                        const bureauDetails = account[0];
+                        return (
                         <TableRow key={account.accountId} className="hover:bg-gray-50">
                             <TableCell>
                                 <Checkbox
-                                    checked={selectedAccounts.includes(account.accountId)}
-                                    onCheckedChange={() => handleSelectAccount(account.accountId)}
+                                    // checked={selectedAccounts.includes(account.accountId)}
+                                    // onCheckedChange={() => handleSelectAccount(account.accountId)}
                                 />
                             </TableCell>
                             <TableCell>
                                 <div className="font-medium cursor-pointer"
-                                     onClick={() => {
-                                        setSelectedFurnisher(account);
-                                        setFurnisherDetailsOpen(true);
-                                      }}
+                                    //  onClick={() => {
+                                    //     setSelectedFurnisher(account);
+                                    //     setFurnisherDetailsOpen(true);
+                                    //   }}
                                       
 >
-                                    {account.furnisher}
+                                    {/* {account.furnisher} */}
+                                    {bureauDetails.creditorName}
                                 </div>
-                                <div className="text-sm text-gray-500">{account.accountId}</div>
+                                <div className="text-sm text-gray-500">{bureauDetails.accountNumber}</div>
                                 <div className={`text-xs ${account.status === 'Positive' ? 'text-green-600' : 'text-red-600'}`}>
                                     {account.status}
                                 </div>
                             </TableCell>
-                            <TableCell>{account.accountType}</TableCell>
-                            <TableCell>
+                                <TableCell>
+                                    {bureauDetails.accountType && bureauDetails.accountType.length > 13
+                                        ? bureauDetails.accountType.substring(0, 11) + '...'
+                                        : bureauDetails.accountType}
+                                </TableCell>
+                                <TableCell>
                                 {renderBureauCheckboxes(account, () => handleSelectAccount(account.accountId))}
                             </TableCell>
                             <TableCell>
@@ -145,7 +174,8 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
                                 </div>
                             </TableCell>
                         </TableRow>
-                    ))}
+                        );
+})}
                 </TableBody>
             </Table>
             {furnisherDetailsOpen && selectedFurnisher && (
