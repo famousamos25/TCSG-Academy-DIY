@@ -36,7 +36,7 @@ import { auth, db } from '@/lib/firebase';
 import { onSnapshot, doc, updateDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 
-interface Profile {
+export interface Profile {
   firstName?: string;
   lastName?: string;
   email: string;
