@@ -3,10 +3,15 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from '@/components/ui/use-toast';
 import { ACCOUNTS, AVAILABLE_INSTRUCTIONS, AVAILABLE_REASONS, LATE_PAYMENTS, INQUIRIES_DATA as inquiriesData } from "@/constants/dispute-type-data";
 import { DISPUTE_TYPES } from "@/constants/dispute-types";
+import { auth, db } from '@/lib/firebase';
+import { convertKeysToLowerFirst } from '@/lib/utils';
+import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { FileText, NetworkIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { DisputeActions, DisputeFooter, DisputeTableWrapper, InquirySection } from "./dispute-actions";
 import { SelectDisputeInstruction, SelectDisputeReason } from "./dispute-reason-instructions";
 import DisputeTable, { Account } from "./DisputeTable";
@@ -44,7 +49,48 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             instruction?: string;
             cdtr?: boolean;
         };
-    }>({})
+    }>({});
+    const [loading, setLoading] = useState(true);
+
+    const [user] = useAuthState(auth);
+    const { toast } = useToast();
+    const [creditReport, setCreditReport] = useState<any>(null);
+
+    useEffect(() => {
+        if (!user) return;
+        try {
+            const q = query(
+                collection(db, 'users', user.uid, 'credit_reports'),
+                orderBy('importedAt', 'desc'),
+                limit(1)
+            );
+
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+                if (!snapshot.empty) {
+                    const reportData = snapshot.docs[0].data();
+                    setCreditReport({
+                        ...reportData,
+                        data: typeof reportData.data === "string" ? convertKeysToLowerFirst(JSON.parse(reportData.data)) : reportData.data,
+                    });
+                }
+                setLoading(false);
+            }, (error) => {
+                console.error('Error fetching credit report:', error);
+                toast({
+                    title: 'Error',
+                    description: 'Failed to load credit report data',
+                    variant: 'destructive',
+                });
+                setLoading(!loading);
+            });
+
+            return () => unsubscribe();
+        } catch (error) {
+            console.error('Error setting up credit report listener:', error);
+            setLoading(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
 
     const handleDisputeTypeSelect = (type: string) => {
@@ -58,11 +104,11 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
         }));
     };
 
-    const handleSelectAccount = (accountId: string) => {
+    const handleSelectAccount = (accountNumber: string) => {
         setSelectedAccounts(prev =>
-            prev.includes(accountId)
-                ? prev.filter(id => id !== accountId)
-                : [...prev, accountId]
+            prev.includes(accountNumber)
+                ? prev.filter(id => id !== accountNumber)
+                : [...prev, accountNumber]
         );
     };
 
@@ -96,52 +142,58 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             : inquiriesData.filter((item) => item.bureau === selectedFilter);
 
     const renderBureauCheckboxes = (
-        account: Account,
+        accounts: Account[],
         onBureauToggle: () => void
     ) => {
-        const selections = bureauSelections[account.accountId] || {
+        const selections = bureauSelections[accounts[0].accountNumber] || {
             tu: false,
             exp: false,
-            eqfx: false
+            eqfx: false,
         };
 
         const handleToggle = (bureau: 'tu' | 'exp' | 'eqfx') => {
-            handleBureauToggle(account.accountId, bureau);
+            handleBureauToggle(accounts[0].accountNumber, bureau);
             onBureauToggle();
         };
 
-        const renderBureau = (label: string, key: 'tu' | 'exp' | 'eqfx') => {
-            const status = account.bureaus[key];
-            if (status === 'Not Reported') {
-                return (
-                    <div className="text-xs text-gray-400">
-                        <span className={key === 'eqfx' ? 'text-red-500' : 'text-gray-500'}>{label}</span>
-                        <div className="text-[10px]">Not Reported</div>
-                    </div>
-                );
-            }
+        const findBureau = (bureau: "TransUnion" | "Experian" | "Equifax") => {
+            return accounts.find(acc => acc.bureau === bureau);
+        };
+
+        const renderBureau = (label: string, key: 'tu' | 'exp' | 'eqfx', bureauName: "TransUnion" | "Experian" | "Equifax") => {
+            const bureauData = findBureau(bureauName);
 
             return (
-                <div>
-                    <div className="text-xs text-gray-500">{label}</div>
-                    <Checkbox
-                        checked={selections[key]}
-                        onCheckedChange={() => handleToggle(key)}
-                    />
+                <div className="flex flex-col items-center min-w-[60px]">
+                    <div className={`text-xs font-semibold ${key === 'eqfx' ? 'text-red-400' : 'text-cyan-400'}`}>
+                        {label}
+                    </div>
+                    {bureauData ? (
+                        <Checkbox
+                            className="mt-1"
+                            checked={selections[key]}
+                            onCheckedChange={() => handleToggle(key)}
+                        />
+                    ) : (
+                        <div className="text-[10px] text-gray-400 mt-1 whitespace-nowrap">
+                            Not Reported
+                        </div>
+                    )}
                 </div>
             );
         };
 
         return (
-            <div className="space-y-2">
-                <div className="flex items-start flex-nowrap gap-2">
-                    {renderBureau("TU", "tu")}
-                    {renderBureau("EXP", "exp")}
-                    {renderBureau("EQFX", "eqfx")}
-                </div>
+            <div className="flex items-center justify-start gap-6">
+                {renderBureau("TU", "tu", "TransUnion")}
+                {renderBureau("EXP", "exp", "Experian")}
+                {renderBureau("EQFX", "eqfx", "Equifax")}
             </div>
         );
     };
+
+
+
     const handleBureauToggle = (accountId: string, option: keyof BureauSelection | 'cdtr') => {
         if (option === 'cdtr') {
             setCustomSelections(prev => ({
@@ -163,20 +215,33 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
     };
 
     const filteredAccounts = (dataSource: any) => {
+        if (!Array.isArray(dataSource)) return [];
+
         return dataSource.filter((account: any) => {
+            const furnisher = account.furnisher?.toLowerCase?.() || "";
+            const accountId = account.accountId?.toLowerCase?.() || "";
             return (
-                account.furnisher.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                account.accountId.toLowerCase().includes(searchTerm.toLowerCase())
+                furnisher.includes(searchTerm.toLowerCase()) ||
+                accountId.includes(searchTerm.toLowerCase())
             );
         });
     };
 
+    const derogatoryAccs = creditReport?.data?.accounts.filter((account: any) => {
+        if (account?.some((acc: any) => acc?.paymentStatus === 'Collection/Chargeoff')) return true;
+        if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("collection"))) return true;
+        if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("chargeoff"))) return true;
+
+        return false;
+    });
+    const derogatoryCount = derogatoryAccs?.length || 0;
+
     const derivedDisputeTypes = DISPUTE_TYPES.map(type => {
         let count = 0;
-    
+
         switch (type.type) {
             case 'derogatory':
-                count = ACCOUNTS.length;
+                count = derogatoryCount;
                 break;
             case 'late-payments':
                 count = LATE_PAYMENTS.length;
@@ -196,16 +261,17 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             default:
                 count = type.count || 0;
         }
-    
+
         const getLabel = (label: string) => {
             if (count === 0) return 'You have none';
             return `You have ${count} ${label}`;
         };
-    
+
         const description = getLabel(type.name);
-    
+
         return { ...type, count, description };
     });
+
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-6 gap-4">
@@ -310,7 +376,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                     )}
                     <DisputeTableWrapper
                         {...props}
-                        accounts={ACCOUNTS}
+                        accounts={derogatoryAccs}
                         data={filteredAccounts}
                         selectedAccounts={selectedAccounts}
                         handleSelectAll={handleSelectAll}
