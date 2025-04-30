@@ -148,7 +148,7 @@ const page = ({ }: Props) => {
 		{ type: "carRepossessionLetter6", component: <CarRepossessionLetter6 {...CRL6Data} /> },
 		{ type: "creditorCarRepossessionLetter1", component: <CreditorCarRepossessionLetter1 {...CCRL1Data} /> },
 		{ type: "securityFreeze", component: <SecurityFreeze {...SFData} /> },
-		{ type: "personalInformation", component: <PersonalInformation {...PIData} /> },
+		{ type: "personalInformation", component: <PersonalInformation {...PIData as any} /> },
 		{ type: "DerogatoryRound2", component: <DerogatoryRound2 {...DR2Data} /> },
 		{ type: "DerogatoryRound3", component: <DerogatoryRound3 {...DR3Data} /> },
 		{ type: "DerogatoryRound4", component: <DerogatoryRound4 {...DR4Data} /> },

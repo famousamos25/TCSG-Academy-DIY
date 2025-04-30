@@ -7,13 +7,14 @@ interface Props {
     clientCity: string;
     clientState: string;
     clientZIPCode: string;
+    clientDob: string;
     ssn: string;
     date: string;
     creditBureau: string;
-    creditBureauAddress: string;
-    creditBureauCity: string;
-    creditBureauState: string;
-    creditBureauZIPCode: string;
+    creditorAddress: string;
+    creditorCity: string;
+    creditorState: string;
+    creditorZIPCode: string;
     reportedClientName: string;
     akaNames: string;
     reportedCurrentAddress: string;
@@ -37,10 +38,10 @@ const PersonalInformation = (info: Props) => {
         ssn,
         date,
         creditBureau,
-        creditBureauAddress,
-        creditBureauCity,
-        creditBureauState,
-        creditBureauZIPCode,
+        creditorAddress,
+        creditorCity,
+        creditorState,
+        creditorZIPCode,
         reportedClientName,
         akaNames,
         reportedCurrentAddress,
@@ -48,14 +49,14 @@ const PersonalInformation = (info: Props) => {
         reportedPreviousAddresses,
         reportedEmployers,
         reportedDOB,
-        actualDOB,
+        clientDob,
         ssnCard,
         driverLicense,
         proofOfAddress,
     } = info;
 
     return (
-        <div className="max-w-2xl mx-auto p-8 bg-white shadow-md rounded-md border border-gray-200">
+        <div className="w-full">
             <div className="space-y-3 text-sm">
                 {/* Client Info */}
                 <div className="space-y-0.5">
@@ -68,8 +69,8 @@ const PersonalInformation = (info: Props) => {
                 {/* Credit Bureau Info */}
                 <div className="space-y-0.5">
                     <p className="font-bold">{creditBureau}</p>
-                    <p>{creditBureauAddress}</p>
-                    <p>{`${creditBureauCity}, ${creditBureauState}, ${creditBureauZIPCode}`}</p>
+                    <p>{creditorAddress}</p>
+                    <p>{`${creditorCity}, ${creditorState}, ${creditorZIPCode}`}</p>
                 </div>
 
                 <p>{date}</p>
@@ -83,7 +84,7 @@ const PersonalInformation = (info: Props) => {
                 </p>
 
                 <p>
-                    In accordance with the <span className="font-bold">Fair Credit Reporting Act (FCRA), 15 U.S.C. § 1681i</span>, I am asserting my right to challenge and dispute inaccurate information on my credit report. The FCRA mandates that each piece of information on a consumer's credit report must be accurate, complete, and within the credit reporting time frame.
+                    In accordance with the <span className="font-bold">Fair Credit Reporting Act (FCRA), 15 U.S.C. § 1681i</span>, I am asserting my right to challenge and dispute inaccurate information on my credit report. The FCRA mandates that each piece of information on a consumer&apos;s credit report must be accurate, complete, and within the credit reporting time frame.
                 </p>
 
                 <p>The specific inaccuracies I found on my report include:</p>
@@ -91,22 +92,22 @@ const PersonalInformation = (info: Props) => {
                 <p className="font-bold text-red-500">Personal Information for {creditBureau}</p>
 
                 <div className="space-y-1">
-                    <p className="flex justify-between"><strong>NAME:</strong>{reportedClientName}</p>
+                    <p className="flex justify-between"><strong>NAME:</strong>{reportedClientName ?? "-"}</p>
                     <p>BS-30/31  </p>
                     <p>The only name I go by is {clientName}. Please remove any name you have in your system that does not match.</p>
                     <p className="flex justify-between"><strong>Also Known As:</strong> {akaNames}</p>
                 </div>
 
                 <div className="space-y-1">
-                    <p className="flex justify-between"><strong>CURRENT ADDRESS:</strong> {reportedCurrentAddress}</p>
+                    <p className="flex justify-between"><strong>CURRENT ADDRESS:</strong> {reportedCurrentAddress ?? "-"}</p>
                     <p>BS-40, BS-42-44</p>
-                    <p>REMOVE the reported Consumer’s Current Residence(s) of {reportedCurrentAddress} as my REQUISITE REPORTED CURRENT, CORRECT and COMPLETE Current Address is {actualCurrentAddress}. I DO NOT AUTHORIZE you to retain, nor report any not proven, true, correct, valid and required reported personal identifier information that is not in exact agreement with my submitted FACTUALLY CORRECT CURRENT PERSONAL IDENTIFIERS as indicated here.</p>
+                    <p>REMOVE the reported Consumer’s Current Residence(s) of {reportedCurrentAddress ?? "-"} as my REQUISITE REPORTED CURRENT, CORRECT and COMPLETE Current Address is {actualCurrentAddress ?? "-"}. I DO NOT AUTHORIZE you to retain, nor report any not proven, true, correct, valid and required reported personal identifier information that is not in exact agreement with my submitted FACTUALLY CORRECT CURRENT PERSONAL IDENTIFIERS as indicated here.</p>
                 </div>
 
                 <div className="space-y-1">
-                    <p className="flex justify-between"><strong>PREVIOUS RESIDENCE:</strong> {reportedPreviousAddresses}</p>
+                    <p className="flex justify-between"><strong>PREVIOUS RESIDENCE:</strong> {reportedPreviousAddresses ?? "-"}</p>
                     <p>BS-40, BS-42-44 </p>
-                    <p>REMOVE the display reported Previous Residence(s) of {reportedPreviousAddresses} as my REQUISITE REPORTED CURRENT CORRECT COMPLETE Current Address is [CURRENT ADDRESS] . I DO NOT AUTHORIZE you to retain nor report any not proven true correct valid and required reported personal identifier information that is not in exact agreement with my submitted FACTUALLY CORRECT CURRENT PERSONAL IDENTIFIERS as indicated</p>
+                    <p>REMOVE the display reported Previous Residence(s) of {reportedPreviousAddresses ?? "-"} as my REQUISITE REPORTED CURRENT CORRECT COMPLETE Current Address is [CURRENT ADDRESS] . I DO NOT AUTHORIZE you to retain nor report any not proven true correct valid and required reported personal identifier information that is not in exact agreement with my submitted FACTUALLY CORRECT CURRENT PERSONAL IDENTIFIERS as indicated</p>
                 </div>
 
                 <div className="space-y-1">
@@ -118,7 +119,7 @@ const PersonalInformation = (info: Props) => {
                 <div className="space-y-1">
                     <p className="flex justify-between"><strong>Birth Year:</strong> {reportedDOB}</p>
                     <p> *BSCF40-45</p>
-                    <p>REMOVE the displayed Date of Birth {reportedDOB}. My actual correct Date of Birth is: {actualDOB}.  I DO NOT AUTHORIZE you to retain nor report any not proven true correct valid and required reported personal identifier information that is not in exact agreement with my submitted FACTUALLY CORRECT CURRENT PERSONAL IDENTIFIERS as indicated</p>
+                    <p>REMOVE the displayed Date of Birth {reportedDOB}. My actual correct Date of Birth is: {clientDob}.  I DO NOT AUTHORIZE you to retain nor report any not proven true correct valid and required reported personal identifier information that is not in exact agreement with my submitted FACTUALLY CORRECT CURRENT PERSONAL IDENTIFIERS as indicated</p>
                 </div>
 
                 <hr />

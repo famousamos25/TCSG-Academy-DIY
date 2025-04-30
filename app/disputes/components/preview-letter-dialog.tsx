@@ -43,6 +43,7 @@ export function PreviewLetterModal({ children, letter }: PreviewLetterModalProps
       clientState: userInfo?.state ?? "",
       clientZIPCode: userInfo?.zipcode ?? "",
       clientPhone: userInfo?.phone ?? "",
+      clientDob: userInfo.dob ,
       date: format(new Date(letter?.createdAt), 'MMMM dd, yyyy'),
       creditorName: creditor?.name ?? "",
       creditorAddress: creditReport?.address?.unparsedStreet ?? "",
@@ -52,6 +53,7 @@ export function PreviewLetterModal({ children, letter }: PreviewLetterModalProps
       ssn: userInfo?.ssn ?? "",
       ssnCard,
       driverLicense,
+      creditBureau: letter?.creditBureauName
     };
   }, [userInfo, letter, creditReport, documents]);
 
@@ -65,7 +67,7 @@ export function PreviewLetterModal({ children, letter }: PreviewLetterModalProps
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-3xl bg-[#f5f8ff] text-white">
+      <DialogContent className="max-w-3xl bg-white text-white py-0">
         <div className="flex items-end justify-end">
           <X className="text-gray-600 w-6 h-6 cursor-pointer" onClick={() => onClose(false)} />
         </div>
