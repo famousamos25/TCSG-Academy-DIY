@@ -61,34 +61,6 @@ const LATE_PAYMENTS = [
 
 const ACCOUNTS = [
     {
-        furnisher: 'UTILITY SELFREPORTED',
-        accountId: 'PR026AB925D0915481288780E8947F597E4',
-        accountType: 'Unknown -credit',
-        bureaus: {
-            tu: 'Not Reported',
-            exp: 'In-Dispute',
-            eqfx: 'Not Reported',
-        },
-        creditor: 'UTILITY SELFREPORTED',
-        reason: 'Under 15 U.S. Code § 1681 (a)(4) Consumer Right to Privacy',
-        instruction: 'This is a violation of my consumer rights, please delete immediately',
-        status: 'Positive'
-    },
-    {
-        furnisher: 'FB&T/MERCURY',
-        accountId: '0059499809',
-        accountType: 'Credit Card',
-        bureaus: {
-            tu: 'In-Dispute',
-            exp: 'In-Dispute',
-            eqfx: 'In-Dispute',
-        },
-        creditor: 'FB&T/MERCURY',
-        reason: 'Under 15 USC 1692g. Validation of debts',
-        instruction: 'Please delete due to a violation of 15 U.S. Code  1692g - Validation of debts',
-        status: 'Negative'
-    },
-    {
         furnisher: 'LVNV FUNDING LLC',
         accountId: '379364015536330',
         accountType: 'Unknown -credit',
