@@ -24,6 +24,7 @@ export default function PersonalInformationDisputeDialog({ open, onOpenChange }:
     const [selectedInfos, setSelectedInfos] = useState<SelectedInfo[]>([]);
 
     const { creditReport, loading: loadingCreditReport } = useCreditReport();
+    const personalInfo = creditReport?.personalInfo;
 
     const handleSelectionChange = (bureau: Bureau, type: string, value: string) => {
         const exists = selectedInfos?.find((info) => info.bureau === bureau && info.value === value && info.type === type);
@@ -60,15 +61,6 @@ export default function PersonalInformationDisputeDialog({ open, onOpenChange }:
         // Convert the map values back to an array
         return Array.from(employerMap.values());
     };
-
-
-    const personalInfo = creditReport?.personalInfo;
-
-    // console.log("personalInfo", personalInfo);
-    console.log("selectedInfos", selectedInfos);
-
-    console.log(getUniqueEmployers(personalInfo?.employer?.equifax ?? []))
-
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>

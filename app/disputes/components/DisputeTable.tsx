@@ -63,8 +63,6 @@ const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts,
     const [editingField, setEditingField] = useState<"reason" | "instruction" | "creditor" | null>(null);
     const [editedText, setEditedText] = useState("");
 
-    console.log("filteredAccounts", filteredAccounts);
-
     const openEditModal = (account: Account, field: "reason" | "instruction" | "creditor") => {
         setEditingAccount(account);
         setEditingField(field);

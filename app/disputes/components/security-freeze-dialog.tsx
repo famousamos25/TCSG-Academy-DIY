@@ -32,7 +32,6 @@ export function SecurityFreezeDialog({ open, onOpenChange }: SecurityFreezeDialo
   const handleCreateSecurityFreezeDispute = async () => {
     setIsCreatingSecurityFreezeDispute(true);
 
-
     try {
       if (selectedFurnishers.length === 0) {
         toast('Error', {

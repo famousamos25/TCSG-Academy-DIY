@@ -3,15 +3,11 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from '@/components/ui/use-toast';
 import { ACCOUNTS, AVAILABLE_INSTRUCTIONS, AVAILABLE_REASONS, LATE_PAYMENTS, INQUIRIES_DATA as inquiriesData } from "@/constants/dispute-type-data";
 import { DISPUTE_TYPES } from "@/constants/dispute-types";
-import { auth, db } from '@/lib/firebase';
-import { convertKeysToLowerFirst } from '@/lib/utils';
-import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { useCreditReport } from '@/hooks/use-credit-report';
 import { FileText, NetworkIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useMemo, useState } from "react";
 import { DisputeActions, DisputeFooter, DisputeTableWrapper, InquirySection } from "./dispute-actions";
 import { SelectDisputeInstruction, SelectDisputeReason } from "./dispute-reason-instructions";
 import DisputeTable, { Account } from "./DisputeTable";
@@ -30,12 +26,18 @@ interface DisputeTypesProps {
     [key: string]: any;
 }
 
+interface SelectedInfo {
+    index: number;
+    type: "bureau" | "cdtr";
+    bureau?: string;
+}
+
 export default function DisputeTypes({ hideDisputeActions = false, onOpenChange, ...props }: DisputeTypesProps) {
     const [selectedDisputeType, setSelectedDisputeType] = useState<string | null>("Derogatory");
     const [selectedInquiries, setSelectedInquiries] = useState<Record<string, boolean>>({});
     const [selectedFilter, setSelectedFilter] = useState<string>("All");
     const [disputeRound, setDisputeRound] = useState('Dispute Round #1');
-
+    const [selectedInfo, setSelectedInfo] = useState<SelectedInfo[]>([]);
 
     const [selectedReason, setSelectedReason] = useState('');
     const [selectedInstruction, setSelectedInstruction] = useState('');
@@ -50,48 +52,12 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             cdtr?: boolean;
         };
     }>({});
-    const [loading, setLoading] = useState(true);
 
-    const [user] = useAuthState(auth);
-    const { toast } = useToast();
-    const [creditReport, setCreditReport] = useState<any>(null);
+    const isChecked = (index: number, type: "bureau" | "cdtr", bureau?: string) => {
 
-    useEffect(() => {
-        if (!user) return;
-        try {
-            const q = query(
-                collection(db, 'users', user.uid, 'credit_reports'),
-                orderBy('importedAt', 'desc'),
-                limit(1)
-            );
+    };
 
-            const unsubscribe = onSnapshot(q, (snapshot) => {
-                if (!snapshot.empty) {
-                    const reportData = snapshot.docs[0].data();
-                    setCreditReport({
-                        ...reportData,
-                        data: typeof reportData.data === "string" ? convertKeysToLowerFirst(JSON.parse(reportData.data)) : reportData.data,
-                    });
-                }
-                setLoading(false);
-            }, (error) => {
-                console.error('Error fetching credit report:', error);
-                toast({
-                    title: 'Error',
-                    description: 'Failed to load credit report data',
-                    variant: 'destructive',
-                });
-                setLoading(!loading);
-            });
-
-            return () => unsubscribe();
-        } catch (error) {
-            console.error('Error setting up credit report listener:', error);
-            setLoading(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
-
+    const { creditReport, loading } = useCreditReport();
 
     const handleDisputeTypeSelect = (type: string) => {
         setSelectedDisputeType(type);
@@ -227,50 +193,57 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
         });
     };
 
-    const derogatoryAccs = creditReport?.data?.accounts.filter((account: any) => {
+    const derogatoryAccs = creditReport?.accounts.filter((account: any) => {
         if (account?.some((acc: any) => acc?.paymentStatus === 'Collection/Chargeoff')) return true;
         if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("collection"))) return true;
         if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("chargeoff"))) return true;
-
         return false;
     });
-    const derogatoryCount = derogatoryAccs?.length || 0;
 
-    const derivedDisputeTypes = DISPUTE_TYPES.map(type => {
-        let count = 0;
-
-        switch (type.type) {
-            case 'derogatory':
-                count = derogatoryCount;
-                break;
-            case 'late-payments':
-                count = LATE_PAYMENTS.length;
-                break;
-            case 'inquiries':
-                count = inquiriesData.length;
-                break;
-            case 'personal-info':
-                count = 0;
-                break;
-            case 'public-records':
-                count = 0;
-                break;
-            case 'all-accounts':
-                count = ACCOUNTS.length + LATE_PAYMENTS.length;
-                break;
-            default:
-                count = type.count || 0;
-        }
-
-        const getLabel = (label: string) => {
-            if (count === 0) return 'You have none';
-            return `You have ${count} ${label}`;
-        };
-
-        const description = getLabel(type.name);
-
-        return { ...type, count, description };
+    const latePaymentAccounts = creditReport?.accounts.filter((account: any) => {
+        if (account?.some((acc: any) => acc?.paymentStatus?.toLowerCase()?.includes("late") && acc?.accountStatus?.toLowerCase() !== "derogatory")) return true;
+        return false;
     });
+
+    const derivedDisputeTypes = useMemo(() => {
+        return DISPUTE_TYPES.map(type => {
+            let count = 0;
+
+            switch (type.type) {
+                case 'derogatory':
+                    count = derogatoryAccs?.length;
+                    break;
+                case 'late-payments':
+                    count = latePaymentAccounts?.length;
+                    break;
+                case 'inquiries':
+                    count = creditReport?.inquiries?.length;
+                    break;
+                case 'personal-info':
+                    count = 0;
+                    break;
+                case 'public-records':
+                    count = creditReport?.publicRecords?.length || 0;
+                    break;
+                case 'all-accounts':
+                    count = creditReport?.accounts.length;
+                    break;
+                default:
+                    count = type.count || 0;
+            }
+
+            const getLabel = (label: string) => {
+                if (count === 0) return 'You have none';
+                return `You have ${count} ${label}`;
+            };
+
+            const description = getLabel(type.name);
+
+            return { ...type, count, description };
+        });
+    }, [creditReport?.accounts.length, creditReport?.inquiries?.length, creditReport?.publicRecords?.length, derogatoryAccs?.length, latePaymentAccounts?.length]);
+
+    console.log("derogatoryAccs", derogatoryAccs);
 
     return (
         <div className="space-y-6">
@@ -315,26 +288,25 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
             <div className="grid grid-cols-4 gap-4 mt-6">
                 <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
                     <div className="text-xl font-bold">
-                        {/* count from derived dispute type */}
-                        {derivedDisputeTypes.find(name => name.name === "Inquiries")?.count || 0}
+                        {creditReport?.inquiries?.length}
                     </div>
                     <div className="text-sm text-gray-600">Inquiries</div>
                 </div>
                 <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
                     <div className="text-xl font-bold">
-                        {derivedDisputeTypes.find(name => name.name === "Derogatory")?.count || 0}
+                        {derogatoryAccs?.length}
                     </div>
                     <div className="text-sm text-gray-600">Derogatory Accounts</div>
                 </div>
                 <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
                     <div className="text-xl font-bold">
-                        {derivedDisputeTypes.find(name => name.name === "Late Payments")?.count || 0}
+                        {latePaymentAccounts?.length}
                     </div>
                     <div className="text-sm text-gray-600">Late Payment Accounts</div>
                 </div>
                 <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
                     <div className="text-xl font-bold">
-                        {derivedDisputeTypes.find(name => name.name === "Public Records")?.count || 0}
+                        {creditReport?.publicRecords?.length || 0}
                     </div>
                     <div className="text-sm text-gray-600">Public Records</div>
                 </div>
@@ -354,81 +326,48 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                 )
             }
 
+            {(selectedDisputeType && ["Late Payments", "Derogatory"].includes(selectedDisputeType) && !hideDisputeActions) && (
+                <DisputeActions
+                    disputeRound={disputeRound}
+                    setDisputeRound={setDisputeRound}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    reasons={AVAILABLE_REASONS}
+                    instructions={AVAILABLE_INSTRUCTIONS}
+                    bureauSelections={bureauSelections}
+                    allSelected={allSelected}
+                    toggleSelectAll={toggleSelectAll}
+                    selectedAccounts={selectedAccounts}
+                    selectedReason={selectedReason}
+                    setSelectedReason={setSelectedReason}
+                    selectedInstruction={selectedInstruction}
+                    setSelectedInstruction={setSelectedInstruction}
+                />
+            )}
+
+            {(selectedDisputeType && ["Late Payments", "Derogatory"].includes(selectedDisputeType)) && (
+                <DisputeTableWrapper
+                    {...props}
+                    accounts={selectedDisputeType === "Derogatory" ? derogatoryAccs : LATE_PAYMENTS}
+                    data={filteredAccounts}
+                    selectedAccounts={selectedAccounts}
+                    handleSelectAll={handleSelectAll}
+                    handleSelectAccount={handleSelectAccount}
+                    renderBureauCheckboxes={renderBureauCheckboxes as any}
+                    customSelections={customSelections}
+                    allSelected={allSelected}
+                    toggleSelectAll={toggleSelectAll}
+                />
+            )}
+
             {selectedDisputeType === "Derogatory" && (
-                <>
-                    {!hideDisputeActions && (
-                        <DisputeActions
-                            disputeRound={disputeRound}
-                            setDisputeRound={setDisputeRound}
-                            searchTerm={searchTerm}
-                            setSearchTerm={setSearchTerm}
-                            reasons={AVAILABLE_REASONS}
-                            instructions={AVAILABLE_INSTRUCTIONS}
-                            bureauSelections={bureauSelections}
-                            allSelected={allSelected}
-                            toggleSelectAll={toggleSelectAll}
-                            selectedAccounts={selectedAccounts}
-                            selectedReason={selectedReason}
-                            setSelectedReason={setSelectedReason}
-                            selectedInstruction={selectedInstruction}
-                            setSelectedInstruction={setSelectedInstruction}
-                        />
-                    )}
-                    <DisputeTableWrapper
-                        {...props}
-                        accounts={derogatoryAccs}
-                        data={filteredAccounts}
-                        selectedAccounts={selectedAccounts}
-                        handleSelectAll={handleSelectAll}
-                        handleSelectAccount={handleSelectAccount}
-                        renderBureauCheckboxes={renderBureauCheckboxes as any}
-                        customSelections={customSelections}
-                        allSelected={allSelected}
-                        toggleSelectAll={toggleSelectAll}
-                    />
                     <DisputeFooter
                         onClose={() => onOpenChange(false)}
                         actionText="Create Letters"
                         disabled={false}
                     />
-                </>
             )}
-
-            {selectedDisputeType === "Late Payments" && (
-                <>
-                    {!hideDisputeActions && (
-                        <DisputeActions
-                            disputeRound={disputeRound}
-                            setDisputeRound={setDisputeRound}
-                            searchTerm={searchTerm}
-                            setSearchTerm={setSearchTerm}
-                            reasons={AVAILABLE_REASONS}
-                            instructions={AVAILABLE_INSTRUCTIONS}
-                            bureauSelections={bureauSelections}
-                            allSelected={allSelected}
-                            toggleSelectAll={toggleSelectAll}
-                            selectedAccounts={selectedAccounts}
-                            selectedReason={selectedReason}
-                            setSelectedReason={setSelectedReason}
-                            selectedInstruction={selectedInstruction}
-                            setSelectedInstruction={setSelectedInstruction}
-                        />
-                    )}
-                    <DisputeTableWrapper
-                        {...props}
-                        accounts={LATE_PAYMENTS}
-                        data={filteredAccounts}
-                        selectedAccounts={selectedAccounts}
-                        handleSelectAll={handleSelectAll}
-                        handleSelectAccount={handleSelectAccount}
-                        renderBureauCheckboxes={renderBureauCheckboxes as any}
-                        customSelections={customSelections}
-                        allSelected={allSelected}
-                        toggleSelectAll={toggleSelectAll}
-                    />
-                </>
-            )}
-
+            
             {selectedDisputeType === "Public Records" && <PublicRecordsNotice />}
 
             {selectedDisputeType === "All Accounts" && (

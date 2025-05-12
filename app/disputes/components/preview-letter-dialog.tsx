@@ -57,9 +57,6 @@ export function PreviewLetterModal({ children, letter }: PreviewLetterModalProps
     };
   }, [userInfo, letter, creditReport, documents]);
 
-
-
-
   if (!letter) return null;
 
   return (
