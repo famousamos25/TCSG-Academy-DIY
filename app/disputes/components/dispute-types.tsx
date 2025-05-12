@@ -8,7 +8,8 @@ import { DISPUTE_TYPES } from "@/constants/dispute-types";
 import { useCreditReport } from '@/hooks/use-credit-report';
 import { FileText, NetworkIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import { DisputeActions, DisputeFooter, DisputeTableWrapper, InquirySection } from "./dispute-actions";
+import ConsumerLawDerogatories from './consumer-law-derogatories';
+import { DisputeActions, InquirySection } from "./dispute-actions";
 import { SelectDisputeInstruction, SelectDisputeReason } from "./dispute-reason-instructions";
 import DisputeTable, { Account } from "./DisputeTable";
 import PersonalInformationDisputeDialog from "./personal-information-dispute";
@@ -325,49 +326,39 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
                     />
                 )
             }
+            {
+                selectedDisputeType === "Derogatory" && <ConsumerLawDerogatories onCloseDialog={() => setSelectedDisputeType(null)} /> 
+            }
 
-            {(selectedDisputeType && ["Late Payments", "Derogatory"].includes(selectedDisputeType) && !hideDisputeActions) && (
-                <DisputeActions
-                    disputeRound={disputeRound}
-                    setDisputeRound={setDisputeRound}
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    reasons={AVAILABLE_REASONS}
-                    instructions={AVAILABLE_INSTRUCTIONS}
-                    bureauSelections={bureauSelections}
-                    allSelected={allSelected}
-                    toggleSelectAll={toggleSelectAll}
-                    selectedAccounts={selectedAccounts}
-                    selectedReason={selectedReason}
-                    setSelectedReason={setSelectedReason}
-                    selectedInstruction={selectedInstruction}
-                    setSelectedInstruction={setSelectedInstruction}
-                />
-            )}
-
-            {(selectedDisputeType && ["Late Payments", "Derogatory"].includes(selectedDisputeType)) && (
-                <DisputeTableWrapper
-                    {...props}
-                    accounts={selectedDisputeType === "Derogatory" ? derogatoryAccs : LATE_PAYMENTS}
-                    data={filteredAccounts}
-                    selectedAccounts={selectedAccounts}
-                    handleSelectAll={handleSelectAll}
-                    handleSelectAccount={handleSelectAccount}
-                    renderBureauCheckboxes={renderBureauCheckboxes as any}
-                    customSelections={customSelections}
-                    allSelected={allSelected}
-                    toggleSelectAll={toggleSelectAll}
-                />
-            )}
-
-            {selectedDisputeType === "Derogatory" && (
-                    <DisputeFooter
-                        onClose={() => onOpenChange(false)}
-                        actionText="Create Letters"
-                        disabled={false}
+            {(selectedDisputeType && ["Late Payments"].includes(selectedDisputeType) && !hideDisputeActions) && (
+                <>
+                    <DisputeActions
+                        disputeRound={disputeRound}
+                        setDisputeRound={setDisputeRound}
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        reasons={AVAILABLE_REASONS}
+                        instructions={AVAILABLE_INSTRUCTIONS}
+                        bureauSelections={bureauSelections}
+                        allSelected={allSelected}
+                        toggleSelectAll={toggleSelectAll}
+                        selectedAccounts={selectedAccounts}
+                        selectedReason={selectedReason}
+                        setSelectedReason={setSelectedReason}
+                        selectedInstruction={selectedInstruction}
+                        setSelectedInstruction={setSelectedInstruction}
                     />
+                    <DisputeTable
+                        filteredAccounts={filteredAccounts(LATE_PAYMENTS)}
+                        selectedAccounts={selectedAccounts}
+                        handleSelectAll={handleSelectAll}
+                        handleSelectAccount={handleSelectAccount}
+                        renderBureauCheckboxes={renderBureauCheckboxes as any}
+                        customSelections={customSelections}
+                    />
+                </>
             )}
-            
+
             {selectedDisputeType === "Public Records" && <PublicRecordsNotice />}
 
             {selectedDisputeType === "All Accounts" && (
@@ -392,7 +383,6 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
 
                     <div className="border rounded-md overflow-hidden shadow-sm mt-4">
                         <DisputeTable
-                            ACCOUNTS={[...ACCOUNTS, ...LATE_PAYMENTS] as any} // TODO remove any and use correct type
                             filteredAccounts={filteredAccounts([...ACCOUNTS, ...LATE_PAYMENTS])}
                             selectedAccounts={selectedAccounts}
                             handleSelectAll={handleSelectAll}
