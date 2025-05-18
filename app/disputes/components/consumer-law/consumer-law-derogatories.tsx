@@ -79,6 +79,10 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
     };
 
     const { creditReport } = useCreditReport();
+    console.log(creditReport);
+
+
+    
     const derogatoryAccs = creditReport?.accounts.filter((account: any) => {
         if (account?.some((acc: any) => acc?.paymentStatus === 'Collection/Chargeoff')) return true;
         if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("collection"))) return true;

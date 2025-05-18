@@ -8,7 +8,6 @@ import { useState } from "react";
 import { ChangeCreditorModal } from './change-creditor-modal';
 import { ChangeReasonModal } from './change-reason-modal';
 
-
 interface Props {
     account: DisputeAccount;
     accounts: DisputeAccount[];
