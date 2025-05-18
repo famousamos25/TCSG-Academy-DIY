@@ -4,13 +4,14 @@ import { AccountDetailsDialog } from '@/app/creditreport/components/account-deta
 import { Button } from "@/components/ui/button";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCreditReport } from '@/hooks/use-credit-report';
-import { SquarePen } from 'lucide-react';
+import { DisputeAccount } from '@/types/account';
 import { useMemo, useState } from "react";
-import { SelectDisputeInstruction, SelectDisputeReason } from "./dispute-reason-instructions";
-import { Account } from "./DisputeTable";
-import SearchBar from "./search-bar";
+import { SelectDisputeInstruction, SelectDisputeReason } from "../dispute-reason-instructions";
+import { Account } from "../DisputeTable";
+import SearchBar from "../search-bar";
+import AccountTableRow from './account-table-row';
 
 type BureauSelection = Record<string, boolean>;
 interface AccountBureauSelections {
@@ -21,6 +22,11 @@ interface AccountBureauSelections {
 interface SelectedInfo {
     index: number;
     bureau: string;
+}
+
+interface SelectedCreditor {
+    index: number;
+    creditor: string;
 }
 
 interface Props {
@@ -34,23 +40,17 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
     const [disputeRound, setDisputeRound] = useState('Dispute Round #1');
     const [selectedFurnisher, setSelectedFurnisher] = useState<Account | null>(null);
     const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<boolean>(false);
+
+    const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
     const [selectedInfo, setSelectedInfo] = useState<SelectedInfo[]>([]);
-    const [selectedCreditors, setSelectedCreditors] = useState<number[]>([]);
+    const [selectedCreditors, setSelectedCreditors] = useState<SelectedCreditor[]>([]);
+
     const [allSelected, setAllSelected] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
     const [selectedReason, setSelectedReason] = useState('');
     const [selectedInstruction, setSelectedInstruction] = useState('');
 
-    const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
-    const [bureauSelections, setBureauSelections] = useState<AccountBureauSelections>({});
-    const [customSelections, setCustomSelections] = useState<{
-        [accountId: string]: {
-            reason?: string;
-            instruction?: string;
-            cdtr?: boolean;
-        };
-    }>({});
 
     const isChecked = (index: number, bureau: string) => {
         return selectedInfo.some((info) => info.index === index && info.bureau === bureau);
@@ -61,22 +61,16 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
     };
 
     const handleBureauCheckedChange = (index: number, bureau: string) => {
-        setSelectedInfo((prev) => {
-            const existingIndex = prev.findIndex((info) => info.index === index && info.bureau === bureau);
-            if (existingIndex !== -1) {
-                return prev.filter((info) => info.index !== index && info.bureau !== bureau);
-            }
-            return [...prev, { index, bureau }];
-        });
+        const isAlreadyChecked = selectedInfo.some((info) => info.index === index && info.bureau === bureau);
+        if (isAlreadyChecked) {
+            setSelectedInfo((prev) => prev.filter((info) => info.index !== index || info.bureau !== bureau));
+        }
+        else {
+            setSelectedInfo((prev) => [...prev, { index, bureau }]);
+        }
     };
 
-    const handleSelectAccount = (accountNumber: string) => {
-    };
-
-    console.log(selectedInfo);
-    
-
-    const { creditReport, loading } = useCreditReport();
+    const { creditReport } = useCreditReport();
     const derogatoryAccs = creditReport?.accounts.filter((account: any) => {
         if (account?.some((acc: any) => acc?.paymentStatus === 'Collection/Chargeoff')) return true;
         if (account?.some((acc: any) => acc?.accountType?.toLowerCase()?.includes("collection"))) return true;
@@ -97,6 +91,8 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
         return derogatoryAccs;
     }, [searchTerm, derogatoryAccs]);
 
+    console.log(selectedCreditors);
+    
 
 
     return (
@@ -156,107 +152,56 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
                         {filteredAccounts.map((accounts: any, idx: number) => {
                             const account = accounts[0];
                             return (
-                                <TableRow key={idx} className="hover:bg-gray-50">
-                                    <TableCell>
-                                        <Checkbox
-                                            checked={selectedInfo.filter(info => info.index === idx).length  === accounts.length}
-                                            onCheckedChange={() => {
-                                                if(selectedInfo.filter(info => info.index === idx).length  === accounts.length) {
-                                                    setSelectedInfo(prev => prev.filter(info => info.index !== idx));
-                                                }
-                                                else {
-                                                    setSelectedInfo(prev => [
-                                                        ...prev,
-                                                        ...accounts.map((acc: any) => ({ index: idx, bureau: acc.bureau }))
-                                                    ]);
-                                                }
-                                            }}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="font-medium cursor-pointer"
-                                            onClick={() => {
-                                                setSelectedFurnisher(account);
-                                                setIsDetailDialogOpen(true);
-                                            }}
-                                        >
-                                            {account.creditorName}
-                                        </div>
-                                        <div className="text-sm text-gray-500">{account.accountNumber}</div>
-                                    </TableCell>
-                                    <TableCell>
-                                        {account.accountType && account.accountType.length > 13
-                                            ? account.accountType.substring(0, 11) + '...'
-                                            : account.accountType}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex items-center justify-start">
-                                            <BeaureauTableCell
-                                                onCheckedChange={() => handleBureauCheckedChange(idx, "TransUnion")}
-                                                isChecked={isChecked(idx, "TransUnion")}
-                                                accounts={accounts} bureau="TransUnion" label="TU" />
-                                            <BeaureauTableCell
-                                                onCheckedChange={() => handleBureauCheckedChange(idx, "Experian")}
-                                                isChecked={isChecked(idx, "Experian")}
-                                                accounts={accounts} bureau="Experian" label="EXP" />
-                                            <BeaureauTableCell
-                                                onCheckedChange={() => handleBureauCheckedChange(idx, "Equifax")}
-                                                isChecked={isChecked(idx, "Equifax")}
-                                                accounts={accounts} bureau="Equifax" label="EQFX" />
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex flex-nowrap whitespace-nowrap items-center">
-                                            <Checkbox
-                                                checked={selectedCreditors.includes(idx)}
-                                                onCheckedChange={() => {
-                                                    setSelectedCreditors((prev) => {
-                                                        if (prev.includes(idx)) {
-                                                            return prev.filter((id) => id !== idx);
-                                                        }
-                                                        return [...prev, idx];
-                                                    });
-                                                }}
-                                            />
-                                            <p className="ml-2">CDTR</p>
-                                            <SquarePen
-                                                className="w-4 h-4 text-green-500 cursor-pointer ml-2"
-                                                onClick={
-                                                    () => {
-                                                        // openEditModal(bureauDetails, "creditor");
-                                                    }
-                                                }
-                                            />
-                                        </div>
+                                <AccountTableRow
+                                    key={idx}
+                                    account={account}
+                                    accounts={accounts}
+                                    rowSelected={selectedInfo.filter(info => info.index === idx).length === accounts.length}
+                                    onSelectRow={() => {
+                                        if (selectedInfo.filter(info => info.index === idx).length === accounts.length) {
+                                            setSelectedInfo(prev => prev.filter(info => info.index !== idx));
+                                        }
+                                        else {
+                                            setSelectedInfo(prev => [
+                                                ...prev,
+                                                ...accounts.map((acc: any) => ({ index: idx, bureau: acc.bureau }))
+                                            ]);
+                                        }
+                                    }}
+                                    onSelectFurnisher={(acc: DisputeAccount) => {
+                                        console.log(acc);
 
-                                        {!account.creditorName && (
-                                            <p className="text-sm text-red-500 mt-1">Not found</p>
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex flex-nowrap">
-                                            {customSelections[account.accountId]?.reason || account.reason}
-                                            <SquarePen
-                                                className="w-4 h-4 text-green-500 cursor-pointer ml-2"
-                                                onClick={() => {
-                                                    // openEditModal(account, "reason");
-                                                }}
-                                            />
-                                        </div>
-                                    </TableCell>
+                                    }}
 
-                                    <TableCell>
-                                        <div className="flex flex-nowrap whitespace-nowrap items-center max-w-[350px] overflow-hidden text-ellipsis">
-                                            <span className="truncate">{account.instruction}</span>
-                                            <SquarePen
-                                                className="w-4 h-4 text-green-500 cursor-pointer ml-2"
-                                                onClick={() => {
-                                                    // openEditModal(account, "instruction");
-                                                }}
-                                            />
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
+                                    isChecked={(b: string) => isChecked(idx, b)}
+                                    handleBureauCheckedChange={(b: string) => handleBureauCheckedChange(idx, b)}
+                                    creditorValue={selectedCreditors.find((c) => c.index === idx)?.creditor}
+
+                                    creditorChecked={!!selectedCreditors.find((c)=>c.index=== idx)}
+                                    onCheckCreditor={() => {
+                                        const isChecked = !!selectedCreditors.find((c) => c.index === idx);
+
+                                        if (isChecked) {
+                                            setSelectedCreditors((prev) => prev.filter((c) => c.index !== idx));
+                                        } 
+                                        else {
+                                            setSelectedCreditors((prev) => [...prev, {index: idx, creditor: account.subscriberCode}]);
+                                        }
+                                    }}
+                                    onEditCreditor={(creditor: string) => {                                        
+                                        const existing = selectedCreditors.find((c) => c.index === idx);                                        
+                                        if (existing) {
+                                            setSelectedCreditors(prev => prev.map(c => {
+                                                if (existing.index === c.index) {
+                                                    return {index: c.index, creditor}
+                                                }
+                                                return c
+                                            }))
+                                        } else {
+                                            setSelectedCreditors((prev) => [...prev, {index: idx, creditor}]);
+                                        }
+                                    }}
+                                />
                             );
                         })}
                     </TableBody>

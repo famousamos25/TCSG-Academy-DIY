@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { disputeMenus } from '@/constants/disputes';
 import { FilmIcon } from 'lucide-react';
 import { useState } from 'react';
-import { ConsumerLawDisputesDialog } from './consumer-law-disputes-dialog';
+import { ConsumerLawDisputesDialog } from './consumer-law/consumer-law-disputes-dialog';
 import { DisputeLettersDialog } from './dispute-letters';
 import { OtherdisputeDialog } from './other-dispute-dialog';
 import { SecurityFreezeDialog } from './security-freeze-dialog';
@@ -54,11 +54,10 @@ const DisputeMenus = ({ }: Props) => {
 			}
 
 			{
-				selectedMenu && (
+				selectedMenu && selectedMenu !== "security-freeze" && (
 					<ConsumerLawDisputesDialog
 						open={!!selectedMenu}
 						onOpenChange={() => setSelectedMenu(null)}
-						hideDisputeActions={false}
 					/>
 				)
 			}

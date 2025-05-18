@@ -1,20 +1,11 @@
 "use client";
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ACCOUNTS, AVAILABLE_INSTRUCTIONS, AVAILABLE_REASONS, LATE_PAYMENTS, INQUIRIES_DATA as inquiriesData } from "@/constants/dispute-type-data";
+import { LATE_PAYMENTS, INQUIRIES_DATA as inquiriesData } from "@/constants/dispute-type-data";
 import { DISPUTE_TYPES } from "@/constants/dispute-types";
 import { useCreditReport } from '@/hooks/use-credit-report';
-import { FileText, NetworkIcon } from "lucide-react";
 import { useMemo, useState } from "react";
-import ConsumerLawDerogatories from './consumer-law-derogatories';
-import { DisputeActions, InquirySection } from "./dispute-actions";
-import { SelectDisputeInstruction, SelectDisputeReason } from "./dispute-reason-instructions";
-import DisputeTable, { Account } from "./DisputeTable";
-import PersonalInformationDisputeDialog from "./personal-information-dispute";
-import PublicRecordsNotice from "./public-response-notice";
-import SearchBar from "./search-bar";
+import { Account } from "./DisputeTable";
 
 type BureauSelection = Record<string, boolean>;
 interface AccountBureauSelections {
@@ -27,18 +18,12 @@ interface DisputeTypesProps {
     [key: string]: any;
 }
 
-interface SelectedInfo {
-    index: number;
-    type: "bureau" | "cdtr";
-    bureau?: string;
-}
 
-export default function DisputeTypes({ hideDisputeActions = false, onOpenChange, ...props }: DisputeTypesProps) {
+export default function DisputeTypes({ hideDisputeActions = false }: DisputeTypesProps) {
     const [selectedDisputeType, setSelectedDisputeType] = useState<string | null>("Derogatory");
     const [selectedInquiries, setSelectedInquiries] = useState<Record<string, boolean>>({});
     const [selectedFilter, setSelectedFilter] = useState<string>("All");
     const [disputeRound, setDisputeRound] = useState('Dispute Round #1');
-    const [selectedInfo, setSelectedInfo] = useState<SelectedInfo[]>([]);
 
     const [selectedReason, setSelectedReason] = useState('');
     const [selectedInstruction, setSelectedInstruction] = useState('');
@@ -54,11 +39,7 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
         };
     }>({});
 
-    const isChecked = (index: number, type: "bureau" | "cdtr", bureau?: string) => {
-
-    };
-
-    const { creditReport, loading } = useCreditReport();
+    const { creditReport } = useCreditReport();
 
     const handleDisputeTypeSelect = (type: string) => {
         setSelectedDisputeType(type);
@@ -244,155 +225,10 @@ export default function DisputeTypes({ hideDisputeActions = false, onOpenChange,
         });
     }, [creditReport?.accounts.length, creditReport?.inquiries?.length, creditReport?.publicRecords?.length, derogatoryAccs?.length, latePaymentAccounts?.length]);
 
-    console.log("derogatoryAccs", derogatoryAccs);
-
     return (
         <div className="space-y-6">
-            <div className="grid grid-cols-6 gap-4">
-                {derivedDisputeTypes.map((type: any) => (
-                    <div
-                        key={type.name}
-                        className={`
-                  border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md hover:border-gray-300
-                  ${selectedDisputeType === type.name ? "border-2 border-green-500 shadow-lg" : ""}
-                `}
-                        onClick={() => handleDisputeTypeSelect(type.name)}
-                    >
-                        <div className="mb-2 flex align-center justify-center">
-                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100 gap-1">
-                                Dispute Guide
-                                <NetworkIcon size={16} className="transform rotate-90" />
-                            </Badge>
-                        </div>
-                        <div className="flex flex-col items-center justify-center h-20">
-                            <FileText className="h-6 w-6 mb-2 text-brand-navy" />
-                            <div className="text-center">
-                                <div className="font-medium">{type.name}</div>
-                                <div className="text-xs text-gray-600">
-                                    {type.name !== "Personal Information" && type.description}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {selectedDisputeType === "Personal Information" && (
-                <PersonalInformationDisputeDialog
-                    open={selectedDisputeType !== null}
-                    onOpenChange={(open) => {
-                        if (!open) setSelectedDisputeType("Derogatory");
-                    }}
-                />
-            )}
-
-            <div className="grid grid-cols-4 gap-4 mt-6">
-                <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-                    <div className="text-xl font-bold">
-                        {creditReport?.inquiries?.length}
-                    </div>
-                    <div className="text-sm text-gray-600">Inquiries</div>
-                </div>
-                <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-                    <div className="text-xl font-bold">
-                        {derogatoryAccs?.length}
-                    </div>
-                    <div className="text-sm text-gray-600">Derogatory Accounts</div>
-                </div>
-                <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-                    <div className="text-xl font-bold">
-                        {latePaymentAccounts?.length}
-                    </div>
-                    <div className="text-sm text-gray-600">Late Payment Accounts</div>
-                </div>
-                <div className="bg-gray-50 border rounded-lg p-4 text-center shadow-sm">
-                    <div className="text-xl font-bold">
-                        {creditReport?.publicRecords?.length || 0}
-                    </div>
-                    <div className="text-sm text-gray-600">Public Records</div>
-                </div>
-            </div>
-            {
-                selectedDisputeType === "Inquiries" && (
-                    <InquirySection
-                        selectedFilter={selectedFilter}
-                        setSelectedFilter={setSelectedFilter}
-                        inquiriesData={inquiriesData}
-                        selectedInquiries={selectedInquiries}
-                        setSelectedInquiries={setSelectedInquiries}
-                        filteredInquiries={filteredInquiries}
-                        toggleInquirySelection={toggleInquirySelection}
-                        setSelectedDisputeType={setSelectedDisputeType}
-                    />
-                )
-            }
-            {
-                selectedDisputeType === "Derogatory" && <ConsumerLawDerogatories onCloseDialog={() => setSelectedDisputeType(null)} /> 
-            }
-
-            {(selectedDisputeType && ["Late Payments"].includes(selectedDisputeType) && !hideDisputeActions) && (
-                <>
-                    <DisputeActions
-                        disputeRound={disputeRound}
-                        setDisputeRound={setDisputeRound}
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                        reasons={AVAILABLE_REASONS}
-                        instructions={AVAILABLE_INSTRUCTIONS}
-                        bureauSelections={bureauSelections}
-                        allSelected={allSelected}
-                        toggleSelectAll={toggleSelectAll}
-                        selectedAccounts={selectedAccounts}
-                        selectedReason={selectedReason}
-                        setSelectedReason={setSelectedReason}
-                        selectedInstruction={selectedInstruction}
-                        setSelectedInstruction={setSelectedInstruction}
-                    />
-                    <DisputeTable
-                        filteredAccounts={filteredAccounts(LATE_PAYMENTS)}
-                        selectedAccounts={selectedAccounts}
-                        handleSelectAll={handleSelectAll}
-                        handleSelectAccount={handleSelectAccount}
-                        renderBureauCheckboxes={renderBureauCheckboxes as any}
-                        customSelections={customSelections}
-                    />
-                </>
-            )}
-
-            {selectedDisputeType === "Public Records" && <PublicRecordsNotice />}
-
-            {selectedDisputeType === "All Accounts" && (
-                <>
-                    <div className="flex justify-between items-center mt-8 space-x-4">
-                        <Button
-                            variant="outline"
-                            className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
-                        >
-                            Dispute All
-                        </Button>
-
-                        {selectedAccounts.length > 0 && (
-                            <div className="flex space-x-4">
-                                <SelectDisputeReason selectedReason={selectedReason} setSelectedReason={setSelectedReason} />
-                                <SelectDisputeInstruction selectedInstruction={selectedInstruction} setSelectedInstruction={setSelectedInstruction} />
-                            </div>
-                        )}
-
-                        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                    </div>
-
-                    <div className="border rounded-md overflow-hidden shadow-sm mt-4">
-                        <DisputeTable
-                            filteredAccounts={filteredAccounts([...ACCOUNTS, ...LATE_PAYMENTS])}
-                            selectedAccounts={selectedAccounts}
-                            handleSelectAll={handleSelectAll}
-                            handleSelectAccount={handleSelectAccount}
-                            renderBureauCheckboxes={renderBureauCheckboxes as any}
-                            customSelections={customSelections}
-                        />
-                    </div>
-                </>
-            )}
+            
+            
         </div>
     );
 }
