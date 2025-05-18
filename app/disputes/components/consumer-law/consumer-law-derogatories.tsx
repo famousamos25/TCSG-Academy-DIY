@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { disputeOptions } from '@/constants/edit-dipute-letter-data';
 import { useCreditReport } from '@/hooks/use-credit-report';
 import { DisputeAccount } from '@/types/account';
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { SelectDisputeInstruction, SelectDisputeReason } from "../dispute-reason-instructions";
 import { Account } from "../DisputeTable";
 import SearchBar from "../search-bar";
@@ -29,6 +30,12 @@ interface SelectedCreditor {
     creditor: string;
 }
 
+interface ColumnReason {
+    index: number;
+    reason: string;
+    description: string;
+}
+
 interface Props {
     onCloseDialog: () => void;
 }
@@ -44,6 +51,7 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
     const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
     const [selectedInfo, setSelectedInfo] = useState<SelectedInfo[]>([]);
     const [selectedCreditors, setSelectedCreditors] = useState<SelectedCreditor[]>([]);
+    const [columnReasons, setColumnReasons] = useState<ColumnReason[]>([]);
 
     const [allSelected, setAllSelected] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -91,9 +99,19 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
         return derogatoryAccs;
     }, [searchTerm, derogatoryAccs]);
 
-    console.log(selectedCreditors);
-    
-
+    const handleEditReason = useCallback(({ reason, description }: { reason: string; description: string; }, idx: number) => {
+        const existing = columnReasons.find((c) => c.index === idx);
+        if (existing) {
+            setColumnReasons(prev => prev.map(c => {
+                if (existing.index === c.index) {
+                    return { index: c.index, reason, description };
+                }
+                return c;
+            }));
+        } else {
+            setColumnReasons((prev) => [...prev, { index: idx, reason, description }]);
+        }
+    }, [columnReasons],);
 
     return (
         <div className="w-full ">
@@ -177,30 +195,32 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
                                     handleBureauCheckedChange={(b: string) => handleBureauCheckedChange(idx, b)}
                                     creditorValue={selectedCreditors.find((c) => c.index === idx)?.creditor}
 
-                                    creditorChecked={!!selectedCreditors.find((c)=>c.index=== idx)}
+                                    creditorChecked={!!selectedCreditors.find((c) => c.index === idx)}
                                     onCheckCreditor={() => {
                                         const isChecked = !!selectedCreditors.find((c) => c.index === idx);
 
                                         if (isChecked) {
                                             setSelectedCreditors((prev) => prev.filter((c) => c.index !== idx));
-                                        } 
+                                        }
                                         else {
-                                            setSelectedCreditors((prev) => [...prev, {index: idx, creditor: account.subscriberCode}]);
+                                            setSelectedCreditors((prev) => [...prev, { index: idx, creditor: account.subscriberCode }]);
                                         }
                                     }}
-                                    onEditCreditor={(creditor: string) => {                                        
-                                        const existing = selectedCreditors.find((c) => c.index === idx);                                        
+                                    onEditCreditor={(creditor: string) => {
+                                        const existing = selectedCreditors.find((c) => c.index === idx);
                                         if (existing) {
                                             setSelectedCreditors(prev => prev.map(c => {
                                                 if (existing.index === c.index) {
-                                                    return {index: c.index, creditor}
+                                                    return { index: c.index, creditor };
                                                 }
-                                                return c
-                                            }))
+                                                return c;
+                                            }));
                                         } else {
-                                            setSelectedCreditors((prev) => [...prev, {index: idx, creditor}]);
+                                            setSelectedCreditors((prev) => [...prev, { index: idx, creditor }]);
                                         }
                                     }}
+                                    onEditReason={(data) => handleEditReason(data, idx)}
+                                    columnReason={columnReasons.find((c) => c.index === idx) ?? { reason: disputeOptions[0]?.items[0], description: disputeOptions[0]?.items[0] }}
                                 />
                             );
                         })}

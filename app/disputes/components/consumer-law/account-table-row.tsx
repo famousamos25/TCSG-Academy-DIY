@@ -6,6 +6,7 @@ import { DisputeAccount } from '@/types/account';
 import { SquarePen } from 'lucide-react';
 import { useState } from "react";
 import { ChangeCreditorModal } from './change-creditor-modal';
+import { ChangeReasonModal } from './change-reason-modal';
 
 
 interface Props {
@@ -22,16 +23,20 @@ interface Props {
     creditorChecked: boolean;
     onCheckCreditor: () => void;
 
-    onEditCreditor: (c: string) => void;
     creditorValue?: string;
+    onEditCreditor: (c: string) => void;
+
+    columnReason: { reason: string; description: string}
+    onEditReason: (data: { reason: string; description: string}) => void;
 }
 
 export default function AccountTableRow({
     account, onSelectRow, rowSelected, onSelectFurnisher, handleBureauCheckedChange, isChecked,
-    creditorChecked, accounts, onCheckCreditor, onEditCreditor, creditorValue
+    creditorChecked, accounts, onCheckCreditor, onEditCreditor, creditorValue, onEditReason, columnReason
 }: Props) {
 
-    const [isChangeCreditorModalOpen, setIsChangeCreditorModalOpen] = useState(false);    
+    const [isChangeCreditorModalOpen, setIsChangeCreditorModalOpen] = useState(false);
+    const [isChangeReasonModalOpen, setIsChangeReasonModalOpen] = useState(false);
 
     return (
         <>
@@ -81,7 +86,7 @@ export default function AccountTableRow({
                         <p className="ml-2">CDTR</p>
                         <SquarePen
                             className="w-4 h-4 text-green-500 cursor-pointer ml-2"
-                            onClick={ () => setIsChangeCreditorModalOpen(true)}
+                            onClick={() => setIsChangeCreditorModalOpen(true)}
                         />
                     </div>
 
@@ -91,10 +96,10 @@ export default function AccountTableRow({
                 </TableCell>
                 <TableCell>
                     <div className="flex flex-nowrap">
-                        {/* {customSelections[account.accountId]?.reason || account.reason} */}
+                        {columnReason.reason}
                         <SquarePen
-                            className="w-4 h-4 text-green-500 cursor-pointer ml-2"
-                            onClick={() => setIsChangeCreditorModalOpen(true)}
+                            className="w-4 h-4 text-green-500 shrink-0 cursor-pointer ml-2"
+                            onClick={() => setIsChangeReasonModalOpen(true)}
                         />
                     </div>
                 </TableCell>
@@ -116,10 +121,21 @@ export default function AccountTableRow({
                     isOpen={isChangeCreditorModalOpen}
                     handleClose={() => setIsChangeCreditorModalOpen(false)}
                     onSave={(value) => {
-                        onEditCreditor(value)
+                        onEditCreditor(value);
                     }}
-                    creditorValue={creditorValue}
+                    defaultValue={creditorValue}
                     account={account}
+                />
+            )}
+
+            {isChangeReasonModalOpen && (
+                <ChangeReasonModal
+                    isOpen={isChangeReasonModalOpen}
+                    handleClose={() => setIsChangeReasonModalOpen(false)}
+                    onSave={(data) => {
+                        onEditReason(data)
+                    }}
+                    defaultValue={columnReason}
                 />
             )}
 

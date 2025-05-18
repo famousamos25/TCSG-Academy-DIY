@@ -20,12 +20,12 @@ type Props = {
   isOpen: boolean;
   handleClose: () => void;
   onSave?: (creditor: string) => void;
-  creditorValue?: string;
+  defaultValue?: string;
   account: DisputeAccount;
 };
 
-export function ChangeCreditorModal({ isOpen, handleClose, creditorValue, onSave = () => { }, account }: Props) {  
-  const [selectedCreditor, setSelectedCreditor] = useState<string>(creditorValue ??account.subscriberCode);
+export function ChangeCreditorModal({ isOpen, handleClose, defaultValue, onSave = () => { }, account }: Props) {  
+  const [selectedCreditor, setSelectedCreditor] = useState<string>(defaultValue ??account.subscriberCode);
 
   const { creditReport } = useCreditReport();
 
@@ -41,12 +41,12 @@ export function ChangeCreditorModal({ isOpen, handleClose, creditorValue, onSave
   };
 
   useEffect(() => {
-    const selectedCred = creditors?.find(c => c.subscriberCode === creditorValue || c.subscriberCode === account.subscriberCode);
+    const selectedCred = creditors?.find(c => c.subscriberCode === defaultValue || c.subscriberCode === account.subscriberCode);
     
     if (selectedCred) {
       setSelectedCreditor(selectedCred.subscriberCode);
     }
-  }, [account, creditors, creditorValue])
+  }, [account, creditors, defaultValue])
 
   return (
     <Dialog open={isOpen}>
