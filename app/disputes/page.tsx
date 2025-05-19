@@ -1,5 +1,12 @@
 'use client';
 
+import { DeleteDialog } from '@/app/disputes/components/delete-dispute-dialog';
+import DisputeMenus from '@/app/disputes/components/dispute-menus';
+import { DownloadLetter } from '@/app/disputes/components/download-letter';
+import { PreviewLetterModal } from '@/app/disputes/components/preview-letter-dialog';
+import { PrintLetter } from '@/app/disputes/components/print-letter';
+import { SendDisputesMail } from '@/app/disputes/components/send-disputes-mail';
+import { UndoStatusDialog } from '@/app/disputes/components/undo-status-dialog';
 import { ConfirmModal } from '@/components/common/confirm-modal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -25,15 +32,8 @@ import {
   Trash2Icon,
   Undo2
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { DeleteDialog } from './components/delete-dispute-dialog';
-import DisputeMenus from './components/dispute-menus';
-import { DownloadLetter } from './components/download-letter';
-import { PreviewLetterModal } from './components/preview-letter-dialog';
-import { PrintLetter } from './components/print-letter';
-import { SendDisputesMail } from './components/send-disputes-mail';
-import { UndoStatusDialog } from './components/undo-status-dialog';
 
 const disputesTracker = [
   {
@@ -170,10 +170,6 @@ export default function DisputesPage() {
     }
   };
 
-  useEffect(() => {
-    // setFilteredDisputes(disputes.filter(dispute => dispute.status === selectedStatus))
-  }, []);
-
   return (
     <div className="container mx-auto p-6">
       {/* Letters List */}
@@ -298,20 +294,26 @@ export default function DisputesPage() {
                             <Send size={18} />
                           </button>
                         </ConfirmModal>
-                        <PreviewLetterModal letter={letter} >
-                          <button className="text-green-400" title="View"
-                            onClick={() => setShowPreview(true)}
-                          >
-                            <EyeIcon size={18} />
-                          </button>
-                        </PreviewLetterModal>
-                        <button className="text-green-400" title="Mail"
-                        >
-                          <MailIcon size={18}
-                            onClick={() => setShowSendDisputesMail(!showSendDisputesMail)} />
-                        </button>
-                        <DownloadLetter letter={letter} />
-                        <PrintLetter letter={letter} />
+                        {
+                          letter && (<>
+                            <PreviewLetterModal letter={letter} >
+                              <button className="text-green-400" title="View"
+                                onClick={() => setShowPreview(true)}
+                              >
+                                <EyeIcon size={18} />
+                              </button>
+                            </PreviewLetterModal>
+                            <button className="text-green-400" title="Mail"
+                            >
+                              <MailIcon size={18}
+                                onClick={() => setShowSendDisputesMail(!showSendDisputesMail)} />
+                            </button>
+                            <Suspense fallback={<div>Loading...</div>}>
+                              <DownloadLetter letter={letter} />
+                            </Suspense>
+                            <PrintLetter letter={letter} />
+                          </>)
+                        }
                       </>
                     )}
                     <ConfirmModal
@@ -324,17 +326,19 @@ export default function DisputesPage() {
                       </button>
                     </ConfirmModal>
                   </TableCell>
-
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </Card>
-        <UndoStatusDialog
-          open={showModal}
-          onOpenChange={setShowModal}
-          onConfirm={() => handleStatusUpdate()}
-        />
+        {
+          showModal &&
+          <UndoStatusDialog
+            open={showModal}
+            onOpenChange={setShowModal}
+            onConfirm={() => handleStatusUpdate()}
+          />
+        }
 
       </div>
 

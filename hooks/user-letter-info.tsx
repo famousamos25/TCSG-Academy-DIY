@@ -16,35 +16,39 @@ export function useLetterInfo({ letter }: PrintLetterProps) {
   const { documents } = useDocuments();
 
   const letterData: any = useMemo(() => {
-    if (!userInfo) return null;
-    if (!letter) return null;
-    if (!creditReport) return null;
-    if (!creditReport?.creditors) return null;
-    if (!creditReport?.creditors?.length) return null;
+    try {
+      if (!userInfo) return null;
+      if (!letter) return null;
+      if (!creditReport) return null;
+      if (!creditReport?.creditors) return null;
+      if (!creditReport?.creditors?.length) return null;
 
-    const creditor = (creditReport?.creditors)?.find((c: any) => c);
+      const creditor = (creditReport?.creditors)?.find((c: any) => c);
 
-    const ssnCard = documents?.find((doc: any) => doc.type === "social_security")?.fileUrl ?? "";
-    const driverLicense = documents?.find((doc: any) => doc.type === "drivers_license")?.fileUrl ?? "";
+      const ssnCard = documents?.find((doc: any) => doc.type === "social_security")?.fileUrl ?? "";
+      const driverLicense = documents?.find((doc: any) => doc.type === "drivers_license")?.fileUrl ?? "";
 
-    return {
-      clientName: `${userInfo?.firstName ?? ""} ${userInfo?.firstName ?? ""}`,
-      clientAddress: userInfo?.address1 ?? "",
-      clientCity: userInfo?.city ?? "",
-      clientState: userInfo?.state ?? "",
-      clientZIPCode: userInfo?.zipcode ?? "",
-      clientPhone: userInfo?.phone ?? "",
-      date: format(new Date(letter?.createdAt), 'MMMM dd, yyyy'),
-      creditorName: creditor?.name ?? "",
-      creditorAddress: creditReport?.address?.unparsedStreet ?? "",
-      creditorCity: creditor?.address?.city ?? "",
-      creditorState: creditor?.address?.stateCode ?? "",
-      creditorZIPCode: creditor?.address?.postalCode ?? "",
-      ssn: userInfo?.ssn ?? "",
-      ssnCard,
-      driverLicense,
-    };
+      return {
+        clientName: `${userInfo?.firstName ?? ""} ${userInfo?.firstName ?? ""}`,
+        clientAddress: userInfo?.address1 ?? "",
+        clientCity: userInfo?.city ?? "",
+        clientState: userInfo?.state ?? "",
+        clientZIPCode: userInfo?.zipcode ?? "",
+        clientPhone: userInfo?.phone ?? "",
+        date: format(new Date(letter?.createdAt), 'MMMM dd, yyyy'),
+        creditorName: creditor?.name ?? "",
+        creditorAddress: creditReport?.address?.unparsedStreet ?? "",
+        creditorCity: creditor?.address?.city ?? "",
+        creditorState: creditor?.address?.stateCode ?? "",
+        creditorZIPCode: creditor?.address?.postalCode ?? "",
+        ssn: userInfo?.ssn ?? "",
+        ssnCard,
+        driverLicense,
+      };
+    } catch (error) {
+      return null;
+    }
   }, [userInfo, letter, creditReport, documents]);
 
-  return { letterData};
+  return { letterData };
 }
