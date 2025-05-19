@@ -7,6 +7,7 @@ import { SquarePen } from 'lucide-react';
 import { useState } from "react";
 import { ChangeCreditorModal } from './change-creditor-modal';
 import { ChangeReasonModal } from './change-reason-modal';
+import { ChangeInstructionModal } from './change-instruction-modal';
 
 interface Props {
     account: DisputeAccount;
@@ -26,16 +27,21 @@ interface Props {
     onEditCreditor: (c: string) => void;
 
     columnReason: { reason: string; description: string}
-    onEditReason: (data: { reason: string; description: string}) => void;
+    onEditReason: (data: { reason: string; description: string; }) => void;
+    
+    columnInstruction: { instruction: string; description: string}
+    onEditInstruction: (data: { instruction: string; description: string}) => void;
 }
 
 export default function AccountTableRow({
     account, onSelectRow, rowSelected, onSelectFurnisher, handleBureauCheckedChange, isChecked,
-    creditorChecked, accounts, onCheckCreditor, onEditCreditor, creditorValue, onEditReason, columnReason
+    creditorChecked, accounts, onCheckCreditor, onEditCreditor, creditorValue, onEditReason, columnReason,
+    columnInstruction, onEditInstruction,
 }: Props) {
 
     const [isChangeCreditorModalOpen, setIsChangeCreditorModalOpen] = useState(false);
     const [isChangeReasonModalOpen, setIsChangeReasonModalOpen] = useState(false);
+    const [isChangeInstructionModalOpen, setIsChangeInstructionModalOpen] = useState(false);
 
     return (
         <>
@@ -108,9 +114,7 @@ export default function AccountTableRow({
                         {/* <span className="truncate">{account.instruction}</span> */}
                         <SquarePen
                             className="w-4 h-4 text-green-500 cursor-pointer ml-2"
-                            onClick={() => {
-                                // openEditModal(account, "instruction");
-                            }}
+                            onClick={() => setIsChangeInstructionModalOpen(true)}
                         />
                     </div>
                 </TableCell>
@@ -135,6 +139,16 @@ export default function AccountTableRow({
                         onEditReason(data)
                     }}
                     defaultValue={columnReason}
+                />
+            )}
+            {isChangeInstructionModalOpen && (
+                <ChangeInstructionModal
+                    isOpen={isChangeInstructionModalOpen}
+                    handleClose={() => setIsChangeInstructionModalOpen(false)}
+                    onSave={(data) => {
+                        onEditInstruction(data)
+                    }}
+                    defaultValue={columnInstruction}
                 />
             )}
 

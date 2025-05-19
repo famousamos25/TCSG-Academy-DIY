@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { disputeOptions } from '@/constants/edit-dipute-letter-data';
+import { disputeInstructions, disputeOptions } from '@/constants/edit-dipute-letter-data';
 import { useCreditReport } from '@/hooks/use-credit-report';
 import { DisputeAccount } from '@/types/account';
 import { useCallback, useMemo, useState } from "react";
@@ -35,6 +35,11 @@ interface ColumnReason {
     reason: string;
     description: string;
 }
+interface ColumnInstruction {
+    index: number;
+    instruction: string;
+    description: string;
+}
 
 interface Props {
     onCloseDialog: () => void;
@@ -52,6 +57,7 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
     const [selectedInfo, setSelectedInfo] = useState<SelectedInfo[]>([]);
     const [selectedCreditors, setSelectedCreditors] = useState<SelectedCreditor[]>([]);
     const [columnReasons, setColumnReasons] = useState<ColumnReason[]>([]);
+    const [columnInstructions, setColumnInstructions] = useState<ColumnInstruction[]>([]);
 
     const [allSelected, setAllSelected] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -116,6 +122,20 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
             setColumnReasons((prev) => [...prev, { index: idx, reason, description }]);
         }
     }, [columnReasons],);
+
+    const handleEditInstruction = useCallback(({ instruction, description }: { instruction: string; description: string; }, idx: number) => {
+        const existing = columnInstructions.find((c) => c.index === idx);
+        if (existing) {
+            setColumnInstructions(prev => prev.map(c => {
+                if (existing.index === c.index) {
+                    return { index: c.index, instruction, description };
+                }
+                return c;
+            }));
+        } else {
+            setColumnInstructions((prev) => [...prev, { index: idx, instruction, description }]);
+        }
+    }, [columnInstructions],);
 
     return (
         <div className="w-full ">
@@ -225,6 +245,8 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
                                     }}
                                     onEditReason={(data) => handleEditReason(data, idx)}
                                     columnReason={columnReasons.find((c) => c.index === idx) ?? { reason: disputeOptions[0]?.items[0], description: disputeOptions[0]?.items[0] }}
+                                    columnInstruction={columnInstructions.find((c) => c.index === idx) ?? { instruction: disputeInstructions[0]?.items[0], description: disputeInstructions[0]?.items[0] }}
+                                    onEditInstruction={(data) => handleEditInstruction(data, idx)}
                                 />
                             );
                         })}
