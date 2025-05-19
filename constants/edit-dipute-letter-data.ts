@@ -32,3 +32,23 @@ export const disputeOptions = [
       ]
     }
   ];
+
+export const disputeInstructions = [
+    {
+      category: "For Deletion",
+      items: [
+        "Please Delete Immediately",
+        "Please delete due to a violation of 15 U.S. Code 1692g - Validation of debts",
+        "This is a violation of my consumer rights, please delete immediately",
+        "This account is not mine, Please remove it from my account immediately.",
+      ]
+    },
+    {
+      category: "For Updating to Positive",
+      items: [
+        "Please Update to Pays Account As Agreed",
+        "Please Update to Never Late",
+        "Please update to paid as agreed, never late.",
+      ]
+    },
+  ];
