@@ -29,6 +29,7 @@ export interface Account {
     paymentFrequency?: string;
     paymentHistory?: PaymentHistory;
     paymentStatus: string;
+    furnisher: string;
 }
 export interface PaymentHistory {
     status: string;
