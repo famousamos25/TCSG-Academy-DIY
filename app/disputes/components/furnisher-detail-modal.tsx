@@ -1,7 +1,6 @@
-import { Account } from "./DisputeTable";
 
 interface FurnisherDetailsModalProps {
-  account: Account;
+  account: any;
   onClose: () => void;
 }
 

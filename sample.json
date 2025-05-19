@@ -1,0 +1,9206 @@
+{
+	"summary": {
+		"experian": {
+			"totalAccounts": "27",
+			"openAccounts": "7",
+			"closeAccounts": "20",
+			"delinquentAccounts": "2",
+			"derogatoryAccounts": "12",
+			"totalBalances": "50756",
+			"totalMonthlyPayments": "2064"
+		},
+		"equifax": {
+			"totalAccounts": "24",
+			"openAccounts": "5",
+			"closeAccounts": "19",
+			"delinquentAccounts": "2",
+			"derogatoryAccounts": "14",
+			"totalBalances": "52105",
+			"totalMonthlyPayments": "1997"
+		},
+		"transUnion": {
+			"totalAccounts": "26",
+			"openAccounts": "8",
+			"closeAccounts": "18",
+			"delinquentAccounts": "2",
+			"derogatoryAccounts": "14",
+			"totalBalances": "50484",
+			"totalMonthlyPayments": "1997"
+		},
+		"merge": {
+			"totalAccounts": "31",
+			"openAccounts": "8",
+			"closeAccounts": "18",
+			"delinquentAccounts": "2",
+			"derogatoryAccounts": "17",
+			"totalBalances": "55889",
+			"totalMonthlyPayments": "1991"
+		}
+	},
+	"scores": {
+		"transUnion": {
+			"bureau": "TransUnion",
+			"score": "567"
+		},
+		"experian": {
+			"bureau": "Experian",
+			"score": "563"
+		},
+		"equifax": {
+			"bureau": "Equifax",
+			"score": "565"
+		}
+	},
+	"personalInfo": {
+		"names": [
+			{
+				"transUnion": "AMOS CHOLIN BRAZAN"
+			},
+			{
+				"transUnion": "  TAYLOR,AMOS,C"
+			},
+			{
+				"experian": "AMOS  BRAZAN"
+			},
+			{
+				"experian": "AMOS C TAYLOR"
+			},
+			{
+				"equifax": "AMOS C BRAZAN"
+			},
+			{
+				"equifax": "AMOS CHOLIN BRAZAN"
+			},
+			{
+				"equifax": "AMOS  TAYLOR"
+			}
+		],
+		"currentAddresses": [
+			{
+				"transUnion": "COLLIERVILLE  385  TN ASHANA DR  38017"
+			},
+			{
+				"experian": "CORDOVA TN 1138 N GERMANTOWN PKW # 101-225 380165872"
+			},
+			{
+				"equifax": "COLLIERVILLE TN 880        SCHILLING FARM             RD APT 201                 38017    "
+			}
+		],
+		"previousAddresses": [
+			{
+				"transUnion": "COLLIERVILLE  880 TN SCHILLING FARM RD 201 38017"
+			},
+			{
+				"transUnion": "GERMANTOWN W 7825 TN GROVE CT 102 38138"
+			},
+			{
+				"experian": "GERMANTOWN TN 7825 GROVE CT W 381383354"
+			},
+			{
+				"equifax": "GERMANTOWN TN 7825       GROVE                      CT W APT 102               38138    "
+			},
+			{
+				"experian": "COLLIERVILLE TN 385 ASHANA DR 380171105"
+			},
+			{
+				"equifax": "COLLIERVILLE TN 385        ASHANA                     DR                         38017    "
+			}
+		],
+		"dateOfBirth": [
+			{
+				"transUnion": "1985-05-13"
+			},
+			{
+				"experian": "1985-01-01"
+			},
+			{
+				"equifax": "1985-05-13"
+			}
+		],
+		"employer": {
+			"transUnion": [
+				{
+					"dateUpdated": "2023-10-25",
+					"name": "SELF"
+				},
+				{
+					"dateUpdated": "2023-10-25",
+					"name": "SELF"
+				},
+				{
+					"dateUpdated": "2022-03-03",
+					"name": "THE CREDIT SOLUTION GROUP ACAD"
+				}
+			],
+			"experian": [
+				{
+					"dateUpdated": "2021-05-01",
+					"name": "FULL HOUSE ENTERTAINMENT"
+				},
+				{
+					"dateUpdated": "2021-05-01",
+					"name": "FULL HOUSE ENTERTAINMENT"
+				},
+				{
+					"dateUpdated": "2007-07-01",
+					"name": "MVSU"
+				}
+			],
+			"equifax": [
+				{
+					"dateUpdated": "2024-07-01",
+					"name": "FULL HOUSE ENTERTAIN"
+				},
+				{
+					"dateUpdated": "2024-07-01",
+					"name": "FULL HOUSE ENTERTAIN"
+				}
+			]
+		}
+	},
+	"accounts": [
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "07678001",
+				"creditorName": "HYUNDAI FINC",
+				"accountNumber": "20210101372143",
+				"balance": "25661",
+				"highBalance": "55497",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2025-02-28",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2020-12-12",
+				"dateReported": "2025-02-28",
+				"dateVerified": "2025-02-28",
+				"dateLastPayment": "2025-02-27",
+				"creditLimit": "0",
+				"amountPastDue": "597",
+				"monthlyPayment": "1016",
+				"paymentFrequency": "Monthly (every month)",
+				"paymentHistory": {
+					"status": "1111CCCCCC11CCCCC11CCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2025-01-28",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-12-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-11-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-10-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-03-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-02-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-08-28",
+							"status": "1"
+						},
+						{
+							"date": "2023-07-28",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-28",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Late 30 Days"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2612005",
+				"creditorName": "HYUNDAI CAPITAL AMERIC",
+				"accountNumber": "20210101372143",
+				"balance": "25661",
+				"highBalance": "55497",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2024-10-01",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-12-01",
+				"dateReported": "2025-02-28",
+				"dateLastPayment": "2025-02-27",
+				"creditLimit": "0",
+				"amountPastDue": "597",
+				"monthlyPayment": "1016",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "11111CCCCCC11CCCCC11CCCCC",
+					"startDate": "2025-02-28",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-28",
+							"status": "1"
+						},
+						{
+							"date": "2025-01-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-12-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-11-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-10-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-03-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-02-28",
+							"status": "1"
+						},
+						{
+							"date": "2024-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-08-28",
+							"status": "1"
+						},
+						{
+							"date": "2023-07-28",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Late 30 Days"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "180FA02062",
+				"creditorName": "HYUNDAIMTR",
+				"accountNumber": "20210101372143",
+				"balance": "25661",
+				"highBalance": "55497",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2024-10-01",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-12-01",
+				"dateReported": "2025-02-01",
+				"dateLastPayment": "2024-10-01",
+				"creditLimit": "0",
+				"amountPastDue": "597",
+				"monthlyPayment": "1016",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "1111UUUUUU11UUUUU11UUUUU",
+					"startDate": "2025-01-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-01",
+							"status": "1"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "1"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "1"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "1"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "1"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "1"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-02-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Late 30 Days"
+			}
+		],
+		[
+			{
+				"bureau": "Experian",
+				"creditorName": "UTILITY SELFREPORTED",
+				"accountNumber": "PRO26AB925D09154B12887B0E8947F597E4",
+				"subscriberCode": "2886920",
+				"balance": "280",
+				"highBalance": "280",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2025-03-01",
+				"accountDescription": "Individual",
+				"accountType": "Unknown - credit extension, review, or collection",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateReported": "2025-03-06",
+				"dateLastPayment": "2025-03-06",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "280",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCUUUUCUCUCUUCCCCCC",
+					"startDate": "2025-03-06",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-03-06",
+							"status": "C"
+						},
+						{
+							"date": "2025-02-06",
+							"status": "C"
+						},
+						{
+							"date": "2025-01-06",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-06",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-06",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-06",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-06",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-06",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-06",
+							"status": "C"
+						},
+						{
+							"date": "2024-06-06",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-06",
+							"status": "C"
+						},
+						{
+							"date": "2024-04-06",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-06",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-06",
+							"status": "C"
+						},
+						{
+							"date": "2024-01-06",
+							"status": "C"
+						},
+						{
+							"date": "2023-12-06",
+							"status": "C"
+						},
+						{
+							"date": "2023-11-06",
+							"status": "C"
+						},
+						{
+							"date": "2023-10-06",
+							"status": "C"
+						},
+						{
+							"date": "2023-09-06",
+							"status": "C"
+						},
+						{
+							"date": "2023-08-06",
+							"status": " "
+						},
+						{
+							"date": "2023-07-06",
+							"status": " "
+						},
+						{
+							"date": "2023-06-06",
+							"status": " "
+						},
+						{
+							"date": "2023-05-06",
+							"status": " "
+						},
+						{
+							"date": "2023-04-06",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "0537D051",
+				"creditorName": "FB&T/MERCURY",
+				"accountNumber": "0059499809",
+				"balance": "0",
+				"highBalance": "2727",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-09-21",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2021-12-02",
+				"dateReported": "2024-01-28",
+				"dateVerified": "2024-01-28",
+				"dateLastPayment": "2023-05-29",
+				"creditLimit": "2000",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2752880",
+				"creditorName": "FB&T/MERCURY",
+				"accountNumber": "0059499809",
+				"balance": "0",
+				"highBalance": "0",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2024-01-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-12-01",
+				"dateReported": "2024-01-29",
+				"dateLastPayment": "2023-05-29",
+				"creditLimit": "2000",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9654321CCCCCCCCCCCCCCCCCC",
+					"startDate": "2024-01-29",
+					"monthlyPayStatus": [
+						{
+							"date": "2024-01-29",
+							"status": "9"
+						},
+						{
+							"date": "2023-12-29",
+							"status": "6"
+						},
+						{
+							"date": "2023-11-29",
+							"status": "5"
+						},
+						{
+							"date": "2023-10-29",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-29",
+							"status": "3"
+						},
+						{
+							"date": "2023-08-29",
+							"status": "2"
+						},
+						{
+							"date": "2023-07-29",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-29",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-29",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-29",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-29",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-28",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "362ON00283",
+				"creditorName": "CC/FB&T",
+				"accountNumber": "0059499809",
+				"balance": "0",
+				"highBalance": "1974",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-06-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-12-01",
+				"dateReported": "2024-01-01",
+				"dateLastPayment": "2023-06-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "444321UUUUUUUUUUUUUUUUUU",
+					"startDate": "2023-12-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2023-12-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "3"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "2"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-01-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02HF4001",
+				"creditorName": "SEZZLE",
+				"accountNumber": "392037553983436972",
+				"balance": "602",
+				"highBalance": "858",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2025-02-28",
+				"accountDescription": "Individual",
+				"accountType": "Line of credit",
+				"creditType": "Line of credit",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2024-09-07",
+				"dateReported": "2025-02-28",
+				"dateVerified": "2025-02-28",
+				"dateLastPayment": "2025-02-28",
+				"creditLimit": "900",
+				"amountPastDue": "0",
+				"monthlyPayment": "905",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCC",
+					"startDate": "2025-01-28",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-28",
+							"status": " "
+						},
+						{
+							"date": "2024-07-28",
+							"status": " "
+						},
+						{
+							"date": "2024-06-28",
+							"status": " "
+						},
+						{
+							"date": "2024-05-28",
+							"status": " "
+						},
+						{
+							"date": "2024-04-28",
+							"status": " "
+						},
+						{
+							"date": "2024-03-28",
+							"status": " "
+						},
+						{
+							"date": "2024-02-28",
+							"status": " "
+						},
+						{
+							"date": "2024-01-28",
+							"status": " "
+						},
+						{
+							"date": "2023-12-28",
+							"status": " "
+						},
+						{
+							"date": "2023-11-28",
+							"status": " "
+						},
+						{
+							"date": "2023-10-28",
+							"status": " "
+						},
+						{
+							"date": "2023-09-28",
+							"status": " "
+						},
+						{
+							"date": "2023-08-28",
+							"status": " "
+						},
+						{
+							"date": "2023-07-28",
+							"status": " "
+						},
+						{
+							"date": "2023-06-28",
+							"status": " "
+						},
+						{
+							"date": "2023-05-28",
+							"status": " "
+						},
+						{
+							"date": "2023-04-28",
+							"status": " "
+						},
+						{
+							"date": "2023-03-28",
+							"status": " "
+						},
+						{
+							"date": "2023-02-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2931581",
+				"creditorName": "SEZZLE INC",
+				"accountNumber": "48392037553983436972",
+				"balance": "602",
+				"highBalance": "858",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2025-02-01",
+				"accountDescription": "Individual",
+				"accountType": "Check credit/Line of credit",
+				"creditType": "Line of credit",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2024-09-01",
+				"dateReported": "2025-02-28",
+				"dateLastPayment": "2025-02-28",
+				"creditLimit": "900",
+				"amountPastDue": "0",
+				"monthlyPayment": "602",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCC",
+					"startDate": "2025-02-28",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2025-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-28",
+							"status": " "
+						},
+						{
+							"date": "2024-07-28",
+							"status": " "
+						},
+						{
+							"date": "2024-06-28",
+							"status": " "
+						},
+						{
+							"date": "2024-05-28",
+							"status": " "
+						},
+						{
+							"date": "2024-04-28",
+							"status": " "
+						},
+						{
+							"date": "2024-03-28",
+							"status": " "
+						},
+						{
+							"date": "2024-02-28",
+							"status": " "
+						},
+						{
+							"date": "2024-01-28",
+							"status": " "
+						},
+						{
+							"date": "2023-12-28",
+							"status": " "
+						},
+						{
+							"date": "2023-11-28",
+							"status": " "
+						},
+						{
+							"date": "2023-10-28",
+							"status": " "
+						},
+						{
+							"date": "2023-09-28",
+							"status": " "
+						},
+						{
+							"date": "2023-08-28",
+							"status": " "
+						},
+						{
+							"date": "2023-07-28",
+							"status": " "
+						},
+						{
+							"date": "2023-06-28",
+							"status": " "
+						},
+						{
+							"date": "2023-05-28",
+							"status": " "
+						},
+						{
+							"date": "2023-04-28",
+							"status": " "
+						},
+						{
+							"date": "2023-03-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "436FZ00261",
+				"creditorName": "SEZZLEINC",
+				"accountNumber": "48392037553983436972",
+				"balance": "602",
+				"highBalance": "0",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2025-02-01",
+				"accountDescription": "Individual",
+				"accountType": "Line of credit",
+				"creditType": "Line of credit",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2024-09-01",
+				"dateReported": "2025-02-01",
+				"dateLastPayment": "2025-02-01",
+				"creditLimit": "900",
+				"amountPastDue": "0",
+				"monthlyPayment": "905",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUU",
+					"startDate": "2025-01-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": " "
+						},
+						{
+							"date": "2024-07-01",
+							"status": " "
+						},
+						{
+							"date": "2024-06-01",
+							"status": " "
+						},
+						{
+							"date": "2024-05-01",
+							"status": " "
+						},
+						{
+							"date": "2024-04-01",
+							"status": " "
+						},
+						{
+							"date": "2024-03-01",
+							"status": " "
+						},
+						{
+							"date": "2024-02-01",
+							"status": " "
+						},
+						{
+							"date": "2024-01-01",
+							"status": " "
+						},
+						{
+							"date": "2023-12-01",
+							"status": " "
+						},
+						{
+							"date": "2023-11-01",
+							"status": " "
+						},
+						{
+							"date": "2023-10-01",
+							"status": " "
+						},
+						{
+							"date": "2023-09-01",
+							"status": " "
+						},
+						{
+							"date": "2023-08-01",
+							"status": " "
+						},
+						{
+							"date": "2023-07-01",
+							"status": " "
+						},
+						{
+							"date": "2023-06-01",
+							"status": " "
+						},
+						{
+							"date": "2023-05-01",
+							"status": " "
+						},
+						{
+							"date": "2023-04-01",
+							"status": " "
+						},
+						{
+							"date": "2023-03-01",
+							"status": " "
+						},
+						{
+							"date": "2023-02-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1623040",
+				"creditorName": "LVNV FUNDING LLC",
+				"accountNumber": "379364015536330",
+				"balance": "1673",
+				"highBalance": "1673",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2024-01-01",
+				"accountDescription": "Individual",
+				"accountType": "Unknown - credit extension, review, or collection",
+				"creditType": "Open Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2024-01-01",
+				"dateReported": "2025-03-04",
+				"creditLimit": "0",
+				"amountPastDue": "1673",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9999999999999",
+					"startDate": "2025-03-04",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-03-04",
+							"status": "9"
+						},
+						{
+							"date": "2025-02-04",
+							"status": "9"
+						},
+						{
+							"date": "2025-01-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-12-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-11-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-10-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-09-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-08-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-07-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-06-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-05-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-04-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-03-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-02-04",
+							"status": " "
+						},
+						{
+							"date": "2024-01-04",
+							"status": " "
+						},
+						{
+							"date": "2023-12-04",
+							"status": " "
+						},
+						{
+							"date": "2023-11-04",
+							"status": " "
+						},
+						{
+							"date": "2023-10-04",
+							"status": " "
+						},
+						{
+							"date": "2023-09-04",
+							"status": " "
+						},
+						{
+							"date": "2023-08-04",
+							"status": " "
+						},
+						{
+							"date": "2023-07-04",
+							"status": " "
+						},
+						{
+							"date": "2023-06-04",
+							"status": " "
+						},
+						{
+							"date": "2023-05-04",
+							"status": " "
+						},
+						{
+							"date": "2023-04-04",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "046FY00013",
+				"creditorName": "LVNVFUNDG",
+				"accountNumber": "379364015536330",
+				"balance": "1673",
+				"highBalance": "1673",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-06-01",
+				"accountDescription": "Individual",
+				"accountType": "Collection",
+				"creditType": "Open Account",
+				"disputeFlag": "Account disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2024-01-01",
+				"dateReported": "2025-03-01",
+				"dateLastPayment": "2023-06-01",
+				"creditLimit": "0",
+				"amountPastDue": "1673",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUU",
+					"startDate": "2025-02-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": " "
+						},
+						{
+							"date": "2024-01-01",
+							"status": " "
+						},
+						{
+							"date": "2023-12-01",
+							"status": " "
+						},
+						{
+							"date": "2023-11-01",
+							"status": " "
+						},
+						{
+							"date": "2023-10-01",
+							"status": " "
+						},
+						{
+							"date": "2023-09-01",
+							"status": " "
+						},
+						{
+							"date": "2023-08-01",
+							"status": " "
+						},
+						{
+							"date": "2023-07-01",
+							"status": " "
+						},
+						{
+							"date": "2023-06-01",
+							"status": " "
+						},
+						{
+							"date": "2023-05-01",
+							"status": " "
+						},
+						{
+							"date": "2023-04-01",
+							"status": " "
+						},
+						{
+							"date": "2023-03-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Late 120 Days"
+			}
+		],
+		[
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1623040",
+				"creditorName": "LVNV FUNDING LLC",
+				"accountNumber": "4707930522615307",
+				"balance": "1762",
+				"highBalance": "1762",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2024-01-01",
+				"accountDescription": "Individual",
+				"accountType": "Unknown - credit extension, review, or collection",
+				"creditType": "Open Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2024-01-01",
+				"dateReported": "2025-03-04",
+				"creditLimit": "0",
+				"amountPastDue": "1762",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9999999999999",
+					"startDate": "2025-03-04",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-03-04",
+							"status": "9"
+						},
+						{
+							"date": "2025-02-04",
+							"status": "9"
+						},
+						{
+							"date": "2025-01-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-12-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-11-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-10-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-09-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-08-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-07-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-06-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-05-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-04-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-03-04",
+							"status": "9"
+						},
+						{
+							"date": "2024-02-04",
+							"status": " "
+						},
+						{
+							"date": "2024-01-04",
+							"status": " "
+						},
+						{
+							"date": "2023-12-04",
+							"status": " "
+						},
+						{
+							"date": "2023-11-04",
+							"status": " "
+						},
+						{
+							"date": "2023-10-04",
+							"status": " "
+						},
+						{
+							"date": "2023-09-04",
+							"status": " "
+						},
+						{
+							"date": "2023-08-04",
+							"status": " "
+						},
+						{
+							"date": "2023-07-04",
+							"status": " "
+						},
+						{
+							"date": "2023-06-04",
+							"status": " "
+						},
+						{
+							"date": "2023-05-04",
+							"status": " "
+						},
+						{
+							"date": "2023-04-04",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "046FY00013",
+				"creditorName": "LVNVFUNDG",
+				"accountNumber": "4707930522615307",
+				"balance": "1762",
+				"highBalance": "1762",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-06-01",
+				"accountDescription": "Individual",
+				"accountType": "Collection",
+				"creditType": "Open Account",
+				"disputeFlag": "Account disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2024-01-01",
+				"dateReported": "2025-03-01",
+				"dateLastPayment": "2023-06-01",
+				"creditLimit": "0",
+				"amountPastDue": "1762",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUU",
+					"startDate": "2025-02-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": " "
+						},
+						{
+							"date": "2024-01-01",
+							"status": " "
+						},
+						{
+							"date": "2023-12-01",
+							"status": " "
+						},
+						{
+							"date": "2023-11-01",
+							"status": " "
+						},
+						{
+							"date": "2023-10-01",
+							"status": " "
+						},
+						{
+							"date": "2023-09-01",
+							"status": " "
+						},
+						{
+							"date": "2023-08-01",
+							"status": " "
+						},
+						{
+							"date": "2023-07-01",
+							"status": " "
+						},
+						{
+							"date": "2023-06-01",
+							"status": " "
+						},
+						{
+							"date": "2023-05-01",
+							"status": " "
+						},
+						{
+							"date": "2023-04-01",
+							"status": " "
+						},
+						{
+							"date": "2023-03-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Late 120 Days"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "01DTV001",
+				"creditorName": "CAPITAL ONE",
+				"accountNumber": "517805808240",
+				"balance": "0",
+				"highBalance": "1689",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2020-10-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2018-04-14",
+				"dateReported": "2020-10-01",
+				"dateVerified": "2020-10-01",
+				"dateLastPayment": "2020-10-01",
+				"creditLimit": "500",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1270246",
+				"creditorName": "CAPITAL ONE",
+				"accountNumber": "517805808240",
+				"balance": "0",
+				"highBalance": "0",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2020-10-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2018-04-01",
+				"dateReported": "2020-10-01",
+				"dateLastPayment": "2020-10-01",
+				"creditLimit": "500",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9UUUUUUU54321CCCCCCCCCCCC",
+					"startDate": "2020-10-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2020-10-01",
+							"status": "9"
+						},
+						{
+							"date": "2020-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-02-29",
+							"status": "U"
+						},
+						{
+							"date": "2020-01-31",
+							"status": "5"
+						},
+						{
+							"date": "2019-12-31",
+							"status": "4"
+						},
+						{
+							"date": "2019-11-30",
+							"status": "3"
+						},
+						{
+							"date": "2019-11-01",
+							"status": "2"
+						},
+						{
+							"date": "2019-10-01",
+							"status": "1"
+						},
+						{
+							"date": "2019-09-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-08-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-07-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-06-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-05-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-04-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2019-01-31",
+							"status": "C"
+						},
+						{
+							"date": "2018-12-31",
+							"status": "C"
+						},
+						{
+							"date": "2018-11-30",
+							"status": "C"
+						},
+						{
+							"date": "2018-11-01",
+							"status": "C"
+						},
+						{
+							"date": "2018-10-01",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Unknown"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "850BB01498",
+				"creditorName": "CAP ONE",
+				"accountNumber": "517805808240",
+				"balance": "0",
+				"highBalance": "1689",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2019-10-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2018-04-01",
+				"dateReported": "2021-12-01",
+				"dateLastPayment": "2019-10-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUUUUU443",
+					"startDate": "2021-11-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2021-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2021-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-02-29",
+							"status": "U"
+						},
+						{
+							"date": "2020-01-31",
+							"status": "4"
+						},
+						{
+							"date": "2019-12-31",
+							"status": "4"
+						},
+						{
+							"date": "2019-11-30",
+							"status": "3"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02ANW004",
+				"creditorName": "SELFINC/LEAD",
+				"accountNumber": "D00000000452609641",
+				"balance": "0",
+				"highBalance": "0",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2021-09-25",
+				"accountDescription": "Individual",
+				"accountType": "Secured credit card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2021-08-23",
+				"dateReported": "2022-06-30",
+				"dateVerified": "2022-06-30",
+				"dateLastPayment": "2021-09-25",
+				"creditLimit": "550",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCCCC",
+					"startDate": "2022-05-30",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-05-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-27",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-28",
+							"status": " "
+						},
+						{
+							"date": "2021-06-28",
+							"status": " "
+						},
+						{
+							"date": "2021-05-28",
+							"status": " "
+						},
+						{
+							"date": "2021-04-28",
+							"status": " "
+						},
+						{
+							"date": "2021-03-28",
+							"status": " "
+						},
+						{
+							"date": "2021-02-27",
+							"status": " "
+						},
+						{
+							"date": "2021-01-27",
+							"status": " "
+						},
+						{
+							"date": "2020-12-27",
+							"status": " "
+						},
+						{
+							"date": "2020-11-27",
+							"status": " "
+						},
+						{
+							"date": "2020-10-28",
+							"status": " "
+						},
+						{
+							"date": "2020-09-28",
+							"status": " "
+						},
+						{
+							"date": "2020-08-28",
+							"status": " "
+						},
+						{
+							"date": "2020-07-28",
+							"status": " "
+						},
+						{
+							"date": "2020-06-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2932264",
+				"creditorName": "SELF FINANCIAL/LEAD BA",
+				"accountNumber": "CRD00000000452609641",
+				"balance": "0",
+				"highBalance": "25",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2022-06-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit line secured",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-08-01",
+				"dateReported": "2022-06-30",
+				"dateLastPayment": "2021-09-25",
+				"creditLimit": "550",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UCCCCCCCCCC",
+					"startDate": "2022-06-30",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-06-30",
+							"status": "U"
+						},
+						{
+							"date": "2022-05-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-27",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-28",
+							"status": " "
+						},
+						{
+							"date": "2021-06-28",
+							"status": " "
+						},
+						{
+							"date": "2021-05-28",
+							"status": " "
+						},
+						{
+							"date": "2021-04-28",
+							"status": " "
+						},
+						{
+							"date": "2021-03-28",
+							"status": " "
+						},
+						{
+							"date": "2021-02-27",
+							"status": " "
+						},
+						{
+							"date": "2021-01-27",
+							"status": " "
+						},
+						{
+							"date": "2020-12-27",
+							"status": " "
+						},
+						{
+							"date": "2020-11-27",
+							"status": " "
+						},
+						{
+							"date": "2020-10-28",
+							"status": " "
+						},
+						{
+							"date": "2020-09-28",
+							"status": " "
+						},
+						{
+							"date": "2020-08-28",
+							"status": " "
+						},
+						{
+							"date": "2020-07-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "786BB00902",
+				"creditorName": "SELF/LEADB",
+				"accountNumber": "CRD00000000452609641",
+				"balance": "0",
+				"highBalance": "550",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2021-09-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-08-01",
+				"dateReported": "2022-06-01",
+				"dateLastPayment": "2021-09-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUU",
+					"startDate": "2022-05-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2022-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-07-01",
+							"status": " "
+						},
+						{
+							"date": "2021-06-01",
+							"status": " "
+						},
+						{
+							"date": "2021-05-01",
+							"status": " "
+						},
+						{
+							"date": "2021-04-01",
+							"status": " "
+						},
+						{
+							"date": "2021-02-28",
+							"status": " "
+						},
+						{
+							"date": "2021-01-31",
+							"status": " "
+						},
+						{
+							"date": "2020-12-31",
+							"status": " "
+						},
+						{
+							"date": "2020-11-30",
+							"status": " "
+						},
+						{
+							"date": "2020-11-01",
+							"status": " "
+						},
+						{
+							"date": "2020-10-01",
+							"status": " "
+						},
+						{
+							"date": "2020-09-01",
+							"status": " "
+						},
+						{
+							"date": "2020-08-01",
+							"status": " "
+						},
+						{
+							"date": "2020-07-01",
+							"status": " "
+						},
+						{
+							"date": "2020-06-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02JE3001",
+				"creditorName": "CURRENT",
+				"accountNumber": "2JH1962FIDI24ED8B4",
+				"balance": "0",
+				"highBalance": "0",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2025-02-28",
+				"accountDescription": "Individual",
+				"accountType": "Secured credit card",
+				"creditType": "Open Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2023-08-29",
+				"dateReported": "2025-02-28",
+				"dateVerified": "2025-02-28",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCCCCCCCCCCCC",
+					"startDate": "2025-01-28",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2024-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-07-28",
+							"status": " "
+						},
+						{
+							"date": "2023-06-28",
+							"status": " "
+						},
+						{
+							"date": "2023-05-28",
+							"status": " "
+						},
+						{
+							"date": "2023-04-28",
+							"status": " "
+						},
+						{
+							"date": "2023-03-28",
+							"status": " "
+						},
+						{
+							"date": "2023-02-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "404ZF00084",
+				"creditorName": "CURRNT/CRO",
+				"accountNumber": "412JH1962FIDI24ED8B4",
+				"balance": "0",
+				"highBalance": "0",
+				"accountStatus": "Open",
+				"accountDescription": "Individual",
+				"accountType": "Secured credit card",
+				"creditType": "Open Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2023-08-01",
+				"dateReported": "2025-02-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUU",
+					"startDate": "2025-01-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-07-01",
+							"status": " "
+						},
+						{
+							"date": "2023-06-01",
+							"status": " "
+						},
+						{
+							"date": "2023-05-01",
+							"status": " "
+						},
+						{
+							"date": "2023-04-01",
+							"status": " "
+						},
+						{
+							"date": "2023-03-01",
+							"status": " "
+						},
+						{
+							"date": "2023-02-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"creditorName": "LVNV FUNDING",
+				"accountNumber": "379364015536330",
+				"subscriberCode": "021T9002",
+				"balance": "1673",
+				"highBalance": "1673",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2025-03-04",
+				"accountDescription": "Individual",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2024-01-19",
+				"dateReported": "2025-03-04",
+				"dateVerified": "2025-03-04",
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02FSS001",
+				"creditorName": "CREDENCE RM",
+				"accountNumber": "279406412",
+				"balance": "52",
+				"highBalance": "52",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2025-02-26",
+				"accountDescription": "Individual",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2024-11-20",
+				"dateReported": "2025-02-26",
+				"dateVerified": "2025-02-26",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2347870",
+				"creditorName": "CREDENCE RESOURCE MANA",
+				"accountNumber": "279406412",
+				"balance": "52",
+				"highBalance": "52",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2024-11-01",
+				"accountDescription": "Individual",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2024-11-01",
+				"dateReported": "2025-02-25",
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"creditorName": "LVNV FUNDING",
+				"accountNumber": "4707930522615307",
+				"subscriberCode": "021T9002",
+				"balance": "1762",
+				"highBalance": "1762",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2025-02-04",
+				"accountDescription": "Individual",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2024-01-19",
+				"dateReported": "2025-02-04",
+				"dateVerified": "2025-02-04",
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02CZ9001",
+				"creditorName": "AMER CR ACPT",
+				"accountNumber": "90123929708",
+				"balance": "0",
+				"highBalance": "23865",
+				"accountStatus": "Closed",
+				"dateAccountStatus": "2021-01-25",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2020-07-18",
+				"dateReported": "2021-01-25",
+				"dateVerified": "2021-01-25",
+				"dateLastPayment": "2021-01-14",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "Monthly (every month)",
+				"paymentHistory": {
+					"status": "CCCCCC",
+					"startDate": "2020-12-25",
+					"monthlyPayStatus": [
+						{
+							"date": "2020-12-25",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-25",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-25",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-25",
+							"status": "C"
+						},
+						{
+							"date": "2020-08-25",
+							"status": "C"
+						},
+						{
+							"date": "2020-07-25",
+							"status": "C"
+						},
+						{
+							"date": "2020-06-25",
+							"status": " "
+						},
+						{
+							"date": "2020-05-25",
+							"status": " "
+						},
+						{
+							"date": "2020-04-25",
+							"status": " "
+						},
+						{
+							"date": "2020-03-25",
+							"status": " "
+						},
+						{
+							"date": "2020-02-25",
+							"status": " "
+						},
+						{
+							"date": "2020-01-25",
+							"status": " "
+						},
+						{
+							"date": "2019-12-25",
+							"status": " "
+						},
+						{
+							"date": "2019-11-25",
+							"status": " "
+						},
+						{
+							"date": "2019-10-25",
+							"status": " "
+						},
+						{
+							"date": "2019-09-25",
+							"status": " "
+						},
+						{
+							"date": "2019-08-25",
+							"status": " "
+						},
+						{
+							"date": "2019-07-25",
+							"status": " "
+						},
+						{
+							"date": "2019-06-25",
+							"status": " "
+						},
+						{
+							"date": "2019-05-25",
+							"status": " "
+						},
+						{
+							"date": "2019-04-25",
+							"status": " "
+						},
+						{
+							"date": "2019-03-25",
+							"status": " "
+						},
+						{
+							"date": "2019-02-25",
+							"status": " "
+						},
+						{
+							"date": "2019-01-25",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1393429",
+				"creditorName": "AMERICAN CREDIT ACCEPT",
+				"accountNumber": "90123929708",
+				"balance": "0",
+				"highBalance": "23865",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2021-01-01",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-07-01",
+				"dateReported": "2021-01-31",
+				"dateLastPayment": "2021-01-14",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UCCCCCC",
+					"startDate": "2021-01-31",
+					"monthlyPayStatus": [
+						{
+							"date": "2021-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-12-31",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-08-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-07-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-06-30",
+							"status": " "
+						},
+						{
+							"date": "2020-05-30",
+							"status": " "
+						},
+						{
+							"date": "2020-04-30",
+							"status": " "
+						},
+						{
+							"date": "2020-03-30",
+							"status": " "
+						},
+						{
+							"date": "2020-02-29",
+							"status": " "
+						},
+						{
+							"date": "2020-01-29",
+							"status": " "
+						},
+						{
+							"date": "2019-12-29",
+							"status": " "
+						},
+						{
+							"date": "2019-11-29",
+							"status": " "
+						},
+						{
+							"date": "2019-10-29",
+							"status": " "
+						},
+						{
+							"date": "2019-09-29",
+							"status": " "
+						},
+						{
+							"date": "2019-08-29",
+							"status": " "
+						},
+						{
+							"date": "2019-07-29",
+							"status": " "
+						},
+						{
+							"date": "2019-06-29",
+							"status": " "
+						},
+						{
+							"date": "2019-05-29",
+							"status": " "
+						},
+						{
+							"date": "2019-04-29",
+							"status": " "
+						},
+						{
+							"date": "2019-03-29",
+							"status": " "
+						},
+						{
+							"date": "2019-02-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "828FA00087",
+				"creditorName": "ACA",
+				"accountNumber": "90123929708",
+				"balance": "0",
+				"highBalance": "23865",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2021-01-01",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-07-01",
+				"dateReported": "2021-01-01",
+				"dateLastPayment": "2021-01-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUU",
+					"startDate": "2020-12-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2020-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-06-01",
+							"status": " "
+						},
+						{
+							"date": "2020-05-01",
+							"status": " "
+						},
+						{
+							"date": "2020-04-01",
+							"status": " "
+						},
+						{
+							"date": "2020-03-01",
+							"status": " "
+						},
+						{
+							"date": "2020-02-01",
+							"status": " "
+						},
+						{
+							"date": "2020-01-01",
+							"status": " "
+						},
+						{
+							"date": "2019-12-01",
+							"status": " "
+						},
+						{
+							"date": "2019-11-01",
+							"status": " "
+						},
+						{
+							"date": "2019-10-01",
+							"status": " "
+						},
+						{
+							"date": "2019-09-01",
+							"status": " "
+						},
+						{
+							"date": "2019-08-01",
+							"status": " "
+						},
+						{
+							"date": "2019-07-01",
+							"status": " "
+						},
+						{
+							"date": "2019-06-01",
+							"status": " "
+						},
+						{
+							"date": "2019-05-01",
+							"status": " "
+						},
+						{
+							"date": "2019-04-01",
+							"status": " "
+						},
+						{
+							"date": "2019-03-01",
+							"status": " "
+						},
+						{
+							"date": "2019-02-01",
+							"status": " "
+						},
+						{
+							"date": "2019-01-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "Experian",
+				"creditorName": "TELECOM SELFREPORTED",
+				"accountNumber": "2905B43889C949489A798A937D142760",
+				"subscriberCode": "2886930",
+				"balance": "17",
+				"highBalance": "17",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2024-09-01",
+				"accountDescription": "Individual",
+				"accountType": "Unknown - credit extension, review, or collection",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateReported": "2024-09-26",
+				"dateLastPayment": "2024-09-26",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "17",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCUCCCUCCCUCCCUCCCCC",
+					"startDate": "2024-09-26",
+					"monthlyPayStatus": [
+						{
+							"date": "2024-09-26",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-26",
+							"status": "C"
+						},
+						{
+							"date": "2024-07-26",
+							"status": "C"
+						},
+						{
+							"date": "2024-06-26",
+							"status": "C"
+						},
+						{
+							"date": "2024-05-26",
+							"status": "C"
+						},
+						{
+							"date": "2024-04-26",
+							"status": "C"
+						},
+						{
+							"date": "2024-03-26",
+							"status": "C"
+						},
+						{
+							"date": "2024-02-25",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-25",
+							"status": "C"
+						},
+						{
+							"date": "2023-12-25",
+							"status": "C"
+						},
+						{
+							"date": "2023-11-25",
+							"status": "C"
+						},
+						{
+							"date": "2023-10-26",
+							"status": "U"
+						},
+						{
+							"date": "2023-09-26",
+							"status": "C"
+						},
+						{
+							"date": "2023-08-26",
+							"status": "C"
+						},
+						{
+							"date": "2023-07-26",
+							"status": "C"
+						},
+						{
+							"date": "2023-06-26",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-26",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-26",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-26",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-25",
+							"status": "U"
+						},
+						{
+							"date": "2023-01-25",
+							"status": "C"
+						},
+						{
+							"date": "2022-12-25",
+							"status": "C"
+						},
+						{
+							"date": "2022-11-25",
+							"status": "C"
+						},
+						{
+							"date": "2022-10-26",
+							"status": "C"
+						},
+						{
+							"date": "2022-09-26",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "01MUZ001",
+				"creditorName": "UNITED AUTO",
+				"accountNumber": "10010116099210002",
+				"balance": "0",
+				"highBalance": "7473",
+				"accountStatus": "Closed",
+				"dateAccountStatus": "2020-08-17",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2019-10-31",
+				"dateReported": "2020-08-17",
+				"dateVerified": "2020-08-17",
+				"dateLastPayment": "2020-08-17",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "Monthly (every month)",
+				"paymentHistory": {
+					"status": "CCCCCCCCC",
+					"startDate": "2020-07-17",
+					"monthlyPayStatus": [
+						{
+							"date": "2020-07-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-06-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-05-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-04-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-03-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-02-16",
+							"status": "C"
+						},
+						{
+							"date": "2020-01-16",
+							"status": "C"
+						},
+						{
+							"date": "2019-12-16",
+							"status": "C"
+						},
+						{
+							"date": "2019-11-16",
+							"status": "C"
+						},
+						{
+							"date": "2019-10-17",
+							"status": " "
+						},
+						{
+							"date": "2019-09-17",
+							"status": " "
+						},
+						{
+							"date": "2019-08-17",
+							"status": " "
+						},
+						{
+							"date": "2019-07-17",
+							"status": " "
+						},
+						{
+							"date": "2019-06-17",
+							"status": " "
+						},
+						{
+							"date": "2019-05-17",
+							"status": " "
+						},
+						{
+							"date": "2019-04-17",
+							"status": " "
+						},
+						{
+							"date": "2019-03-17",
+							"status": " "
+						},
+						{
+							"date": "2019-02-16",
+							"status": " "
+						},
+						{
+							"date": "2019-01-16",
+							"status": " "
+						},
+						{
+							"date": "2018-12-16",
+							"status": " "
+						},
+						{
+							"date": "2018-11-16",
+							"status": " "
+						},
+						{
+							"date": "2018-10-17",
+							"status": " "
+						},
+						{
+							"date": "2018-09-17",
+							"status": " "
+						},
+						{
+							"date": "2018-08-17",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "3603330",
+				"creditorName": "UNITED AUTO CREDIT CO",
+				"accountNumber": "10010116099210002",
+				"balance": "0",
+				"highBalance": "7473",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2020-08-01",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2019-10-01",
+				"dateReported": "2020-08-31",
+				"dateLastPayment": "2020-08-17",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UCCCCCCCCC",
+					"startDate": "2020-08-31",
+					"monthlyPayStatus": [
+						{
+							"date": "2020-08-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-07-31",
+							"status": "C"
+						},
+						{
+							"date": "2020-06-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-05-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-04-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-03-30",
+							"status": "C"
+						},
+						{
+							"date": "2020-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2020-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2019-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2019-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2019-10-29",
+							"status": " "
+						},
+						{
+							"date": "2019-09-29",
+							"status": " "
+						},
+						{
+							"date": "2019-08-29",
+							"status": " "
+						},
+						{
+							"date": "2019-07-29",
+							"status": " "
+						},
+						{
+							"date": "2019-06-29",
+							"status": " "
+						},
+						{
+							"date": "2019-05-29",
+							"status": " "
+						},
+						{
+							"date": "2019-04-29",
+							"status": " "
+						},
+						{
+							"date": "2019-03-29",
+							"status": " "
+						},
+						{
+							"date": "2019-02-27",
+							"status": " "
+						},
+						{
+							"date": "2019-01-27",
+							"status": " "
+						},
+						{
+							"date": "2018-12-27",
+							"status": " "
+						},
+						{
+							"date": "2018-11-27",
+							"status": " "
+						},
+						{
+							"date": "2018-10-28",
+							"status": " "
+						},
+						{
+							"date": "2018-09-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "180FA05024",
+				"creditorName": "UACC",
+				"accountNumber": "10010116099210002",
+				"balance": "0",
+				"highBalance": "7473",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2020-08-01",
+				"accountDescription": "Individual",
+				"accountType": "Auto Loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2019-10-01",
+				"dateReported": "2020-08-01",
+				"dateLastPayment": "2020-08-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUU",
+					"startDate": "2020-07-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2020-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-02-29",
+							"status": "U"
+						},
+						{
+							"date": "2020-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2019-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2019-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2019-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2019-10-01",
+							"status": " "
+						},
+						{
+							"date": "2019-09-01",
+							"status": " "
+						},
+						{
+							"date": "2019-08-01",
+							"status": " "
+						},
+						{
+							"date": "2019-07-01",
+							"status": " "
+						},
+						{
+							"date": "2019-06-01",
+							"status": " "
+						},
+						{
+							"date": "2019-05-01",
+							"status": " "
+						},
+						{
+							"date": "2019-04-01",
+							"status": " "
+						},
+						{
+							"date": "2019-02-28",
+							"status": " "
+						},
+						{
+							"date": "2019-01-31",
+							"status": " "
+						},
+						{
+							"date": "2018-12-31",
+							"status": " "
+						},
+						{
+							"date": "2018-11-30",
+							"status": " "
+						},
+						{
+							"date": "2018-11-01",
+							"status": " "
+						},
+						{
+							"date": "2018-10-01",
+							"status": " "
+						},
+						{
+							"date": "2018-09-01",
+							"status": " "
+						},
+						{
+							"date": "2018-08-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02GY6002",
+				"creditorName": "MISSIONLNTAB",
+				"accountNumber": "4315037501085207",
+				"balance": "1289",
+				"highBalance": "1289",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-09-18",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2022-06-23",
+				"dateReported": "2025-03-18",
+				"dateVerified": "2025-03-18",
+				"dateLastPayment": "2023-03-22",
+				"creditLimit": "1000",
+				"amountPastDue": "1289",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2914668",
+				"creditorName": "MISSION LANE TAB BANK",
+				"accountNumber": "4315037501085207",
+				"balance": "1289",
+				"highBalance": "0",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-09-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-06-01",
+				"dateReported": "2025-03-18",
+				"dateLastPayment": "2023-03-22",
+				"creditLimit": "1000",
+				"amountPastDue": "1289",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "999999999999999999954321C",
+					"startDate": "2025-03-18",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-03-18",
+							"status": "9"
+						},
+						{
+							"date": "2025-02-17",
+							"status": "9"
+						},
+						{
+							"date": "2025-01-17",
+							"status": "9"
+						},
+						{
+							"date": "2024-12-17",
+							"status": "9"
+						},
+						{
+							"date": "2024-11-17",
+							"status": "9"
+						},
+						{
+							"date": "2024-10-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-09-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-08-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-07-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-06-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-05-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-04-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-03-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-02-17",
+							"status": "9"
+						},
+						{
+							"date": "2024-01-17",
+							"status": "9"
+						},
+						{
+							"date": "2023-12-17",
+							"status": "9"
+						},
+						{
+							"date": "2023-11-17",
+							"status": "9"
+						},
+						{
+							"date": "2023-10-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-09-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-08-18",
+							"status": "5"
+						},
+						{
+							"date": "2023-07-18",
+							"status": "4"
+						},
+						{
+							"date": "2023-06-18",
+							"status": "3"
+						},
+						{
+							"date": "2023-05-18",
+							"status": "2"
+						},
+						{
+							"date": "2023-04-18",
+							"status": "1"
+						},
+						{
+							"date": "2023-03-18",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "163FZ05951",
+				"creditorName": "MSNLNTAB",
+				"accountNumber": "4315037501085207",
+				"balance": "1289",
+				"highBalance": "1289",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-04-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-06-01",
+				"dateReported": "2025-03-01",
+				"dateLastPayment": "2023-04-01",
+				"creditLimit": "0",
+				"amountPastDue": "1289",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUU44321U",
+					"startDate": "2025-02-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "3"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "2"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02GHE002",
+				"creditorName": "PETAL CARD 1",
+				"accountNumber": "325040484374",
+				"balance": "0",
+				"highBalance": "1909",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2024-01-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2022-06-06",
+				"dateReported": "2024-01-29",
+				"dateVerified": "2024-01-29",
+				"dateLastPayment": "2024-01-29",
+				"creditLimit": "1300",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1124402",
+				"creditorName": "PETAL CARD 1/WEBBANK",
+				"accountNumber": "325040484374",
+				"balance": "0",
+				"highBalance": "0",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-12-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-06-01",
+				"dateReported": "2024-01-29",
+				"dateLastPayment": "2024-01-29",
+				"creditLimit": "1300",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9954321CCCCCCCCCCCCC",
+					"startDate": "2024-01-29",
+					"monthlyPayStatus": [
+						{
+							"date": "2024-01-29",
+							"status": "9"
+						},
+						{
+							"date": "2023-12-29",
+							"status": "9"
+						},
+						{
+							"date": "2023-11-29",
+							"status": "5"
+						},
+						{
+							"date": "2023-10-29",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-29",
+							"status": "3"
+						},
+						{
+							"date": "2023-08-29",
+							"status": "2"
+						},
+						{
+							"date": "2023-07-29",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-29",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-29",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-29",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-29",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-05-28",
+							"status": " "
+						},
+						{
+							"date": "2022-04-28",
+							"status": " "
+						},
+						{
+							"date": "2022-03-28",
+							"status": " "
+						},
+						{
+							"date": "2022-02-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "404BC00454",
+				"creditorName": "PETALCARD1",
+				"accountNumber": "325040484374",
+				"balance": "0",
+				"highBalance": "1909",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-06-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-06-01",
+				"dateReported": "2024-02-01",
+				"dateLastPayment": "2023-06-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "U44321UUUUUUUUUUUUUU",
+					"startDate": "2024-01-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "3"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "2"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-05-01",
+							"status": " "
+						},
+						{
+							"date": "2022-04-01",
+							"status": " "
+						},
+						{
+							"date": "2022-03-01",
+							"status": " "
+						},
+						{
+							"date": "2022-02-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02F4M005",
+				"creditorName": "BESTEGG",
+				"accountNumber": "4942860002921484",
+				"balance": "1248",
+				"highBalance": "1248",
+				"accountStatus": "Closed",
+				"dateAccountStatus": "2025-03-11",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2022-06-03",
+				"dateReported": "2025-03-11",
+				"dateVerified": "2025-03-11",
+				"dateLastPayment": "2024-11-08",
+				"creditLimit": "1000",
+				"amountPastDue": "172",
+				"monthlyPayment": "76",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "21CCCCC21CCCCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2025-02-11",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-11",
+							"status": "2"
+						},
+						{
+							"date": "2025-01-11",
+							"status": "1"
+						},
+						{
+							"date": "2024-12-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-11-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-10-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-09-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-07-11",
+							"status": "2"
+						},
+						{
+							"date": "2024-06-11",
+							"status": "1"
+						},
+						{
+							"date": "2024-05-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-04-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-03-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-02-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-01-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-12-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-11-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-10-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-09-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-08-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-07-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-06-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-01-11",
+							"status": "C"
+						},
+						{
+							"date": "2022-12-11",
+							"status": "C"
+						},
+						{
+							"date": "2022-11-11",
+							"status": "C"
+						},
+						{
+							"date": "2022-10-11",
+							"status": "C"
+						},
+						{
+							"date": "2022-09-11",
+							"status": "C"
+						},
+						{
+							"date": "2022-08-11",
+							"status": "C"
+						},
+						{
+							"date": "2022-07-11",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Late 90 Days"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2252980",
+				"creditorName": "BEST EGG",
+				"accountNumber": "4942860002921484",
+				"balance": "1223",
+				"highBalance": "1223",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2025-02-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-06-01",
+				"dateReported": "2025-02-11",
+				"dateLastPayment": "2024-11-08",
+				"creditLimit": "1000",
+				"amountPastDue": "98",
+				"monthlyPayment": "74",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "21CCCCC21CCCCCCCCCCCCCCCC",
+					"startDate": "2025-02-11",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-11",
+							"status": "2"
+						},
+						{
+							"date": "2025-01-11",
+							"status": "1"
+						},
+						{
+							"date": "2024-12-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-11-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-10-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-09-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-08-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-07-11",
+							"status": "2"
+						},
+						{
+							"date": "2024-06-11",
+							"status": "1"
+						},
+						{
+							"date": "2024-05-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-04-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-03-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-02-11",
+							"status": "C"
+						},
+						{
+							"date": "2024-01-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-12-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-11-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-10-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-09-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-08-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-07-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-06-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-11",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-11",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Late 60 Days"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "458FP04029",
+				"creditorName": "BESTEGG/MS",
+				"accountNumber": "4942860002921484",
+				"balance": "1248",
+				"highBalance": "1000",
+				"accountStatus": "Closed",
+				"dateAccountStatus": "2024-12-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-06-01",
+				"dateReported": "2025-03-01",
+				"dateLastPayment": "2024-12-01",
+				"creditLimit": "0",
+				"amountPastDue": "172",
+				"monthlyPayment": "76",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "21UUUUU21UUUUUUUUUUUUUUU",
+					"startDate": "2025-02-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-01",
+							"status": "2"
+						},
+						{
+							"date": "2025-01-01",
+							"status": "1"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "2"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "1"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Late 90 Days"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "01DTV001",
+				"creditorName": "CAPITAL ONE",
+				"accountNumber": "517805851656",
+				"balance": "0",
+				"highBalance": "3514",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2022-07-09",
+				"accountDescription": "Terminated",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2014-12-03",
+				"dateReported": "2022-07-09",
+				"dateVerified": "2022-07-09",
+				"dateLastPayment": "2022-07-04",
+				"creditLimit": "3550",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-06-09",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-06-09",
+							"status": "C"
+						},
+						{
+							"date": "2022-05-09",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-09",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-08",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-08",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-08",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-08",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-08",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-08-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-07-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-06-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-05-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-04-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-03-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-02-08",
+							"status": "C"
+						},
+						{
+							"date": "2020-01-08",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1270246",
+				"creditorName": "CAPITAL ONE",
+				"accountNumber": "517805851656",
+				"balance": "0",
+				"highBalance": "3514",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2022-07-01",
+				"accountDescription": "Terminated",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2014-12-01",
+				"dateReported": "2022-07-09",
+				"dateLastPayment": "2022-07-04",
+				"creditLimit": "3550",
+				"amountPastDue": "0",
+				"monthlyPayment": "32",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-07-09",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-07-09",
+							"status": "C"
+						},
+						{
+							"date": "2022-06-09",
+							"status": "C"
+						},
+						{
+							"date": "2022-05-09",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-09",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-08",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-08",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-09",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-08",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-08",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-08",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-08",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-08-09",
+							"status": "C"
+						},
+						{
+							"date": "2020-07-09",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "01DTV001",
+				"creditorName": "CAPITAL ONE",
+				"accountNumber": "517805802326",
+				"balance": "0",
+				"highBalance": "1510",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2020-10-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2019-01-20",
+				"dateReported": "2020-10-01",
+				"dateVerified": "2020-10-01",
+				"dateLastPayment": "2020-10-01",
+				"creditLimit": "500",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1270246",
+				"creditorName": "CAPITAL ONE",
+				"accountNumber": "517805802326",
+				"balance": "0",
+				"highBalance": "0",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2020-10-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2019-01-01",
+				"dateReported": "2020-10-01",
+				"dateLastPayment": "2020-10-01",
+				"creditLimit": "500",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9UUUUUU5432U1CCCCCCC",
+					"startDate": "2020-10-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2020-10-01",
+							"status": "9"
+						},
+						{
+							"date": "2020-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-02-29",
+							"status": "5"
+						},
+						{
+							"date": "2020-01-31",
+							"status": "4"
+						},
+						{
+							"date": "2019-12-31",
+							"status": "3"
+						},
+						{
+							"date": "2019-11-30",
+							"status": "2"
+						},
+						{
+							"date": "2019-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2019-10-01",
+							"status": "1"
+						},
+						{
+							"date": "2019-09-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-08-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-07-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-06-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-05-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-04-01",
+							"status": "C"
+						},
+						{
+							"date": "2019-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2019-01-31",
+							"status": " "
+						},
+						{
+							"date": "2018-12-31",
+							"status": " "
+						},
+						{
+							"date": "2018-11-30",
+							"status": " "
+						},
+						{
+							"date": "2018-11-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Unknown"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "850BB01498",
+				"creditorName": "CAP ONE",
+				"accountNumber": "517805802326",
+				"balance": "0",
+				"highBalance": "1510",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2019-10-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2019-01-01",
+				"dateReported": "2021-12-01",
+				"dateLastPayment": "2019-10-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUUUUU443",
+					"startDate": "2021-11-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2021-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2021-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-02-29",
+							"status": "U"
+						},
+						{
+							"date": "2020-01-31",
+							"status": "4"
+						},
+						{
+							"date": "2019-12-31",
+							"status": "4"
+						},
+						{
+							"date": "2019-11-30",
+							"status": "3"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "021WB001",
+				"creditorName": "AMEX",
+				"accountNumber": "3499929866639103",
+				"balance": "4765",
+				"highBalance": "4765",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2022-12-10",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Open Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2022-05-12",
+				"dateReported": "2025-02-20",
+				"dateVerified": "2025-02-20",
+				"creditLimit": "0",
+				"amountPastDue": "3741",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1229200",
+				"creditorName": "AMEX",
+				"accountNumber": "3499929866639103",
+				"balance": "4765",
+				"highBalance": "4765",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-04-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-05-01",
+				"dateReported": "2025-03-23",
+				"creditLimit": "0",
+				"amountPastDue": "3776",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9999999999999999999999999",
+					"startDate": "2025-03-23",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-03-23",
+							"status": "9"
+						},
+						{
+							"date": "2025-02-22",
+							"status": "9"
+						},
+						{
+							"date": "2025-01-22",
+							"status": "9"
+						},
+						{
+							"date": "2024-12-22",
+							"status": "9"
+						},
+						{
+							"date": "2024-11-22",
+							"status": "9"
+						},
+						{
+							"date": "2024-10-23",
+							"status": "9"
+						},
+						{
+							"date": "2024-09-23",
+							"status": "9"
+						},
+						{
+							"date": "2024-08-23",
+							"status": "9"
+						},
+						{
+							"date": "2024-07-23",
+							"status": "9"
+						},
+						{
+							"date": "2024-06-23",
+							"status": "9"
+						},
+						{
+							"date": "2024-05-23",
+							"status": "9"
+						},
+						{
+							"date": "2024-04-23",
+							"status": "9"
+						},
+						{
+							"date": "2024-03-23",
+							"status": "9"
+						},
+						{
+							"date": "2024-02-22",
+							"status": "9"
+						},
+						{
+							"date": "2024-01-22",
+							"status": "9"
+						},
+						{
+							"date": "2023-12-22",
+							"status": "9"
+						},
+						{
+							"date": "2023-11-22",
+							"status": "9"
+						},
+						{
+							"date": "2023-10-23",
+							"status": "9"
+						},
+						{
+							"date": "2023-09-23",
+							"status": "9"
+						},
+						{
+							"date": "2023-08-23",
+							"status": "9"
+						},
+						{
+							"date": "2023-07-23",
+							"status": "9"
+						},
+						{
+							"date": "2023-06-23",
+							"status": "9"
+						},
+						{
+							"date": "2023-05-23",
+							"status": "9"
+						},
+						{
+							"date": "2023-04-23",
+							"status": "9"
+						},
+						{
+							"date": "2023-03-23",
+							"status": "9"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "402BB48257",
+				"creditorName": "AMEX",
+				"accountNumber": "-3499929866639103",
+				"balance": "4765",
+				"highBalance": "4694",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2022-09-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Open Account",
+				"disputeFlag": "Account disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-05-01",
+				"dateReported": "2025-02-01",
+				"dateLastPayment": "2022-09-01",
+				"creditLimit": "0",
+				"amountPastDue": "3741",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUUUUUUUU",
+					"startDate": "2025-01-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-02-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "01DTV001",
+				"creditorName": "CAPITAL ONE",
+				"accountNumber": "517805970860",
+				"balance": "0",
+				"highBalance": "5048",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2022-07-18",
+				"accountDescription": "Terminated",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2014-11-12",
+				"dateReported": "2022-07-18",
+				"dateVerified": "2022-07-18",
+				"dateLastPayment": "2022-07-12",
+				"creditLimit": "4350",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-06-18",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-06-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-08-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-07-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-06-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2019-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2019-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2019-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2019-09-18",
+							"status": "C"
+						},
+						{
+							"date": "2019-08-18",
+							"status": "C"
+						},
+						{
+							"date": "2019-07-18",
+							"status": "C"
+						},
+						{
+							"date": "2019-06-18",
+							"status": "C"
+						},
+						{
+							"date": "2019-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2019-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2019-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2019-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2019-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2018-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2018-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2018-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2018-09-18",
+							"status": "C"
+						},
+						{
+							"date": "2018-08-18",
+							"status": "C"
+						},
+						{
+							"date": "2018-07-18",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1270246",
+				"creditorName": "CAPITAL ONE",
+				"accountNumber": "517805970860",
+				"balance": "0",
+				"highBalance": "5048",
+				"accountStatus": "Open",
+				"dateAccountStatus": "2022-07-01",
+				"accountDescription": "Terminated",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2014-11-01",
+				"dateReported": "2022-07-18",
+				"dateLastPayment": "2022-07-12",
+				"creditLimit": "4350",
+				"amountPastDue": "0",
+				"monthlyPayment": "43",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-07-18",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-07-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-06-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-08-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-07-18",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "Equifax",
+				"creditorName": "CRDTONEBNK",
+				"accountNumber": "379364015536330",
+				"subscriberCode": "180BB27505",
+				"balance": "1673",
+				"highBalance": "1673",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-06-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-04-01",
+				"dateReported": "2023-12-01",
+				"dateLastPayment": "2023-06-01",
+				"creditLimit": "0",
+				"amountPastDue": "1673",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "444321UUUUUUUUUUUUUUUUUU",
+					"startDate": "2023-11-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2023-11-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "3"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "2"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2023-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2022-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2022-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2022-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2022-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-30",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02GSZ001",
+				"creditorName": "GS BANK USA",
+				"accountNumber": "1200",
+				"balance": "3625",
+				"highBalance": "3625",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-12-31",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2022-04-13",
+				"dateReported": "2025-02-28",
+				"dateVerified": "2025-02-28",
+				"dateLastPayment": "2023-06-01",
+				"creditLimit": "3000",
+				"amountPastDue": "3625",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1795380",
+				"creditorName": "APPLE CARD/GS BANK USA",
+				"accountNumber": "1200012060702033",
+				"balance": "3625",
+				"highBalance": "0",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-12-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-04-01",
+				"dateReported": "2025-02-28",
+				"dateLastPayment": "2023-06-01",
+				"creditLimit": "3000",
+				"amountPastDue": "3625",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "99999999999999954321CCCCC",
+					"startDate": "2025-02-28",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-28",
+							"status": "9"
+						},
+						{
+							"date": "2025-01-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-12-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-11-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-10-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-09-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-08-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-07-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-06-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-05-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-04-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-03-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-02-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-01-28",
+							"status": "9"
+						},
+						{
+							"date": "2023-12-28",
+							"status": "9"
+						},
+						{
+							"date": "2023-11-28",
+							"status": "5"
+						},
+						{
+							"date": "2023-10-28",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-28",
+							"status": "3"
+						},
+						{
+							"date": "2023-08-28",
+							"status": "2"
+						},
+						{
+							"date": "2023-07-28",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "496BB25493",
+				"creditorName": "GS BANKUSA",
+				"accountNumber": "1200012060702033",
+				"balance": "3625",
+				"highBalance": "3625",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-07-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-04-01",
+				"dateReported": "2025-02-01",
+				"dateLastPayment": "2023-07-01",
+				"creditLimit": "0",
+				"amountPastDue": "3625",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUU44321UUUUU",
+					"startDate": "2025-01-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "3"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "2"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-02-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02GB1001",
+				"creditorName": "UPGRADE INC",
+				"accountNumber": "157454983",
+				"balance": "0",
+				"highBalance": "1999",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-11-28",
+				"accountDescription": "Individual",
+				"accountType": "Line of credit",
+				"creditType": "Open Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2022-04-13",
+				"dateReported": "2023-11-28",
+				"dateVerified": "2023-11-28",
+				"dateLastPayment": "2023-05-26",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2843230",
+				"creditorName": "UPGRADE INC",
+				"accountNumber": "157454983",
+				"balance": "0",
+				"highBalance": "1999",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-11-01",
+				"accountDescription": "Individual",
+				"accountType": "Check credit/Line of credit",
+				"creditType": "Line of credit",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-04-01",
+				"dateReported": "2023-11-28",
+				"dateLastPayment": "2023-05-26",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "99321CCCCCCCCCCCCC",
+					"startDate": "2023-11-28",
+					"monthlyPayStatus": [
+						{
+							"date": "2023-11-28",
+							"status": "9"
+						},
+						{
+							"date": "2023-10-28",
+							"status": "9"
+						},
+						{
+							"date": "2023-09-28",
+							"status": "3"
+						},
+						{
+							"date": "2023-08-28",
+							"status": "2"
+						},
+						{
+							"date": "2023-07-28",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-01-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-12-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-11-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2022-05-28",
+							"status": " "
+						},
+						{
+							"date": "2022-04-28",
+							"status": " "
+						},
+						{
+							"date": "2022-03-28",
+							"status": " "
+						},
+						{
+							"date": "2022-02-28",
+							"status": " "
+						},
+						{
+							"date": "2022-01-28",
+							"status": " "
+						},
+						{
+							"date": "2021-12-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "163FP10271",
+				"creditorName": "UPGRADEINC",
+				"accountNumber": "157454983",
+				"balance": "0",
+				"highBalance": "0",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-07-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Open Account",
+				"disputeFlag": "Account disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2022-04-01",
+				"dateReported": "2024-11-01",
+				"dateLastPayment": "2023-07-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUUUUUUUU",
+					"startDate": "2024-10-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-29",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2023-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2022-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2022-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2022-11-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02D8V001",
+				"creditorName": "FSTPROGRESS",
+				"accountNumber": "5443030008306103",
+				"balance": "0",
+				"highBalance": "68",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2021-11-10",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2020-10-12",
+				"dateReported": "2022-06-18",
+				"dateVerified": "2022-06-18",
+				"dateLastPayment": "2021-11-10",
+				"creditLimit": "200",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-05-18",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-18",
+							"status": " "
+						},
+						{
+							"date": "2020-08-18",
+							"status": " "
+						},
+						{
+							"date": "2020-07-18",
+							"status": " "
+						},
+						{
+							"date": "2020-06-18",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1388830",
+				"creditorName": "1STPROGRESS/TSYS/VT",
+				"accountNumber": "5443030008306103",
+				"balance": "0",
+				"highBalance": "68",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2022-06-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-10-01",
+				"dateReported": "2022-06-17",
+				"dateLastPayment": "2021-11-10",
+				"creditLimit": "200",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-06-17",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-06-17",
+							"status": "U"
+						},
+						{
+							"date": "2022-05-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-16",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-16",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-16",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-16",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-16",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-16",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-16",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-16",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-17",
+							"status": " "
+						},
+						{
+							"date": "2020-08-17",
+							"status": " "
+						},
+						{
+							"date": "2020-07-17",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "496ON02537",
+				"creditorName": "1 PROGRESS",
+				"accountNumber": "5443030008306103",
+				"balance": "0",
+				"highBalance": "200",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2021-11-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-10-01",
+				"dateReported": "2022-06-01",
+				"dateLastPayment": "2021-11-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUUUU",
+					"startDate": "2022-05-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2022-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2021-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-09-01",
+							"status": " "
+						},
+						{
+							"date": "2020-08-01",
+							"status": " "
+						},
+						{
+							"date": "2020-07-01",
+							"status": " "
+						},
+						{
+							"date": "2020-06-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02D8V001",
+				"creditorName": "FSTPROGRESS",
+				"accountNumber": "5443030008318504",
+				"balance": "0",
+				"highBalance": "58",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2021-11-10",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2020-10-12",
+				"dateReported": "2022-06-18",
+				"dateVerified": "2022-06-18",
+				"dateLastPayment": "2021-11-10",
+				"creditLimit": "200",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "CCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-05-18",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-18",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-18",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-18",
+							"status": " "
+						},
+						{
+							"date": "2020-08-18",
+							"status": " "
+						},
+						{
+							"date": "2020-07-18",
+							"status": " "
+						},
+						{
+							"date": "2020-06-18",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1388830",
+				"creditorName": "1STPROGRESS/TSYS/VT",
+				"accountNumber": "5443030008318504",
+				"balance": "0",
+				"highBalance": "58",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2022-06-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-10-01",
+				"dateReported": "2022-06-17",
+				"dateLastPayment": "2021-11-10",
+				"creditLimit": "200",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-06-17",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-06-17",
+							"status": "U"
+						},
+						{
+							"date": "2022-05-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-17",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-16",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-16",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-16",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-16",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-17",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-16",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-16",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-16",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-16",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-17",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-17",
+							"status": " "
+						},
+						{
+							"date": "2020-08-17",
+							"status": " "
+						},
+						{
+							"date": "2020-07-17",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "496ON02537",
+				"creditorName": "1 PROGRESS",
+				"accountNumber": "5443030008318504",
+				"balance": "0",
+				"highBalance": "200",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2021-11-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-10-01",
+				"dateReported": "2022-06-01",
+				"dateLastPayment": "2021-11-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUUUU",
+					"startDate": "2022-05-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2022-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2021-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-09-01",
+							"status": " "
+						},
+						{
+							"date": "2020-08-01",
+							"status": " "
+						},
+						{
+							"date": "2020-07-01",
+							"status": " "
+						},
+						{
+							"date": "2020-06-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "02GS2001",
+				"creditorName": "ATLCAPBKSELF",
+				"accountNumber": "13230469",
+				"balance": "0",
+				"highBalance": "724",
+				"accountStatus": "Closed",
+				"dateAccountStatus": "2022-06-13",
+				"accountDescription": "Individual",
+				"accountType": "Secured loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2020-10-04",
+				"dateReported": "2022-06-13",
+				"dateVerified": "2022-06-13",
+				"dateLastPayment": "2022-06-13",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "Monthly (every month)",
+				"paymentHistory": {
+					"status": "CCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-05-13",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-05-13",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-13",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-12",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-12",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-12",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-12",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-12",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-13",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-13",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-13",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-13",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-13",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-13",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-13",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-12",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-12",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-12",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-12",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-12",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-13",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-13",
+							"status": " "
+						},
+						{
+							"date": "2020-08-13",
+							"status": " "
+						},
+						{
+							"date": "2020-07-13",
+							"status": " "
+						},
+						{
+							"date": "2020-06-13",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "2928750",
+				"creditorName": "SELF/ATLANTIC CAPITAL",
+				"accountNumber": "13230469",
+				"balance": "0",
+				"highBalance": "724",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2022-06-01",
+				"accountDescription": "Individual",
+				"accountType": "Secured loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-10-01",
+				"dateReported": "2022-06-30",
+				"dateLastPayment": "2022-06-13",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UCCCCCCCCCCCCCCCCCCCC",
+					"startDate": "2022-06-30",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-06-30",
+							"status": "U"
+						},
+						{
+							"date": "2022-05-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-04-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-03-30",
+							"status": "C"
+						},
+						{
+							"date": "2022-02-27",
+							"status": "C"
+						},
+						{
+							"date": "2022-01-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-12-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-11-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-09-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-08-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-07-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2021-02-27",
+							"status": "C"
+						},
+						{
+							"date": "2021-01-27",
+							"status": "C"
+						},
+						{
+							"date": "2020-12-27",
+							"status": "C"
+						},
+						{
+							"date": "2020-11-27",
+							"status": "C"
+						},
+						{
+							"date": "2020-10-28",
+							"status": "C"
+						},
+						{
+							"date": "2020-09-28",
+							"status": " "
+						},
+						{
+							"date": "2020-08-28",
+							"status": " "
+						},
+						{
+							"date": "2020-07-28",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "401BB42003",
+				"creditorName": "ATLANTICCA",
+				"accountNumber": "13230469",
+				"balance": "0",
+				"highBalance": "724",
+				"accountStatus": "Paid",
+				"dateAccountStatus": "2022-06-01",
+				"accountDescription": "Individual",
+				"accountType": "Secured loan",
+				"creditType": "Installment Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2020-10-01",
+				"dateReported": "2022-06-01",
+				"dateLastPayment": "2022-06-01",
+				"creditLimit": "0",
+				"amountPastDue": "0",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUUUU",
+					"startDate": "2022-05-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2022-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2022-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2022-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2021-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2021-02-28",
+							"status": "U"
+						},
+						{
+							"date": "2021-01-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-12-31",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-30",
+							"status": "U"
+						},
+						{
+							"date": "2020-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2020-09-01",
+							"status": " "
+						},
+						{
+							"date": "2020-08-01",
+							"status": " "
+						},
+						{
+							"date": "2020-07-01",
+							"status": " "
+						},
+						{
+							"date": "2020-06-01",
+							"status": " "
+						}
+					]
+				},
+				"paymentStatus": "Current"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "021WB001",
+				"creditorName": "AMEX",
+				"accountNumber": "3499929216623733",
+				"balance": "3812",
+				"highBalance": "3812",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2022-12-10",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2021-10-29",
+				"dateReported": "2025-03-18",
+				"dateVerified": "2025-03-18",
+				"creditLimit": "0",
+				"amountPastDue": "2595",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "1229200",
+				"creditorName": "AMEX",
+				"accountNumber": "3499929216623733",
+				"balance": "3812",
+				"highBalance": "3812",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-05-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-10-01",
+				"dateReported": "2025-03-18",
+				"creditLimit": "0",
+				"amountPastDue": "2595",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9999999999999999999999999",
+					"startDate": "2025-03-18",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-03-18",
+							"status": "9"
+						},
+						{
+							"date": "2025-02-17",
+							"status": "9"
+						},
+						{
+							"date": "2025-01-17",
+							"status": "9"
+						},
+						{
+							"date": "2024-12-17",
+							"status": "9"
+						},
+						{
+							"date": "2024-11-17",
+							"status": "9"
+						},
+						{
+							"date": "2024-10-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-09-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-08-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-07-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-06-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-05-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-04-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-03-18",
+							"status": "9"
+						},
+						{
+							"date": "2024-02-17",
+							"status": "9"
+						},
+						{
+							"date": "2024-01-17",
+							"status": "9"
+						},
+						{
+							"date": "2023-12-17",
+							"status": "9"
+						},
+						{
+							"date": "2023-11-17",
+							"status": "9"
+						},
+						{
+							"date": "2023-10-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-09-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-08-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-07-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-06-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-05-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-04-18",
+							"status": "9"
+						},
+						{
+							"date": "2023-03-18",
+							"status": "9"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "402BB48257",
+				"creditorName": "AMEX",
+				"accountNumber": "-3499929216623733",
+				"balance": "3812",
+				"highBalance": "3773",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2022-10-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-10-01",
+				"dateReported": "2025-03-01",
+				"dateLastPayment": "2022-10-01",
+				"creditLimit": "0",
+				"amountPastDue": "2595",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUUUUUUUUUUU",
+					"startDate": "2025-02-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "09616003",
+				"creditorName": "DISCOVERBANK",
+				"accountNumber": "601101460148",
+				"balance": "5072",
+				"highBalance": "5072",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-10-12",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2021-10-28",
+				"dateReported": "2025-03-16",
+				"dateVerified": "2025-03-16",
+				"dateLastPayment": "2023-04-10",
+				"creditLimit": "4000",
+				"amountPastDue": "5072",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "3276502",
+				"creditorName": "DISCOVER BANK",
+				"accountNumber": "601101460148",
+				"balance": "5072",
+				"highBalance": "0",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-12-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-10-01",
+				"dateReported": "2025-03-16",
+				"dateLastPayment": "2023-04-10",
+				"creditLimit": "4000",
+				"amountPastDue": "5072",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "9999999999999999654321CCC",
+					"startDate": "2025-03-16",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-03-16",
+							"status": "9"
+						},
+						{
+							"date": "2025-02-15",
+							"status": "9"
+						},
+						{
+							"date": "2025-01-15",
+							"status": "9"
+						},
+						{
+							"date": "2024-12-15",
+							"status": "9"
+						},
+						{
+							"date": "2024-11-15",
+							"status": "9"
+						},
+						{
+							"date": "2024-10-16",
+							"status": "9"
+						},
+						{
+							"date": "2024-09-16",
+							"status": "9"
+						},
+						{
+							"date": "2024-08-16",
+							"status": "9"
+						},
+						{
+							"date": "2024-07-16",
+							"status": "9"
+						},
+						{
+							"date": "2024-06-16",
+							"status": "9"
+						},
+						{
+							"date": "2024-05-16",
+							"status": "9"
+						},
+						{
+							"date": "2024-04-16",
+							"status": "9"
+						},
+						{
+							"date": "2024-03-16",
+							"status": "9"
+						},
+						{
+							"date": "2024-02-15",
+							"status": "9"
+						},
+						{
+							"date": "2024-01-15",
+							"status": "9"
+						},
+						{
+							"date": "2023-12-15",
+							"status": "9"
+						},
+						{
+							"date": "2023-11-15",
+							"status": "6"
+						},
+						{
+							"date": "2023-10-16",
+							"status": "5"
+						},
+						{
+							"date": "2023-09-16",
+							"status": "4"
+						},
+						{
+							"date": "2023-08-16",
+							"status": "3"
+						},
+						{
+							"date": "2023-07-16",
+							"status": "2"
+						},
+						{
+							"date": "2023-06-16",
+							"status": "1"
+						},
+						{
+							"date": "2023-05-16",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-16",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-16",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "155BB03747",
+				"creditorName": "DISCOVER",
+				"accountNumber": "601101460148",
+				"balance": "5072",
+				"highBalance": "5072",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-05-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-10-01",
+				"dateReported": "2025-03-01",
+				"dateLastPayment": "2023-05-01",
+				"creditLimit": "0",
+				"amountPastDue": "5072",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUUUU444321UUU",
+					"startDate": "2025-02-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "3"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "2"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		],
+		[
+			{
+				"bureau": "TransUnion",
+				"subscriberCode": "026QK001",
+				"creditorName": "JPMCB CARD",
+				"accountNumber": "4266841695981413",
+				"balance": "923",
+				"highBalance": "923",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-09-30",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "Account not disputed",
+				"dateOpened": "2021-10-29",
+				"dateReported": "2025-02-28",
+				"dateVerified": "2025-02-28",
+				"dateLastPayment": "2023-05-25",
+				"creditLimit": "500",
+				"amountPastDue": "923",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": "",
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Experian",
+				"subscriberCode": "3182310",
+				"creditorName": "JPMCB CARD",
+				"accountNumber": "426684169598",
+				"balance": "923",
+				"highBalance": "0",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2024-01-01",
+				"accountDescription": "Individual",
+				"accountType": "Credit Card",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-10-01",
+				"dateReported": "2025-02-28",
+				"dateLastPayment": "2023-05-25",
+				"creditLimit": "500",
+				"amountPastDue": "923",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "99999999999999654321CCCCC",
+					"startDate": "2025-02-28",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-02-28",
+							"status": "9"
+						},
+						{
+							"date": "2025-01-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-12-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-11-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-10-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-09-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-08-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-07-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-06-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-05-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-04-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-03-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-02-28",
+							"status": "9"
+						},
+						{
+							"date": "2024-01-28",
+							"status": "9"
+						},
+						{
+							"date": "2023-12-28",
+							"status": "6"
+						},
+						{
+							"date": "2023-11-28",
+							"status": "5"
+						},
+						{
+							"date": "2023-10-28",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-28",
+							"status": "3"
+						},
+						{
+							"date": "2023-08-28",
+							"status": "2"
+						},
+						{
+							"date": "2023-07-28",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-05-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-04-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-03-28",
+							"status": "C"
+						},
+						{
+							"date": "2023-02-28",
+							"status": "C"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			},
+			{
+				"bureau": "Equifax",
+				"subscriberCode": "458ON13374",
+				"creditorName": "JPMCB CARD",
+				"accountNumber": "426684169598",
+				"balance": "923",
+				"highBalance": "923",
+				"accountStatus": "Derogatory",
+				"dateAccountStatus": "2023-07-01",
+				"accountDescription": "Individual",
+				"accountType": "",
+				"creditType": "Revolving Account",
+				"disputeFlag": "Account not disputed",
+				"verificationIndicator": "",
+				"dateOpened": "2021-10-01",
+				"dateReported": "2025-02-01",
+				"dateLastPayment": "2023-07-01",
+				"creditLimit": "0",
+				"amountPastDue": "923",
+				"monthlyPayment": "0",
+				"paymentFrequency": "",
+				"paymentHistory": {
+					"status": "UUUUUUUUUUUUU444321UUUUU",
+					"startDate": "2025-01-01",
+					"monthlyPayStatus": [
+						{
+							"date": "2025-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-12-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-11-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-10-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-09-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-08-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-07-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-02-01",
+							"status": "U"
+						},
+						{
+							"date": "2024-01-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-12-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-11-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-10-01",
+							"status": "4"
+						},
+						{
+							"date": "2023-09-01",
+							"status": "3"
+						},
+						{
+							"date": "2023-08-01",
+							"status": "2"
+						},
+						{
+							"date": "2023-07-01",
+							"status": "1"
+						},
+						{
+							"date": "2023-06-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-05-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-04-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-03-01",
+							"status": "U"
+						},
+						{
+							"date": "2023-02-01",
+							"status": "U"
+						}
+					]
+				},
+				"paymentStatus": "Collection/Chargeoff"
+			}
+		]
+	],
+	"inquiries": [
+		{
+			"bureau": "TransUnion",
+			"inquiryDate": "2023-11-09",
+			"inquiryType": "I",
+			"subscriberNumber": "01199407",
+			"subscriberName": "SYNCB/LOWES",
+			"industryCode": "Hardware Stores"
+		},
+		{
+			"bureau": "TransUnion",
+			"inquiryDate": "2023-10-25",
+			"inquiryType": "I",
+			"subscriberNumber": "04102746",
+			"subscriberName": "SALLIE MAE B",
+			"industryCode": "Line of Credit - Bank"
+		},
+		{
+			"bureau": "Equifax",
+			"inquiryDate": "2023-11-11",
+			"inquiryType": "",
+			"subscriberNumber": "485FP00917",
+			"subscriberName": "CBNA/THD",
+			"industryCode": ""
+		}
+	],
+	"creditors": [
+		{
+			"name": "SALLIE MAE BANK",
+			"subscriberCode": "04102746",
+			"telephone": "8004725543",
+			"address": {
+				"city": "WILMINGTON                 ",
+				"stateCode": "DE",
+				"unparsedStreet": "PO BOX 3229                                                  ",
+				"postalCode": "19804"
+			},
+			"industryCode": "Bank",
+			"source": "TransUnion"
+		},
+		{
+			"name": "SYNCB/LOWES",
+			"subscriberCode": "01199407",
+			"telephone": "8004441408",
+			"address": {
+				"city": "PHILADELPHIA               ",
+				"stateCode": "PA",
+				"unparsedStreet": "PO BOX 71727                                                 ",
+				"postalCode": "19176"
+			},
+			"industryCode": "Lumber/Building Materials/Hardware",
+			"source": "TransUnion"
+		},
+		{
+			"name": "CREDENCE RESOURCE MANAGE",
+			"subscriberCode": "02FSS001",
+			"telephone": "8558765351",
+			"address": {
+				"city": "DALLAS                     ",
+				"stateCode": "TX",
+				"unparsedStreet": "4222 TRINITY MILLS SUITE 260                                 ",
+				"postalCode": "75287"
+			},
+			"industryCode": "Other Collection Agencies",
+			"source": "TransUnion"
+		},
+		{
+			"name": "LVNV FUNDING LLC",
+			"subscriberCode": "021T9002",
+			"telephone": "8775274484",
+			"address": {
+				"city": "GREENVILLE                 ",
+				"stateCode": "SC",
+				"unparsedStreet": "C/O RESURGENT CAPITAL SERVICES PO BOX 1269                   ",
+				"postalCode": "29602"
+			},
+			"industryCode": "Other Collection Agencies",
+			"source": "TransUnion"
+		},
+		{
+			"name": "DISCOVER BANK",
+			"subscriberCode": "09616003",
+			"telephone": "8003472683",
+			"address": {
+				"city": "SALT LAKE CITY             ",
+				"stateCode": "UT",
+				"unparsedStreet": "PO BOX 30939                                                 ",
+				"postalCode": "84130"
+			},
+			"industryCode": "Bank Credit Cards",
+			"source": "TransUnion"
+		},
+		{
+			"name": "HYUNDAI FINANCE",
+			"subscriberCode": "07678001",
+			"telephone": "8005234030",
+			"address": {
+				"city": "FOUNTAIN VALLEY            ",
+				"stateCode": "CA",
+				"unparsedStreet": "10550 TALBERT AV                                             ",
+				"postalCode": "92708"
+			},
+			"industryCode": "Miscellaneous Credit Unions and Finance Companies",
+			"source": "TransUnion"
+		},
+		{
+			"name": "FB&T/MERCURY FINANCIAL",
+			"subscriberCode": "0537D051",
+			"telephone": "8666862158",
+			"address": {
+				"city": "COLUMBUS                   ",
+				"stateCode": "GA",
+				"unparsedStreet": "PO BOX 84064                                                 ",
+				"postalCode": "31908"
+			},
+			"industryCode": "Finance Collection",
+			"source": "TransUnion"
+		},
+		{
+			"name": "CURRENT",
+			"subscriberCode": "02JE3001",
+			"telephone": "8888511172",
+			"address": {
+				"city": "NEW YORK                   ",
+				"stateCode": "NY",
+				"unparsedStreet": "217 CENTRE ST                                                ",
+				"postalCode": "10013"
+			},
+			"industryCode": "Non-traditional card",
+			"source": "TransUnion"
+		},
+		{
+			"name": "SEZZLE INC",
+			"subscriberCode": "02HF4001",
+			"telephone": "8885401867",
+			"address": {
+				"city": "MINNEAPOLIS                ",
+				"stateCode": "MN",
+				"unparsedStreet": "251 1ST AVE                                                  ",
+				"postalCode": "55401"
+			},
+			"industryCode": "Miscellaneous Finance",
+			"source": "TransUnion"
+		},
+		{
+			"name": "MISSION LANE TAB BANK",
+			"subscriberCode": "02GY6002",
+			"telephone": "8557908860",
+			"address": {
+				"city": "ATLANTA                    ",
+				"stateCode": "GA",
+				"unparsedStreet": "PO BOX 105286                  SW # 1340                     ",
+				"postalCode": "30348"
+			},
+			"industryCode": "Bank Credit Cards",
+			"source": "TransUnion"
+		},
+		{
+			"name": "APPLE CARD - GS BANK USA",
+			"subscriberCode": "02GSZ001",
+			"telephone": "8772555923",
+			"address": {
+				"city": "PHILADELPHIA               ",
+				"stateCode": "PA",
+				"unparsedStreet": "LOCKBOX 6112                   P.O. BOX 7247                 ",
+				"postalCode": "19170"
+			},
+			"industryCode": "Bank Credit Cards",
+			"source": "TransUnion"
+		},
+		{
+			"name": "ATLANTIC CAP BKSELFLENDR",
+			"subscriberCode": "02GS2001",
+			"telephone": "8778830999",
+			"address": {
+				"city": "AUSTIN                     ",
+				"stateCode": "TX",
+				"unparsedStreet": "515 CONGRESS AVE               SUITE 2200                    ",
+				"postalCode": "78701"
+			},
+			"industryCode": "Full Service Banks",
+			"source": "TransUnion"
+		},
+		{
+			"name": "PETAL CARD INC",
+			"subscriberCode": "02GHE002",
+			"telephone": "8556973825",
+			"address": {
+				"city": "ATLANTA                    ",
+				"stateCode": "GA",
+				"unparsedStreet": "PO BOX 105168                                                ",
+				"postalCode": "30348"
+			},
+			"industryCode": "Personal Loan Companies",
+			"source": "TransUnion"
+		},
+		{
+			"name": "UPGRADE INC",
+			"subscriberCode": "02GB1001",
+			"telephone": "",
+			"address": {
+				"city": "PHOENIX                    ",
+				"stateCode": "AZ",
+				"unparsedStreet": "2 NORTH CENTRAL AVE, 10TH FLR  10TH FLOOR                    ",
+				"postalCode": "85004"
+			},
+			"industryCode": "Personal Loan Companies",
+			"source": "TransUnion"
+		},
+		{
+			"name": "BEST EGG",
+			"subscriberCode": "02F4M005",
+			"telephone": "8336132592",
+			"address": {
+				"city": "PHILADELPHIA               ",
+				"stateCode": "PA",
+				"unparsedStreet": "PO BOX 42912                                                 ",
+				"postalCode": "19101"
+			},
+			"industryCode": "Miscellaneous Finance",
+			"source": "TransUnion"
+		},
+		{
+			"name": "FIRST PROGRESS CARD",
+			"subscriberCode": "02D8V001",
+			"telephone": "8883791075",
+			"address": {
+				"city": "COLUMBUS                   ",
+				"stateCode": "GA",
+				"unparsedStreet": "P.O. BOX  84010                                              ",
+				"postalCode": "31908"
+			},
+			"industryCode": "Bank Credit Cards",
+			"source": "TransUnion"
+		},
+		{
+			"name": "AMERICAN CREDIT ACCEPTAN",
+			"subscriberCode": "02CZ9001",
+			"telephone": "8665443430",
+			"address": {
+				"city": "SPARTANBURG                ",
+				"stateCode": "SC",
+				"unparsedStreet": "961 E MAIN ST                  2ND FLOOR                     ",
+				"postalCode": "29302"
+			},
+			"industryCode": "Auto Financing",
+			"source": "TransUnion"
+		},
+		{
+			"name": "SELF FINANCIAL INC / LEA",
+			"subscriberCode": "02ANW004",
+			"telephone": "8778830999",
+			"address": {
+				"city": "AUSTIN                     ",
+				"stateCode": "TX",
+				"unparsedStreet": "901 E. 6TH STREET              SUITE #400                    ",
+				"postalCode": "78702"
+			},
+			"industryCode": "Sales Financing",
+			"source": "TransUnion"
+		},
+		{
+			"name": "JPMCB CARD SERVICES",
+			"subscriberCode": "026QK001",
+			"telephone": "8009452000",
+			"address": {
+				"city": "WILMINGTON                 ",
+				"stateCode": "DE",
+				"unparsedStreet": "PO BOX 15369                                                 ",
+				"postalCode": "19850"
+			},
+			"industryCode": "Bank Credit Cards",
+			"source": "TransUnion"
+		},
+		{
+			"name": "AMERICAN EXPRESS",
+			"subscriberCode": "021WB001",
+			"telephone": "8008742717",
+			"address": {
+				"city": "EL PASO                    ",
+				"stateCode": "TX",
+				"unparsedStreet": "P.O. BOX 981537                                              ",
+				"postalCode": "79998"
+			},
+			"industryCode": "Bank Credit Cards",
+			"source": "TransUnion"
+		},
+		{
+			"name": "UNITED AUTO CREDIT CORP",
+			"subscriberCode": "01MUZ001",
+			"telephone": "7142241900",
+			"address": {
+				"city": "NEWPORT BEACH              ",
+				"stateCode": "CA",
+				"unparsedStreet": "3990 WESTERLEY PLACE           SUITE 200                     ",
+				"postalCode": "92660"
+			},
+			"industryCode": "Miscellaneous Automotive",
+			"source": "TransUnion"
+		},
+		{
+			"name": "CAPITAL ONE",
+			"subscriberCode": "01DTV001",
+			"telephone": "8009557070",
+			"address": {
+				"city": "SALT LAKE CITY             ",
+				"stateCode": "UT",
+				"unparsedStreet": "PO BOX 31293                                                 ",
+				"postalCode": "84131"
+			},
+			"industryCode": "Bank Credit Cards",
+			"source": "TransUnion"
+		},
+		{
+			"name": "UTILITY SELFREPORTED",
+			"subscriberCode": "2886920",
+			"telephone": "8558912743",
+			"address": {
+				"city": "ALLEN",
+				"stateCode": "TX",
+				"unparsedStreet": "PO BOX 4500",
+				"postalCode": "75013"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "UPGRADE INC",
+			"subscriberCode": "2843230",
+			"telephone": "",
+			"address": {
+				"city": "SAN FRANCISCO",
+				"stateCode": "CA",
+				"unparsedStreet": "275 BATTERY ST FL 23",
+				"postalCode": "94111"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "UNITED AUTO CREDIT CO",
+			"subscriberCode": "3603330",
+			"telephone": "9492241917",
+			"address": {
+				"city": "NEWPORT BEACH",
+				"stateCode": "CA",
+				"unparsedStreet": "1071 CAMELBACK ST STE 10",
+				"postalCode": "92660"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "TELECOM SELFREPORTED",
+			"subscriberCode": "2886930",
+			"telephone": "8558912743",
+			"address": {
+				"city": "ALLEN",
+				"stateCode": "TX",
+				"unparsedStreet": "PO BOX 4500",
+				"postalCode": "75013"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "SEZZLE INC",
+			"subscriberCode": "2931581",
+			"telephone": "8885401867",
+			"address": {
+				"city": "MINNEAPOLIS",
+				"stateCode": "MN",
+				"unparsedStreet": "700 NICOLLET MALL STE 64",
+				"postalCode": "55402"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "SELF/ATLANTIC CAPITAL",
+			"subscriberCode": "2928750",
+			"telephone": "4049556050",
+			"address": {
+				"city": "ATLANTA",
+				"stateCode": "GA",
+				"unparsedStreet": "945 E PACES FERRY RD NE",
+				"postalCode": "30326"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "SELF FINANCIAL/LEAD BA",
+			"subscriberCode": "2932264",
+			"telephone": "8668459545",
+			"address": {
+				"city": "KANSAS CITY",
+				"stateCode": "MO",
+				"unparsedStreet": "1801 MAIN ST",
+				"postalCode": "64108"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "PETAL CARD 1/WEBBANK",
+			"subscriberCode": "1124402",
+			"telephone": "8556973825",
+			"address": {
+				"city": "ATLANTA",
+				"stateCode": "GA",
+				"unparsedStreet": "PO BOX 105168",
+				"postalCode": "30348"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "MISSION LANE TAB BANK",
+			"subscriberCode": "2914668",
+			"telephone": "8555703732",
+			"address": {
+				"city": "RICHMOND",
+				"stateCode": "VA",
+				"unparsedStreet": "1504 BELLEVILLE ST",
+				"postalCode": "23230"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "LVNV FUNDING LLC",
+			"subscriberCode": "1623040",
+			"telephone": "8664641183",
+			"address": {
+				"city": "GREENVILLE",
+				"stateCode": "SC",
+				"unparsedStreet": "PO BOX 1269",
+				"postalCode": "29602"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "JPMCB CARD",
+			"subscriberCode": "3182310",
+			"telephone": "8009452000",
+			"address": {
+				"city": "WILMINGTON",
+				"stateCode": "DE",
+				"unparsedStreet": "PO BOX 15369",
+				"postalCode": "19850"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "HYUNDAI CAPITAL AMERIC",
+			"subscriberCode": "2612005",
+			"telephone": "8005237020",
+			"address": {
+				"city": "NEWPORT BEACH",
+				"stateCode": "CA",
+				"unparsedStreet": "4000 MACARTHUR BLVD STE ",
+				"postalCode": "92660"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "FB&T/MERCURY",
+			"subscriberCode": "2752880",
+			"telephone": "6056962265",
+			"address": {
+				"city": "BROOKINGS",
+				"stateCode": "SD",
+				"unparsedStreet": "2220 6TH ST",
+				"postalCode": "57006"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "DISCOVER BANK",
+			"subscriberCode": "3276502",
+			"telephone": "8003472683",
+			"address": {
+				"city": "SALT LAKE CITY",
+				"stateCode": "UT",
+				"unparsedStreet": "PO BOX 30939",
+				"postalCode": "84130"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "CREDENCE RESOURCE MANA",
+			"subscriberCode": "2347870",
+			"telephone": "",
+			"address": {
+				"city": "DALLAS",
+				"stateCode": "TX",
+				"unparsedStreet": "17000 DALLAS PKWY STE 20",
+				"postalCode": "75248"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "CAPITAL ONE",
+			"subscriberCode": "1270246",
+			"telephone": "8009557070",
+			"address": {
+				"city": "SALT LAKE CITY",
+				"stateCode": "UT",
+				"unparsedStreet": "PO BOX 31293",
+				"postalCode": "84131"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "BEST EGG",
+			"subscriberCode": "2252980",
+			"telephone": "8007118198",
+			"address": {
+				"city": "WILMINGTON",
+				"stateCode": "DE",
+				"unparsedStreet": "3419 SILVERSIDE RD",
+				"postalCode": "19810"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "APPLE CARD/GS BANK USA",
+			"subscriberCode": "1795380",
+			"telephone": "8772555923",
+			"address": {
+				"city": "PHILADELPHIA",
+				"stateCode": "PA",
+				"unparsedStreet": "LOCKBOX 6112 PO BOX 7247",
+				"postalCode": "19170"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "AMEX",
+			"subscriberCode": "1229200",
+			"telephone": "8008742717",
+			"address": {
+				"city": "FORT LAUDERDALE",
+				"stateCode": "FL",
+				"unparsedStreet": "PO BOX 297871",
+				"postalCode": "33329"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "AMERICAN CREDIT ACCEPT",
+			"subscriberCode": "1393429",
+			"telephone": "8664410251",
+			"address": {
+				"city": "SPARTANBURG",
+				"stateCode": "SC",
+				"unparsedStreet": "961 E MAIN ST",
+				"postalCode": "29302"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		},
+		{
+			"name": "1STPROGRESS/TSYS/VT",
+			"subscriberCode": "1388830",
+			"telephone": "",
+			"address": {
+				"city": "JOHNSON CITY",
+				"stateCode": "TN",
+				"unparsedStreet": "PO BOX 9053",
+				"postalCode": "37615"
+			},
+			"industryCode": "",
+			"source": "Experian"
+		}
+	],
+	"publicRecords": []
+}

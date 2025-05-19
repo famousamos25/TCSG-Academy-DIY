@@ -43,14 +43,14 @@ export function ConfirmModal({
                 </DialogHeader>
                 <p
                     className="text-sm text-gray-600"
-                    dangerouslySetInnerHTML={{ __html: description ?? "" }}
+                    dangerouslySetInnerHTML={{ __html: description as any ?? "" }}
                 />
                 <DialogFooter className="flex justify-between mt-4">
                     <Button variant="secondary" onClick={() => setIsOpen(false)} disabled={isPending}>
                         Cancel
                     </Button>
                     <Button onClick={handleConfirm} disabled={isPending}>
-                        {isPending ? <Loader className="h-4 w-4 animate-spin" /> : "Delete"}
+                        {isPending ? <Loader className="h-4 w-4 animate-spin" /> : "Confirm"}
                     </Button>
                 </DialogFooter>
             </DialogContent>

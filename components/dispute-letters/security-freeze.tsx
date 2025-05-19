@@ -7,8 +7,8 @@ interface Props {
     clientCity: string;
     clientState: string;
     clientZIPCode: string;
-    ssn: string;
     clientPhone: string;
+    ssn: string;
     creditorName: string;
     creditorAddress: string;
     creditorCity: string;
@@ -39,7 +39,7 @@ const SecurityFreeze = (info: Props) => {
     } = info;
 
     return (
-        <div className="max-w-2xl mx-auto p-8 bg-white shadow-md rounded-md border border-gray-200">
+        <div className="w-full">
             <div className="space-y-3 text-sm">
                 {/* Client Info */}
                 <div className="space-y-0.5">

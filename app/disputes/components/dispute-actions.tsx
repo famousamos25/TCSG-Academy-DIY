@@ -122,7 +122,6 @@ const DisputeTableWrapper = ({ data, accounts, selectedAccounts, handleSelectAll
 }) => (
     <div className="border rounded-md overflow-hidden shadow-sm mt-4">
         <DisputeTable
-            ACCOUNTS={accounts}
             filteredAccounts={data(accounts)}
             selectedAccounts={selectedAccounts}
             handleSelectAll={handleSelectAll}

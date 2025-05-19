@@ -29,6 +29,7 @@ export interface Account {
     paymentFrequency?: string;
     paymentHistory?: PaymentHistory;
     paymentStatus: string;
+    furnisher: string;
 }
 export interface PaymentHistory {
     status: string;
@@ -40,7 +41,6 @@ export interface PaymentHistory {
 }
 
 interface DisputeTableProps {
-    ACCOUNTS: Account[];
     filteredAccounts: Account[];
     selectedAccounts: string[];
     handleSelectAll: () => void;
@@ -54,16 +54,13 @@ interface DisputeTableProps {
     };
 }
 
-const DisputeTable: React.FC<DisputeTableProps> = ({ ACCOUNTS, filteredAccounts, selectedAccounts, handleSelectAll, handleSelectAccount, renderBureauCheckboxes, customSelections }) => {
+const DisputeTable: React.FC<DisputeTableProps> = ({ filteredAccounts, selectedAccounts, handleSelectAll, handleSelectAccount, renderBureauCheckboxes, customSelections }) => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [furnisherDetailsOpen, setFurnisherDetailsOpen] = useState(false);
     const [selectedFurnisher, setSelectedFurnisher] = useState<Account | null>(null);
     const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<boolean>(false)
     const [editingAccount, setEditingAccount] = useState<Account | null>(null);
     const [editingField, setEditingField] = useState<"reason" | "instruction" | "creditor" | null>(null);
     const [editedText, setEditedText] = useState("");
-
-    console.log("filteredAccounts", filteredAccounts);
 
     const openEditModal = (account: Account, field: "reason" | "instruction" | "creditor") => {
         setEditingAccount(account);

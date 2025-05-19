@@ -1,5 +1,6 @@
 
 export interface DisputeLetter {
+	letterType: string;
 	id: string;
 	letterName: string;
 	creditBureauName: string;
@@ -9,8 +10,12 @@ export interface DisputeLetter {
 	letterCompleted: boolean;
 	createdAt: string;
 	userId: string;
-	inquiries: [];
-	accounts: LetterAccount[];
+	inquiries?: [];
+	accounts?: LetterAccount[];
+	creditbureauAddresses?: CreditbureauAddress[];
+	includeAffidavit?: boolean;
+	includeSelfRep?: boolean;
+	metadata?: any;
 
 	letterSentAt?: string;
 	letterCompletedAt?: string;
@@ -22,4 +27,9 @@ interface LetterAccount {
 	furnisher: string;
 	instruction: string;
 	reason: string;
+}
+
+interface CreditbureauAddress { 
+	bureau: string;
+	address: string
 }
