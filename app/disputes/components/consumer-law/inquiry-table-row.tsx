@@ -159,34 +159,3 @@ export default function InquiryTableRow({
         </>
     );
 }
-
-interface BeaureauTableCellProps {
-    isChecked: boolean;
-    accounts: any;
-    bureau: string;
-    label: string;
-    onCheckedChange: () => void;
-}
-const BeaureauTableCell = ({ accounts, bureau, label, isChecked, onCheckedChange }: BeaureauTableCellProps) => {
-
-    const bureauDetails = accounts?.find((account: any) => account?.bureau?.toLowerCase() === bureau.toLowerCase());
-
-    return (
-        <div className="flex flex-col items-center min-w-[60px]">
-            <div className={`text-xs font-semibold ${label === 'EQFX' ? 'text-red-400' : 'text-cyan-400'}`}>
-                {label}
-            </div>
-            {bureauDetails ? (
-                <Checkbox
-                    className="mt-1"
-                    checked={isChecked}
-                    onCheckedChange={onCheckedChange}
-                />
-            ) : (
-                <div className="text-[10px] text-gray-400 mt-1 whitespace-nowrap">
-                    Not Reported
-                </div>
-            )}
-        </div>
-    );
-};

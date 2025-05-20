@@ -26,6 +26,7 @@ interface AccountBureauSelections {
 interface SelectedInfo {
     index: number;
     bureau: string;
+    subscriberName?: string;
 }
 
 interface SelectedCreditor {
@@ -70,11 +71,21 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
     };
 
     const toggleSelectAll = () => {
-        setAllSelected(prev => !prev);
+        if(selectedInfo.length === filteredAccounts.length) {
+            setSelectedInfo([])
+            setAllSelected(false);
+            return;
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const selectedInfoAccs = filteredAccounts.map(({ industryCode, inquiryDate,inquiryType,subscriberCode,subscriberNumber, ...rest }) => rest);
+        setSelectedInfo(selectedInfoAccs.map((acc,idx)=>({
+            index:idx,
+            ...acc
+        })))
+        setAllSelected(true);
     };
 
     const handleBureauCheckedChange = (index: number, bureau: string) => {
-        console.log('idx',index + 'bureau',bureau)
         const isAlreadyChecked = selectedInfo.some((info) => info.index === index && info.bureau === bureau);
         if (isAlreadyChecked) {
             setSelectedInfo((prev) => prev.filter((info) => info.index !== index || info.bureau !== bureau));
@@ -194,7 +205,8 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                         </SelectContent>
                     </Select>
 
-                    {selectedAccounts.length > 1 && (
+                   {
+                    allSelected && 
                         <div className="flex space-x-4">
                             <Button
                                 variant="outline"
@@ -211,7 +223,8 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                                 Instructions for All
                             </Button>
                         </div>
-                    )}
+                   }                
+                
                 </div>
 
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -223,7 +236,7 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                         <TableRow>
                             <TableHead className="w-12">
                                 <Checkbox
-                                    checked={selectedAccounts.length === filteredAccounts.length && filteredAccounts.length > 0}
+                                    checked={(filteredAccounts.length === selectedInfo.length) && filteredAccounts.length > 0}
                                     onCheckedChange={toggleSelectAll}
                                 />
                             </TableHead>
@@ -243,16 +256,21 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                                     key={idx}
                                     account={account}
                                     accounts={accounts}
-                                    rowSelected={selectedInfo.filter(info => info.index === idx).length === accounts.length}
+                                    rowSelected={selectedInfo.some(info => info.index === idx)}
                                     onSelectRow={() => {
-                                        if (selectedInfo.filter(info => info.index === idx).length === accounts.length) {
+                                        if (selectedInfo) {
+                                            const checkedBureau: SelectedInfo = {
+                                                index: idx,
+                                                bureau: account.bureau,
+                                                subscriberName: account.subscriberName
+                                            }
+                                            if(filteredAccounts.length === selectedInfo.length){setAllSelected(true)}
+                                            if(filteredAccounts.length !== selectedInfo.length){setAllSelected(false)}
+                                            if(selectedInfo.some(info => info.index === idx)) {
                                             setSelectedInfo(prev => prev.filter(info => info.index !== idx));
-                                        }
-                                        else {
-                                            setSelectedInfo(prev => [
-                                                ...prev,
-                                                ...accounts.map((acc: any) => ({ index: idx, bureau: acc.bureau }))
-                                            ]);
+                                            return;
+                                            };
+                                            setSelectedInfo([...selectedInfo, checkedBureau])                                            
                                         }
                                     }}
                                     onSelectFurnisher={(acc: DisputeAccount) => {
