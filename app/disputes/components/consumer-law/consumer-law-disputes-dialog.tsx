@@ -9,6 +9,7 @@ import PublicRecordsNotice from '../public-response-notice';
 import ConsumerLawDerogatories from './consumer-law-derogatories';
 import ConsumerLawOptions from './consumer-law-options';
 import ConsumerLawStats from './consumer-law-stats';
+import InquiriesTable from './inquiries-table';
 
 interface ConsumerLawDisputesDialogProps {
   open: boolean;
@@ -52,6 +53,8 @@ export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDis
             )}
 
             {activeOption === "Derogatory" && <ConsumerLawDerogatories onCloseDialog={() => onOpenChange(false)} />}
+
+            {activeOption === "Inquiries" && <InquiriesTable onCloseDialog={() => onOpenChange(false)} />}
             
             {/* {
                 activeOption === "Inquiries" && (
