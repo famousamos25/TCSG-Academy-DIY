@@ -68,7 +68,15 @@ export default function InquiryTableRow({
                         checked={rowSelected}
                         onCheckedChange={onSelectRow}
                     />
-                     <div className="text-sm text-gray-500 ml-1">{account.bureau}</div>
+                        <div className={`text-sm ml-1 ${account.bureau === 'Equifax' ? 'text-red-500' : 'text-gray-500'}`}>
+                            {account.bureau === 'TransUnion'
+                                ? 'TU'
+                                : account.bureau === 'Equifax'
+                                    ? 'EQFX'
+                                    : account.bureau === 'Experian'
+                                        ? 'EXP'
+                                        : account.bureau}
+                        </div>
                     </div>
                     
                     {/* {account.accountType && account.accountType.length > 13
@@ -107,7 +115,7 @@ export default function InquiryTableRow({
 
                 <TableCell>
                     <div className="flex flex-nowrap whitespace-nowrap items-center max-w-[350px] overflow-hidden text-ellipsis">
-                        {/* <span className="truncate">{account.instruction}</span> */}
+                        <span className="truncate">{columnInstruction.instruction}</span>
                         <SquarePen
                             className="w-4 h-4 text-green-500 cursor-pointer ml-2"
                             onClick={() => setIsChangeInstructionModalOpen(true)}

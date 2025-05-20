@@ -111,7 +111,7 @@ export default function AccountTableRow({
 
                 <TableCell>
                     <div className="flex flex-nowrap whitespace-nowrap items-center max-w-[350px] overflow-hidden text-ellipsis">
-                        {/* <span className="truncate">{account.instruction}</span> */}
+                        <span className="truncate">{columnInstruction.instruction}</span>
                         <SquarePen
                             className="w-4 h-4 text-green-500 cursor-pointer ml-2"
                             onClick={() => setIsChangeInstructionModalOpen(true)}

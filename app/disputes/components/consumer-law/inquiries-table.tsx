@@ -3,7 +3,7 @@
 import { AccountDetailsDialog } from '@/app/creditreport/components/account-details-dialog';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { disputeInstructions, disputeOptions } from '@/constants/edit-dipute-letter-data';
 import { useCreditReport } from '@/hooks/use-credit-report';
@@ -14,6 +14,8 @@ import { Account } from "../DisputeTable";
 import SearchBar from "../search-bar";
 import AccountTableRow from './account-table-row';
 import InquiryTableRow from './inquiry-table-row';
+import ReasonsForAllModal from '../reason-for-all-modal';
+import InstructionsForAllModal from '../instruction-for-all-modal';
 
 type BureauSelection = Record<string, boolean>;
 interface AccountBureauSelections {
@@ -47,7 +49,7 @@ interface Props {
 }
 
 export default function InquiriesTable({ onCloseDialog }: Props) {
-    const [disputeRound, setDisputeRound] = useState('Dispute Round #1');
+    const [selectedBureau, setSelectedBureau] = useState('');
     const [selectedFurnisher, setSelectedFurnisher] = useState<Account | null>(null);
     const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<boolean>(false);
 
@@ -56,12 +58,11 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
     const [selectedCreditors, setSelectedCreditors] = useState<SelectedCreditor[]>([]);
     const [columnReasons, setColumnReasons] = useState<ColumnReason[]>([]);
     const [columnInstructions, setColumnInstructions] = useState<ColumnInstruction[]>([]);
+    const [isReasonForAllModalOpen, setIsReasonForAllModalOpen] = useState(false);
+    const [isInstructionForAllModalOpen, setIsInstructionForAllModalOpen] = useState(false);
 
     const [allSelected, setAllSelected] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-
-    const [selectedReason, setSelectedReason] = useState('');
-    const [selectedInstruction, setSelectedInstruction] = useState('');
 
 
     const isChecked = (index: number, bureau: string) => {
@@ -88,21 +89,43 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
     const inquiryAccs = creditReport?.inquiries.map((i: { subscriberNumber: number; }) =>({
        ...i,
        subscriberCode: i.subscriberNumber
-    }))
-    
+    }));
+
+    const bureauCounts: Record<string, number> = {
+        TransUnion: 0,
+        Equifax: 0,
+        Experian: 0
+    };
+
+    inquiryAccs?.forEach((account: any) => {
+        const bureau = account.bureau;
+        if (bureau && bureauCounts.hasOwnProperty(bureau)) {
+            bureauCounts[bureau]++;
+        }
+    });
 
     const filteredAccounts = useMemo(() => {
-        if (!inquiryAccs) return [];
-        if (searchTerm) {
-            return inquiryAccs.filter((account: any) => {
-                const bureauDetails = account[0];
-                const creditorName = bureauDetails.creditorName.toLowerCase();
-                const accountNumber = bureauDetails.accountNumber.toLowerCase();
-                return creditorName.includes(searchTerm.toLowerCase()) || accountNumber.includes(searchTerm.toLowerCase());
-            });
-        }
-        return inquiryAccs;
-    }, [searchTerm, inquiryAccs]);
+    if (!inquiryAccs) return [];
+
+    let accounts = [...inquiryAccs];
+
+    if (selectedBureau && selectedBureau !== 'ALL_BUREAUS') {
+        accounts = accounts.filter((account: any) => account.bureau === selectedBureau);
+    }
+
+    if (searchTerm) {
+        accounts = accounts.filter((account: any) => {
+            const creditorName = account.creditorName?.toLowerCase() || '';
+            const accountNumber = account.accountNumber?.toLowerCase() || '';
+            return (
+                creditorName.includes(searchTerm.toLowerCase()) ||
+                accountNumber.includes(searchTerm.toLowerCase())
+            );
+        });
+    }
+
+    return accounts;
+}, [searchTerm, selectedBureau, inquiryAccs]);
 
 
     const handleEditReason = useCallback(({ reason, description }: { reason: string; description: string; }, idx: number) => {
@@ -144,23 +167,49 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                     >
                         {allSelected ? "Deselect All" : "Dispute All"}
                     </Button>
-                    <Select value={disputeRound} onValueChange={setDisputeRound}>
+                    <Select value={selectedBureau} onValueChange={setSelectedBureau}>
                         <SelectTrigger className="w-[200px]">
-                            <SelectValue placeholder="Select round" />
+                            <SelectValue placeholder="Select bureau" />
                         </SelectTrigger>
                         <SelectContent>
-                            {[...Array(6)].map((_, i) => (
-                                <SelectItem key={i} value={`Dispute Round #${i + 1}`}>
-                                    Dispute Round #{i + 1}
+                            <SelectGroup>
+                                <SelectItem value="ALL_BUREAUS">
+                                    {`All(${Object.values(bureauCounts).reduce((sum, count) => sum + count, 0)})`}
                                 </SelectItem>
-                            ))}
+                                {['TransUnion', 'Equifax', 'Experian'].map((bureau, idx) => {
+                                    const count = bureauCounts[bureau] || 0;
+                                    const short =
+                                        bureau === 'TransUnion' ? 'TU' :
+                                            bureau === 'Equifax' ? 'EQFX' :
+                                                bureau === 'Experian' ? 'EXP' :
+                                                    bureau;
+
+                                    return (
+                                        <SelectItem key={idx} value={bureau}>
+                                            {`${short} (${count})`}
+                                        </SelectItem>
+                                    );
+                                })}
+                            </SelectGroup>
                         </SelectContent>
                     </Select>
 
-                    {selectedAccounts.length > 0 && (
+                    {selectedAccounts.length > 1 && (
                         <div className="flex space-x-4">
-                            <SelectDisputeReason selectedReason={selectedReason} setSelectedReason={setSelectedReason} />
-                            <SelectDisputeInstruction selectedInstruction={selectedInstruction} setSelectedInstruction={setSelectedInstruction} />
+                            <Button
+                                variant="outline"
+                                className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
+                                onClick={() => setIsReasonForAllModalOpen(true)}
+                            >
+                                Reasons for All
+                            </Button>
+                           <Button
+                                variant="outline"
+                                className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
+                                onClick={() => setIsInstructionForAllModalOpen(true)}
+                            >
+                                Instructions for All
+                            </Button>
                         </div>
                     )}
                 </div>
@@ -254,6 +303,18 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                         onOpenChange={() => setIsDetailDialogOpen(false)}
                         account={selectedFurnisher}
                         creditors={[]}
+                    />
+                )}
+                {isReasonForAllModalOpen && (
+                    <ReasonsForAllModal
+                        open={isReasonForAllModalOpen}
+                        onOpenChange={setIsReasonForAllModalOpen}
+                    />
+                )}
+                {isInstructionForAllModalOpen && (
+                    <InstructionsForAllModal
+                        open={isInstructionForAllModalOpen}
+                        onOpenChange={setIsInstructionForAllModalOpen}
                     />
                 )}
                 {/*{modalOpen && (
