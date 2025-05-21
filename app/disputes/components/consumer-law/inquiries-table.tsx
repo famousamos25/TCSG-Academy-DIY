@@ -66,10 +66,6 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
     const [searchTerm, setSearchTerm] = useState('');
 
 
-    const isChecked = (index: number, bureau: string) => {
-        return selectedInfo.some((info) => info.index === index && info.bureau === bureau);
-    };
-
     const toggleSelectAll = () => {
         if(selectedInfo.length === filteredAccounts.length) {
             setSelectedInfo([])
@@ -83,16 +79,6 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
             ...acc
         })))
         setAllSelected(true);
-    };
-
-    const handleBureauCheckedChange = (index: number, bureau: string) => {
-        const isAlreadyChecked = selectedInfo.some((info) => info.index === index && info.bureau === bureau);
-        if (isAlreadyChecked) {
-            setSelectedInfo((prev) => prev.filter((info) => info.index !== index || info.bureau !== bureau));
-        }
-        else {
-            setSelectedInfo((prev) => [...prev, { index, bureau }]);
-        }
     };
 
     const { creditReport } = useCreditReport();
@@ -126,11 +112,11 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
 
     if (searchTerm) {
         accounts = accounts.filter((account: any) => {
-            const creditorName = account.creditorName?.toLowerCase() || '';
-            const accountNumber = account.accountNumber?.toLowerCase() || '';
+            const bureau = account.bureau?.toLowerCase() || '';
+            const subscriberName = account.subscriberName?.toLowerCase() || '';
             return (
-                creditorName.includes(searchTerm.toLowerCase()) ||
-                accountNumber.includes(searchTerm.toLowerCase())
+                bureau.includes(searchTerm.toLowerCase()) ||
+                subscriberName.includes(searchTerm.toLowerCase())
             );
         });
     }
@@ -166,6 +152,24 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
             setColumnInstructions((prev) => [...prev, { index: idx, instruction, description }]);
         }
     }, [columnInstructions],);
+
+    const handleReasonForAll = (reason: string) => {
+       const newColumnReasons = Array.from({length: filteredAccounts.length},(r: ColumnReason, idx: number)=>({
+            index: idx,
+           description: reason,
+           reason: reason
+       }))
+       setColumnReasons(newColumnReasons)
+    }
+    
+    const handleInstructionsForAll = (instruction: string) => {
+      const newInstructionReasons = Array.from({length: filteredAccounts.length},(r: ColumnInstruction, idx: number)=>({
+           index: idx,
+           description: instruction,
+           instruction: instruction
+       }))
+       setColumnInstructions(newInstructionReasons)
+    }
 
     return (
         <div className="w-full ">
@@ -250,12 +254,10 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                     </TableHeader>
                     <TableBody>
                         {filteredAccounts.map((account: any, idx: number) => {
-                            const accounts:DisputeAccount[]  = []
                             return (
                                 <InquiryTableRow
                                     key={idx}
                                     account={account}
-                                    accounts={accounts}
                                     rowSelected={selectedInfo.some(info => info.index === idx)}
                                     onSelectRow={() => {
                                         if (selectedInfo) {
@@ -273,13 +275,6 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                                             setSelectedInfo([...selectedInfo, checkedBureau])                                            
                                         }
                                     }}
-                                    onSelectFurnisher={(acc: DisputeAccount) => {
-                                        console.log(acc);
-
-                                    }}
-
-                                    isChecked={(b: string) => isChecked(idx, b)}
-                                    handleBureauCheckedChange={(b: string) => handleBureauCheckedChange(idx, b)}
                                     creditorValue={selectedCreditors.find((c) => c.index === idx)?.creditor}
 
                                     creditorChecked={!!selectedCreditors.find((c) => c.index === idx)}
@@ -327,12 +322,14 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                     <ReasonsForAllModal
                         open={isReasonForAllModalOpen}
                         onOpenChange={setIsReasonForAllModalOpen}
+                        handleReasonForAll= {(reason: string) =>  handleReasonForAll(reason)}
                     />
                 )}
                 {isInstructionForAllModalOpen && (
                     <InstructionsForAllModal
                         open={isInstructionForAllModalOpen}
                         onOpenChange={setIsInstructionForAllModalOpen}
+                        handleInstructionsForAll= {(instruction: string) =>  handleInstructionsForAll(instruction)}
                     />
                 )}
                 {/*{modalOpen && (
@@ -373,34 +370,3 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
         </div>
     );
 }
-
-interface BeaureauTableCellProps {
-    isChecked: boolean;
-    accounts: any;
-    bureau: string;
-    label: string;
-    onCheckedChange: () => void;
-}
-const BeaureauTableCell = ({ accounts, bureau, label, isChecked, onCheckedChange }: BeaureauTableCellProps) => {
-
-    const bureauDetails = accounts?.find((account: any) => account?.bureau?.toLowerCase() === bureau.toLowerCase());
-
-    return (
-        <div className="flex flex-col items-center min-w-[60px]">
-            <div className={`text-xs font-semibold ${label === 'EQFX' ? 'text-red-400' : 'text-cyan-400'}`}>
-                {label}
-            </div>
-            {bureauDetails ? (
-                <Checkbox
-                    className="mt-1"
-                    checked={isChecked}
-                    onCheckedChange={onCheckedChange}
-                />
-            ) : (
-                <div className="text-[10px] text-gray-400 mt-1 whitespace-nowrap">
-                    Not Reported
-                </div>
-            )}
-        </div>
-    );
-};

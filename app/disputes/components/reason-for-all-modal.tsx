@@ -16,9 +16,10 @@ import {
 interface ReasonsForAllModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  handleReasonForAll: (reason: string) => void;
 }
 
-export default function ReasonsForAllModal({ open, onOpenChange }: ReasonsForAllModalProps) {
+export default function ReasonsForAllModal({ open, onOpenChange, handleReasonForAll }: ReasonsForAllModalProps) {
   const roundFlowOption = disputeOptions.find(option => option.category === 'ROUND 1-12 FLOW');
 
   return (
@@ -26,7 +27,7 @@ export default function ReasonsForAllModal({ open, onOpenChange }: ReasonsForAll
       <DialogContent className="text-black border-slate-800">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
-            What's inaccurate or incorrect about this account?
+            What&apos;s inaccurate or incorrect about this account?
           </DialogTitle>
           <DialogClose className="absolute right-4 top-4 text-slate-400 hover:text-slate-100">
             <X className="h-4 w-4" />
@@ -44,7 +45,7 @@ export default function ReasonsForAllModal({ open, onOpenChange }: ReasonsForAll
                 key={idx}
                 className="flex items-center space-x-2 border border-slate-700 rounded-md p-2 cursor-pointer"
               >
-                <RadioGroupItem value={item} id={`reason-${idx}`} className="border-slate-600 text-blue-500" />
+                <RadioGroupItem value={item} id={`reason-${idx}`} className="border-slate-600 text-blue-500" onClick={()=> handleReasonForAll(item)}/>
                 <Label htmlFor={`reason-${idx}`} className="text-sm cursor-pointer">
                   {item}
                 </Label>

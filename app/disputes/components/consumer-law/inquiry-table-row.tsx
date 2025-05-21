@@ -2,7 +2,6 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { TableCell, TableRow } from "@/components/ui/table";
-import { DisputeAccount } from '@/types/account';
 import { SquarePen } from 'lucide-react';
 import { useState } from "react";
 import { ChangeCreditorModal } from './change-creditor-modal';
@@ -12,15 +11,10 @@ import { CreditInquiry } from '@/types/inquiry';
 
 interface Props {
     account: CreditInquiry;
-    accounts: DisputeAccount[];
 
     rowSelected: boolean;
     onSelectRow: () => void;
 
-    onSelectFurnisher: (account: DisputeAccount) => void;
-
-    isChecked: (bureau: string) => boolean;
-    handleBureauCheckedChange: (bureau: string) => void;
     creditorChecked: boolean;
     onCheckCreditor: () => void;
 
@@ -35,8 +29,7 @@ interface Props {
 }
 
 export default function InquiryTableRow({
-    account, onSelectRow, rowSelected, onSelectFurnisher, handleBureauCheckedChange, isChecked,
-    creditorChecked, accounts, onCheckCreditor, onEditCreditor, creditorValue, onEditReason, columnReason,
+    account, onSelectRow, rowSelected, creditorChecked, onCheckCreditor, onEditCreditor, creditorValue, onEditReason, columnReason,
     columnInstruction, onEditInstruction,
 }: Props) {
 
@@ -56,7 +49,6 @@ export default function InquiryTableRow({
                 </TableCell>
                 <TableCell>
                     <div className="font-medium cursor-pointer"
-                        // onClick={() => onSelectFurnisher(account)}
                     >
                         {account.subscriberName}
                     </div>
@@ -78,10 +70,6 @@ export default function InquiryTableRow({
                                         : account.bureau}
                         </div>
                     </div>
-                    
-                    {/* {account.accountType && account.accountType.length > 13
-                        ? account.accountType.substring(0, 11) + '...'
-                        : account.accountType} */}
                 </TableCell>
                 <TableCell>
                     <div className="flex flex-nowrap whitespace-nowrap items-center">
