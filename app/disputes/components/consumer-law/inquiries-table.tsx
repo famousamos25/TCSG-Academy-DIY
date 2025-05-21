@@ -7,15 +7,19 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { disputeInstructions, disputeOptions } from '@/constants/edit-dipute-letter-data';
 import { useCreditReport } from '@/hooks/use-credit-report';
-import { DisputeAccount } from '@/types/account';
 import { useCallback, useMemo, useState } from "react";
-import { SelectDisputeInstruction, SelectDisputeReason } from "../dispute-reason-instructions";
 import { Account } from "../DisputeTable";
 import SearchBar from "../search-bar";
-import AccountTableRow from './account-table-row';
 import InquiryTableRow from './inquiry-table-row';
 import ReasonsForAllModal from '../reason-for-all-modal';
 import InstructionsForAllModal from '../instruction-for-all-modal';
+import { DisputeLetter } from '@/types/dispute-center';
+import { randomId } from '@/lib/utils';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '@/lib/firebase';
+import { doc, setDoc } from '@firebase/firestore';
+import { toast } from 'sonner';
+import { Loader  } from 'lucide-react';
 
 type BureauSelection = Record<string, boolean>;
 interface AccountBureauSelections {
@@ -54,17 +58,18 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
     const [selectedFurnisher, setSelectedFurnisher] = useState<Account | null>(null);
     const [isDetailDialogOpen, setIsDetailDialogOpen] = useState<boolean>(false);
 
-    const [selectedAccounts, setSelectedAccounts] = useState<string[]>([]);
     const [selectedInfo, setSelectedInfo] = useState<SelectedInfo[]>([]);
     const [selectedCreditors, setSelectedCreditors] = useState<SelectedCreditor[]>([]);
     const [columnReasons, setColumnReasons] = useState<ColumnReason[]>([]);
     const [columnInstructions, setColumnInstructions] = useState<ColumnInstruction[]>([]);
     const [isReasonForAllModalOpen, setIsReasonForAllModalOpen] = useState(false);
     const [isInstructionForAllModalOpen, setIsInstructionForAllModalOpen] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false)
 
     const [allSelected, setAllSelected] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-
+    const [user] = useAuthState(auth);
+    
 
     const toggleSelectAll = () => {
         if(selectedInfo.length === filteredAccounts.length) {
@@ -169,6 +174,74 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
            instruction: instruction
        }))
        setColumnInstructions(newInstructionReasons)
+    }
+
+    const createLetters = async () => {
+        setLoading(true)
+        const letters: DisputeLetter[] = [];
+        if(selectedInfo.length)
+        {   
+            const instructionsArray: {instruction:string; reason:string}[] = []
+            selectedInfo.forEach((info,idx) => {
+               const inquiryInstruction = columnInstructions.find(i => i.index === idx)?.instruction ??  disputeInstructions[0].items[0]
+               const inquiryReason = columnReasons.find(r => r.index === idx)?.reason ?? disputeOptions[0].items[0]
+               instructionsArray.push({ instruction: inquiryInstruction, reason: inquiryReason })
+               
+               letters.push({
+                id: randomId(),
+                letterName: 'Inquiries',
+                shortDescription: 'Credit Bureau',
+                letterType: 'InquiryRound1',
+                creditBureauName: info.bureau.toUpperCase(),
+                createdAt: new Date().toISOString(),
+                letterRound: 1,
+                userId: user?.uid || '',
+                letterSent: false,
+                letterCompleted: false,
+                accounts: [],
+                inquiries: [...instructionsArray]
+               })
+            })
+        }
+        if(selectedCreditors.length) {
+          selectedCreditors.forEach(creditor => {
+            letters.push({
+                id: randomId(),
+                letterName: 'Inquiries',
+                shortDescription: 'Credit Bureau',
+                letterType: 'InquiryRound1',
+                creditBureauName: creditReport.creditors.find((c: { subscriberCode: string; }) => c.subscriberCode === creditor.creditor).name,
+                createdAt: new Date().toISOString(),
+                letterRound: 1,
+                userId: user?.uid || '',
+                letterSent: false,
+                letterCompleted: false
+               })
+          })
+
+        }
+        try {
+        await Promise.all(
+        letters.map(async (letter) => {
+            const letterRef = doc(db, 'letters', letter.id);
+            await setDoc(letterRef, letter);
+        })
+        );
+        setLoading(false)
+        toast('Success', {
+        description: 'Personal information dispute letters created successfully.',
+        duration: 3000,
+        });
+        } catch (error) {
+            setLoading(false)
+            toast('Error', {
+        description: 'Something went wrong while creating dispute letters.',
+        duration: 3000,
+        })
+        }
+
+        setSelectedCreditors([])
+        setSelectedInfo([])
     }
 
     return (
@@ -332,39 +405,16 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                         handleInstructionsForAll= {(instruction: string) =>  handleInstructionsForAll(instruction)}
                     />
                 )}
-                {/*{modalOpen && (
-                    <Modal onClose={() => setModalOpen(false)} onSave={handleSave}>
-                        <div className="space-y-4">
-                            <label className="block">
-                                <Input
-                                    type="text"
-                                    value={editedText}
-                                    onChange={(e) => setEditedText(e.target.value)}
-                                    className="w-full p-2 border rounded-md"
-                                />
-                            </label>
-
-                            {editingField !== "creditor" && (
-                                <label className="block">
-                                    <Textarea
-                                        value={editedText}
-                                        onChange={(e) => setEditedText(e.target.value)}
-                                        className="w-full p-2 border rounded-md"
-                                    />
-                                </label>
-                            )}
-                        </div>
-                    </Modal>
-                )} */}
             </div>
 
             <div className="flex justify-end space-x-4 mt-6">
                 <Button variant="outline" onClick={onCloseDialog}>Close</Button>
                 <Button
                     className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                    disabled={false}
+                    disabled={!selectedInfo.length && !selectedCreditors.length}
+                    onClick={createLetters}
                 >
-                    Create Letters
+                    {loading ? <Loader  className="h-4 w-4 animate-spin" /> : ' Create Letters'} 
                 </Button>
             </div>
         </div>
