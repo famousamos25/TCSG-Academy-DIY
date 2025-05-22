@@ -65,9 +65,11 @@ export function ChangeReasonModal({ isOpen, handleClose, defaultValue, onSave = 
             </SelectTrigger>
             <SelectContent>
               {
-                disputeOptions?.map((option, idx) => (
+                disputeOptions
+                .filter(option => option.category === 'ROUND 1-12 FLOW')
+                .map((option, idx) => (
                   <SelectGroup key={idx}>
-                    <SelectLabel>{option.category}</SelectLabel>
+                    <SelectLabel>INQUIRIES</SelectLabel>
                     {
                       option.items?.map((item, idx) => (<SelectItem key={idx} value={item}>{item}</SelectItem>))
                     }

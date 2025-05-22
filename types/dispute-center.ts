@@ -10,7 +10,7 @@ export interface DisputeLetter {
 	letterCompleted: boolean;
 	createdAt: string;
 	userId: string;
-	inquiries?: [];
+	inquiries?: { instruction: string, reason: string}[];
 	accounts?: LetterAccount[];
 	creditbureauAddresses?: CreditbureauAddress[];
 	includeAffidavit?: boolean;

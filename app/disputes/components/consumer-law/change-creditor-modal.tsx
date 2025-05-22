@@ -12,6 +12,7 @@ import {
 import { useCreditReport } from '@/hooks/use-credit-report';
 import { DisputeAccount } from '@/types/account';
 import { Creditor } from '@/types/creditor';
+import { CreditInquiry } from "@/types/inquiry";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -21,7 +22,7 @@ type Props = {
   handleClose: () => void;
   onSave?: (creditor: string) => void;
   defaultValue?: string;
-  account: DisputeAccount;
+  account: any; //made this any because this modal is being reused and the account has different interfaces in differenct components (DisputeAccount | CreditInquiry)
 };
 
 export function ChangeCreditorModal({ isOpen, handleClose, defaultValue, onSave = () => { }, account }: Props) {  
