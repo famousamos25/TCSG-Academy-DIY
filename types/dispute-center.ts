@@ -25,8 +25,11 @@ interface LetterAccount {
 	accountNumber: string;
 	status: string;
 	furnisher: string;
-	instruction: string;
+	
 	reason: string;
+	reasonDescription?: string;
+	instruction: string;
+	instructionDescription?: string;
 }
 
 interface CreditbureauAddress { 

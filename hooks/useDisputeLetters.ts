@@ -2,7 +2,7 @@
 
 import { auth, db } from '@/lib/firebase';
 import { DisputeLetter } from '@/types/dispute-center';
-import { collection, DocumentData, onSnapshot, Query, query, where } from 'firebase/firestore';
+import { collection, DocumentData, onSnapshot, orderBy, Query, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -18,7 +18,7 @@ const useDisputeLetters = (filters: Record<string, any>) => {
 			try {
 				const lettersRef = collection(db, 'letters');
 
-				const q: Query<DocumentData, DocumentData> = query(lettersRef, where('userId', '==', user?.uid));
+				const q: Query<DocumentData, DocumentData> = query(lettersRef, where('userId', '==', user?.uid), orderBy('createdAt', 'desc'));
 
 				onSnapshot(q, (snapshot) => {
 					const letterList = snapshot.docs.map(doc => ({
@@ -47,6 +47,7 @@ const useDisputeLetters = (filters: Record<string, any>) => {
 		if (user?.uid) fetchLetters();
 	}, [filters, user?.uid]);
 
+	// Stats
 	useEffect(() => {
 		const fetchLetters = async () => {
 			try {

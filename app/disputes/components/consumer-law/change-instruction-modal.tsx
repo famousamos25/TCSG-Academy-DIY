@@ -10,10 +10,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from '@/components/ui/textarea';
-import { disputeOptions } from '@/constants/edit-dipute-letter-data';
+import { disputeInstructions } from '@/constants/edit-dipute-letter-data';
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
-
 
 type Props = {
   isOpen: boolean;
@@ -65,11 +64,11 @@ export function ChangeInstructionModal({ isOpen, handleClose, defaultValue, onSa
             </SelectTrigger>
             <SelectContent>
               {
-                disputeOptions?.map((option, idx) => (
+                disputeInstructions?.map((option, idx) => (
                   <SelectGroup key={idx}>
-                    <SelectLabel>{option.category}</SelectLabel>
+                    <SelectLabel className='uppercase text-accent'>{option.category}</SelectLabel>
                     {
-                      option.items?.map((item, idx) => (<SelectItem key={idx} value={item}>{item}</SelectItem>))
+                      option.items?.map((item, idx) => (<SelectItem className='max-w-[600px]' key={idx} value={item}>{item}</SelectItem>))
                     }
                   </SelectGroup>
                 ))

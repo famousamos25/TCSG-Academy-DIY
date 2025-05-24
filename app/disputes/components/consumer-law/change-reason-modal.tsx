@@ -66,12 +66,12 @@ export function ChangeReasonModal({ isOpen, handleClose, defaultValue, onSave = 
             <SelectContent>
               {
                 disputeOptions
-                .filter(option => option.category === 'ROUND 1-12 FLOW')
+                // .filter(option => option.category === 'ROUND 1-12 FLOW')
                 .map((option, idx) => (
                   <SelectGroup key={idx}>
-                    <SelectLabel>INQUIRIES</SelectLabel>
+                    <SelectLabel className='uppercase text-accent'>{option.category}</SelectLabel>
                     {
-                      option.items?.map((item, idx) => (<SelectItem key={idx} value={item}>{item}</SelectItem>))
+                      option.items?.map((item, idx) => (<SelectItem className='max-w-[600px]' key={idx} value={item}>{item}</SelectItem>))
                     }
                   </SelectGroup>
                 ))

@@ -10,6 +10,7 @@ import { UndoStatusDialog } from '@/app/disputes/components/undo-status-dialog';
 import { ConfirmModal } from '@/components/common/confirm-modal';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Table,
   TableBody,
@@ -215,121 +216,121 @@ export default function DisputesPage() {
             </div>
           </CardContent>
 
-          <Table className="w-full border-t text-white">
-            <TableHeader>
-              <TableRow className="text-gray-400">
-                <TableHead className="py-2 px-4">
-                  <Checkbox
-                    className="w-5 h-5 cursor-pointer"
-                    checked={allSelected}
-                    onCheckedChange={handleSelectAll}
-                  />
-                </TableHead>
-                <TableHead className="py-2 px-4">Dispute Letter</TableHead>
-                <TableHead className="py-2 px-4">Creditor Name</TableHead>
-                <TableHead className="py-2 px-4">Date Created</TableHead>
-                <TableHead className="py-2 px-4">Dispute Round</TableHead>
-                <TableHead className="py-2 px-4">Disputed Items</TableHead>
-                <TableHead className="py-2 px-4">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {letters.map((letter, index) => (
-                <TableRow key={index} className="border-b">
-                  <TableCell className="py-2 px-4">
+          <ScrollArea className='h-[600px]'>
+            <Table className="w-full border-t text-white">
+              <TableHeader>
+                <TableRow className="text-gray-400">
+                  <TableHead className="py-2 px-4">
                     <Checkbox
                       className="w-5 h-5 cursor-pointer"
-                      checked={selected[index]}
-                      onCheckedChange={() => handleSelectRow(index)}
+                      checked={allSelected}
+                      onCheckedChange={handleSelectAll}
                     />
-                  </TableCell>
-                  <TableCell className="py-2 px-4 text-gray-500 text-sm">{letter.letterName}</TableCell>
-                  <TableCell className="py-2 px-4">
-                    <span className="text-blue-400">{letter.creditBureauName}</span>
-                    <br />
-                    <span className="text-gray-400 text-sm">{letter.shortDescription}</span>
-                  </TableCell>
-                  <TableCell className="py-2 px-4">
-                    <div className="flex flex-col items-start">
-                      <span className="text-gray-500 font-semibold">
-                        {format(new Date(letter.createdAt), 'MMM dd, yyyy')}
-                      </span>
-                      <span className="text-gray-500 text-sm">
-                        {format(new Date(letter.createdAt), 'hh:mm:ss aaa')}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="py-2 px-4">
-                    <span className="border border-green-500 text-green-500 px-2 py-1 rounded">
-                      Dispute Round #{letter.letterRound}
-                    </span>
-                  </TableCell>
-                  <TableCell className="py-2 px-4">{letter.accounts?.length}</TableCell>
-                  <TableCell className="py-2 px-4 space-x-2">
-                    {letter.letterSent ? (
-                      <>
-                        <button
-                          className="text-green-400"
-                          title="Mark Un sent"
-                          onClick={() => openModal()}
-                        >
-                          <Undo2 size={18} />
-                        </button>
-                        <button
-                          className="text-green-400"
-                          title="Preview Letter"
-                          onClick={() => setShowPreview(true)}
-                        >
-                          <EyeIcon size={18} />
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <ConfirmModal
-                          title='Are you sure?'
-                          description='Please ensure each letter is marked as sent only after it has been mailed.'
-                          onConfirm={() => handleMarkAsSent(letter.id)}
-                        >
-                          <button className="text-green-400" title="Send">
-                            <Send size={18} />
-                          </button>
-                        </ConfirmModal>
-                        {
-                          letter && (<>
-                            <PreviewLetterModal letter={letter} >
-                              <button className="text-green-400" title="View"
-                                onClick={() => setShowPreview(true)}
-                              >
-                                <EyeIcon size={18} />
-                              </button>
-                            </PreviewLetterModal>
-                            <button className="text-green-400" title="Mail"
-                            >
-                              <MailIcon size={18}
-                                onClick={() => setShowSendDisputesMail(!showSendDisputesMail)} />
-                            </button>
-                            <Suspense fallback={<div>Loading...</div>}>
-                              <DownloadLetter letter={letter} />
-                            </Suspense>
-                            <PrintLetter letter={letter} />
-                          </>)
-                        }
-                      </>
-                    )}
-                    <ConfirmModal
-                      title='Are you sure?'
-                      description={`Do You want To Delete <b>${letter.creditBureauName}</b>`}
-                      onConfirm={() => handleDeleteLetter(letter.id)}
-                    >
-                      <button className="text-red-400" title="Delete">
-                        <Trash2Icon size={18} />
-                      </button>
-                    </ConfirmModal>
-                  </TableCell>
+                  </TableHead>
+                  <TableHead className="py-2 px-4">Dispute Letter</TableHead>
+                  <TableHead className="py-2 px-4">Creditor Name</TableHead>
+                  <TableHead className="py-2 px-4">Date Created</TableHead>
+                  <TableHead className="py-2 px-4">Dispute Round</TableHead>
+                  <TableHead className="py-2 px-4">Disputed Items</TableHead>
+                  <TableHead className="py-2 px-4">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {letters.map((letter, index) => (
+                  <TableRow key={index} className="border-b">
+                    <TableCell className="py-2 px-4">
+                      <Checkbox
+                        className="w-5 h-5 cursor-pointer"
+                        checked={selected[index]}
+                        onCheckedChange={() => handleSelectRow(index)}
+                      />
+                    </TableCell>
+                    <TableCell className="py-2 px-4 text-gray-500 text-sm">{letter.letterName}</TableCell>
+                    <TableCell className="py-2 px-4">
+                      <span className="text-blue-400">{letter.creditBureauName}</span>
+                      <br />
+                      <span className="text-gray-400 text-sm">{letter.shortDescription}</span>
+                    </TableCell>
+                    <TableCell className="py-2 px-4">
+                      <div className="flex flex-col items-start">
+                        <span className="text-gray-500 font-semibold">
+                          {format(new Date(letter.createdAt), 'MMM dd, yyyy')}
+                        </span>
+                        <span className="text-gray-500 text-sm">
+                          {format(new Date(letter.createdAt), 'hh:mm:ss aaa')}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-2 px-4">
+                      <span className="border border-green-500 text-green-500 px-2 py-1 rounded">
+                        Dispute Round #{letter.letterRound}
+                      </span>
+                    </TableCell>
+                    <TableCell className="py-2 px-4 text-black">{letter.accounts?.length ?? 0}</TableCell>
+                    <TableCell className="py-2 px-4 space-x-2">
+                      {letter.letterSent ? (
+                        <>
+                          <button
+                            className="text-green-400"
+                            title="Mark Un sent"
+                            onClick={() => openModal()}
+                          >
+                            <Undo2 size={18} />
+                          </button>
+                          <button
+                            className="text-green-400"
+                            title="Preview Letter"
+                            onClick={() => setShowPreview(true)}
+                          >
+                            <EyeIcon size={18} />
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <ConfirmModal
+                            title='Are you sure?'
+                            description='Please ensure each letter is marked as sent only after it has been mailed.'
+                            onConfirm={() => handleMarkAsSent(letter.id)}
+                          >
+                            <button className="text-green-400" title="Send">
+                              <Send size={18} />
+                            </button>
+                          </ConfirmModal>
+                          {
+                            letter && (<>
+                              <PreviewLetterModal letter={letter} >
+                                <button className="text-green-400" title="View" >
+                                  <EyeIcon size={18} />
+                                </button>
+                              </PreviewLetterModal>
+                              <button className="text-green-400" title="Mail"
+                              >
+                                <MailIcon size={18}
+                                  onClick={() => setShowSendDisputesMail(!showSendDisputesMail)} />
+                              </button>
+                              <Suspense fallback={<div>Loading...</div>}>
+                                <DownloadLetter letter={letter} />
+                              </Suspense>
+                              <PrintLetter letter={letter} />
+                            </>)
+                          }
+                        </>
+                      )}
+                      <ConfirmModal
+                        title='Are you sure?'
+                        description={`Do You want To Delete <b>${letter.creditBureauName}</b>`}
+                        onConfirm={() => handleDeleteLetter(letter.id)}
+                      >
+                        <button className="text-red-400" title="Delete">
+                          <Trash2Icon size={18} />
+                        </button>
+                      </ConfirmModal>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </ScrollArea>
         </Card>
         {
           showModal &&

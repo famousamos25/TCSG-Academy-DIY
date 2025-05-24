@@ -13,29 +13,23 @@ import { SelectDisputeInstruction, SelectDisputeReason } from "../dispute-reason
 import { Account } from "../DisputeTable";
 import SearchBar from "../search-bar";
 import AccountTableRow from './account-table-row';
-
-type BureauSelection = Record<string, boolean>;
-interface AccountBureauSelections {
-    [accountId: string]: BureauSelection;
-}
-
-
-interface SelectedInfo {
+import { CreateAccountDisputeDialog } from './create-account-dispute-modal';
+export interface SelectedInfo {
     index: number;
     bureau: string;
 }
 
-interface SelectedCreditor {
+export interface SelectedCreditor {
     index: number;
     creditor: string;
 }
 
-interface ColumnReason {
+export interface ColumnReason {
     index: number;
     reason: string;
     description: string;
 }
-interface ColumnInstruction {
+export interface ColumnInstruction {
     index: number;
     instruction: string;
     description: string;
@@ -58,6 +52,7 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
     const [selectedCreditors, setSelectedCreditors] = useState<SelectedCreditor[]>([]);
     const [columnReasons, setColumnReasons] = useState<ColumnReason[]>([]);
     const [columnInstructions, setColumnInstructions] = useState<ColumnInstruction[]>([]);
+    const [showAddressModal, setShowAddressModal] = useState(false);
 
     const [allSelected, setAllSelected] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -260,72 +255,38 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
                         creditors={[]}
                     />
                 )}
-                {/*{modalOpen && (
-                    <Modal onClose={() => setModalOpen(false)} onSave={handleSave}>
-                        <div className="space-y-4">
-                            <label className="block">
-                                <Input
-                                    type="text"
-                                    value={editedText}
-                                    onChange={(e) => setEditedText(e.target.value)}
-                                    className="w-full p-2 border rounded-md"
-                                />
-                            </label>
-
-                            {editingField !== "creditor" && (
-                                <label className="block">
-                                    <Textarea
-                                        value={editedText}
-                                        onChange={(e) => setEditedText(e.target.value)}
-                                        className="w-full p-2 border rounded-md"
-                                    />
-                                </label>
-                            )}
-                        </div>
-                    </Modal>
-                )} */}
             </div>
 
             <div className="flex justify-end space-x-4 mt-6">
                 <Button variant="outline" onClick={onCloseDialog}>Close</Button>
                 <Button
                     className="bg-brand-yellow text-brand-navy hover:bg-brand-yellow/90"
-                    disabled={false}
+                    onClick={() => setShowAddressModal(true)}
+                    disabled={selectedInfo.length === 0 && selectedCreditors.length === 0}
                 >
                     Create Letters
                 </Button>
             </div>
-        </div>
-    );
-}
 
-interface BeaureauTableCellProps {
-    isChecked: boolean;
-    accounts: any;
-    bureau: string;
-    label: string;
-    onCheckedChange: () => void;
-}
-const BeaureauTableCell = ({ accounts, bureau, label, isChecked, onCheckedChange }: BeaureauTableCellProps) => {
-
-    const bureauDetails = accounts?.find((account: any) => account?.bureau?.toLowerCase() === bureau.toLowerCase());
-
-    return (
-        <div className="flex flex-col items-center min-w-[60px]">
-            <div className={`text-xs font-semibold ${label === 'EQFX' ? 'text-red-400' : 'text-cyan-400'}`}>
-                {label}
-            </div>
-            {bureauDetails ? (
-                <Checkbox
-                    className="mt-1"
-                    checked={isChecked}
-                    onCheckedChange={onCheckedChange}
+            {showAddressModal && (
+                <CreateAccountDisputeDialog
+                    isOpen={showAddressModal}
+                    handleClose={() => {
+                        setShowAddressModal(false);
+                    }}
+                    onComplete={() => {
+                        setSelectedInfo([])
+                        setSelectedCreditors([]);
+                        setColumnReasons([]);
+                        setColumnInstructions([]);
+                    }}
+                    columnInstructions={columnInstructions}
+                    columnReasons={columnReasons}
+                    selectedInfos={selectedInfo}
+                    selectedCreditors={selectedCreditors}
+                    accounts={filteredAccounts}
                 />
-            ) : (
-                <div className="text-[10px] text-gray-400 mt-1 whitespace-nowrap">
-                    Not Reported
-                </div>
             )}
         </div>
     );
-};
+}
