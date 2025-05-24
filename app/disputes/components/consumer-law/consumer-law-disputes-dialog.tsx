@@ -2,11 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { DisputeType } from '@/constants/dispute-types';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 import PersonalInformationDisputeDialog from '../personal-information-dispute';
 import PublicRecordsNotice from '../public-response-notice';
 import ConsumerLawDerogatories from './consumer-law-derogatories';
+import ConsumerLawLatePayments from './consumer-law-late-payments';
 import ConsumerLawOptions from './consumer-law-options';
 import ConsumerLawStats from './consumer-law-stats';
 import InquiriesTable from './inquiries-table';
@@ -17,7 +19,7 @@ interface ConsumerLawDisputesDialogProps {
 }
 
 export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDisputesDialogProps) {
-  const [activeOption, setActiveOption] = useState<string>("Derogatory");
+  const [activeOption, setActiveOption] = useState<DisputeType>(DisputeType.DEROGATORY);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -40,21 +42,22 @@ export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDis
           <h2 className="text-lg font-medium text-center mb-6">What do you want to dispute?</h2>
 
           <div className="space-y-6">
-            <ConsumerLawOptions selectedOption={activeOption} selectOption={(option) => setActiveOption(option)} />
+            <ConsumerLawOptions selectedOption={activeOption} selectOption={(option: any) => setActiveOption(option)} />
 
             <ConsumerLawStats />
 
-            {activeOption === "Personal Information" && (
-              <PersonalInformationDisputeDialog open={activeOption === "Personal Information"}
+            {activeOption === DisputeType.PERSONAL_INFO && (
+              <PersonalInformationDisputeDialog open={activeOption === DisputeType.PERSONAL_INFO}
                 onOpenChange={(open) => {
-                  if (!open) setActiveOption("Derogatory");
+                  if (!open) setActiveOption(DisputeType.DEROGATORY);
                 }}
               />
             )}
 
-            {activeOption === "Derogatory" && <ConsumerLawDerogatories onCloseDialog={() => onOpenChange(false)} />}
+            {activeOption === DisputeType.DEROGATORY && <ConsumerLawDerogatories onCloseDialog={() => onOpenChange(false)} />}
+            {activeOption === DisputeType.LATE_PAYMENTS && <ConsumerLawLatePayments onCloseDialog={() => onOpenChange(false)} />}
 
-            {activeOption === "Inquiries" && <InquiriesTable onCloseDialog={() => onOpenChange(false)} />}
+            {activeOption === DisputeType.INQUIRIES && <InquiriesTable onCloseDialog={() => onOpenChange(false)} />}
             
             {/* {
                 activeOption === "Inquiries" && (
@@ -100,7 +103,7 @@ export function ConsumerLawDisputesDialog({ open, onOpenChange }: ConsumerLawDis
                 </>
             )} */}
 
-            {activeOption === "Public Records" && <PublicRecordsNotice />}
+            {activeOption === DisputeType.PUBLIC_RECORDS && <PublicRecordsNotice />}
 
             {/* {selectedDisputeType === "All Accounts" && (
                 <>

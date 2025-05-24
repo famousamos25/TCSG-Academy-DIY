@@ -23,7 +23,7 @@ export function PreviewLetterModal({ children, letter }: PreviewLetterModalProps
   const { creditReport, loading } = useCreditReport();
   const { userInfo, loading: loadingUserInfo } = usePersonalInfo();
   const { documents, loading: loadingDocs } = useDocuments();
-
+  
   const letterData: any = useMemo(() => {
     if (!userInfo) return null;
     if (!letter) return null;
@@ -31,13 +31,14 @@ export function PreviewLetterModal({ children, letter }: PreviewLetterModalProps
     if (!creditReport?.creditors) return null;
     if (!creditReport?.creditors?.length) return null;
 
-    const creditor = (creditReport?.creditors)?.find((c: any) => c);
+    const creditor = (creditReport?.creditors)?.find((c: any) => letter?.creditBureauName);
 
     const ssnCard = documents?.find((doc: any) => doc.type === "social_security")?.fileUrl ?? "";
     const driverLicense = documents?.find((doc: any) => doc.type === "drivers_license")?.fileUrl ?? "";
 
+    
     return {
-      clientName: `${userInfo?.firstName ?? ""} ${userInfo?.firstName ?? ""}`,
+      clientName: `${userInfo?.firstName ?? ""} ${userInfo?.lastName ?? ""}`,
       clientAddress: userInfo?.address1 ?? "",
       clientCity: userInfo?.city ?? "",
       clientState: userInfo?.state ?? "",
@@ -45,6 +46,7 @@ export function PreviewLetterModal({ children, letter }: PreviewLetterModalProps
       clientPhone: userInfo?.phone ?? "",
       clientDob: userInfo.dob ,
       date: format(new Date(letter?.createdAt), 'MMMM dd, yyyy'),
+
       creditorName: creditor?.name ?? "",
       creditorAddress: creditReport?.address?.unparsedStreet ?? "",
       creditorCity: creditor?.address?.city ?? "",

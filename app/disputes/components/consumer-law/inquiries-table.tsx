@@ -7,19 +7,20 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { disputeInstructions, disputeOptions } from '@/constants/edit-dipute-letter-data';
 import { useCreditReport } from '@/hooks/use-credit-report';
+import { auth, db } from '@/lib/firebase';
+import { randomId } from '@/lib/utils';
+import { DisputeLetter } from '@/types/dispute-center';
+import { doc, setDoc } from 'firebase/firestore';
+import { Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useState } from "react";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'sonner';
 import { Account } from "../DisputeTable";
+import InstructionsForAllModal from '../instruction-for-all-modal';
+import ReasonsForAllModal from '../reason-for-all-modal';
 import SearchBar from "../search-bar";
 import InquiryTableRow from './inquiry-table-row';
-import ReasonsForAllModal from '../reason-for-all-modal';
-import InstructionsForAllModal from '../instruction-for-all-modal';
-import { DisputeLetter } from '@/types/dispute-center';
-import { randomId } from '@/lib/utils';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '@/lib/firebase';
-import { doc, setDoc } from '@firebase/firestore';
-import { toast } from 'sonner';
-import { Loader  } from 'lucide-react';
 
 type BureauSelection = Record<string, boolean>;
 interface AccountBureauSelections {
@@ -31,6 +32,7 @@ interface SelectedInfo {
     index: number;
     bureau: string;
     subscriberName?: string;
+    subscriberCode?: string;
 }
 
 interface SelectedCreditor {
@@ -64,33 +66,32 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
     const [columnInstructions, setColumnInstructions] = useState<ColumnInstruction[]>([]);
     const [isReasonForAllModalOpen, setIsReasonForAllModalOpen] = useState(false);
     const [isInstructionForAllModalOpen, setIsInstructionForAllModalOpen] = useState(false);
-    const [loading, setLoading] = useState<boolean>(false)
-
+    const [loading, setLoading] = useState<boolean>(false);
     const [allSelected, setAllSelected] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+
     const [user] = useAuthState(auth);
-    
+    const { creditReport } = useCreditReport();
+    const router = useRouter();
 
     const toggleSelectAll = () => {
-        if(selectedInfo.length === filteredAccounts.length) {
-            setSelectedInfo([])
+        if (selectedInfo.length === filteredAccounts.length) {
+            setSelectedInfo([]);
             setAllSelected(false);
             return;
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const selectedInfoAccs = filteredAccounts.map(({ industryCode, inquiryDate,inquiryType,subscriberCode,subscriberNumber, ...rest }) => rest);
-        setSelectedInfo(selectedInfoAccs.map((acc,idx)=>({
-            index:idx,
+        const selectedInfoAccs = filteredAccounts.map(({ industryCode, inquiryDate, inquiryType, subscriberCode, subscriberNumber, ...rest }) => rest);
+        setSelectedInfo(selectedInfoAccs.map((acc, idx) => ({
+            index: idx,
             ...acc
-        })))
+        })));
         setAllSelected(true);
     };
 
-    const { creditReport } = useCreditReport();
-
-    const inquiryAccs = creditReport?.inquiries.map((i: { subscriberNumber: number; }) =>({
-       ...i,
-       subscriberCode: i.subscriberNumber
+    const inquiryAccs = creditReport?.inquiries.map((i: { subscriberNumber: number; }) => ({
+        ...i,
+        subscriberCode: i.subscriberNumber
     }));
 
     const bureauCounts: Record<string, number> = {
@@ -107,27 +108,27 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
     });
 
     const filteredAccounts = useMemo(() => {
-    if (!inquiryAccs) return [];
+        if (!inquiryAccs) return [];
 
-    let accounts = [...inquiryAccs];
+        let accounts = [...inquiryAccs];
 
-    if (selectedBureau && selectedBureau !== 'ALL_BUREAUS') {
-        accounts = accounts.filter((account: any) => account.bureau === selectedBureau);
-    }
+        if (selectedBureau && selectedBureau !== 'ALL_BUREAUS') {
+            accounts = accounts.filter((account: any) => account.bureau === selectedBureau);
+        }
 
-    if (searchTerm) {
-        accounts = accounts.filter((account: any) => {
-            const bureau = account.bureau?.toLowerCase() || '';
-            const subscriberName = account.subscriberName?.toLowerCase() || '';
-            return (
-                bureau.includes(searchTerm.toLowerCase()) ||
-                subscriberName.includes(searchTerm.toLowerCase())
-            );
-        });
-    }
+        if (searchTerm) {
+            accounts = accounts.filter((account: any) => {
+                const bureau = account.bureau?.toLowerCase() || '';
+                const subscriberName = account.subscriberName?.toLowerCase() || '';
+                return (
+                    bureau.includes(searchTerm.toLowerCase()) ||
+                    subscriberName.includes(searchTerm.toLowerCase())
+                );
+            });
+        }
 
-    return accounts;
-}, [searchTerm, selectedBureau, inquiryAccs]);
+        return accounts;
+    }, [searchTerm, selectedBureau, inquiryAccs]);
 
 
     const handleEditReason = useCallback(({ reason, description }: { reason: string; description: string; }, idx: number) => {
@@ -159,90 +160,101 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
     }, [columnInstructions],);
 
     const handleReasonForAll = (reason: string) => {
-       const newColumnReasons = Array.from({length: filteredAccounts.length},(r: ColumnReason, idx: number)=>({
+        const newColumnReasons = Array.from({ length: filteredAccounts.length }, (r: ColumnReason, idx: number) => ({
             index: idx,
-           description: reason,
-           reason: reason
-       }))
-       setColumnReasons(newColumnReasons)
-    }
-    
+            description: reason,
+            reason: reason
+        }));
+        setColumnReasons(newColumnReasons);
+    };
+
     const handleInstructionsForAll = (instruction: string) => {
-      const newInstructionReasons = Array.from({length: filteredAccounts.length},(r: ColumnInstruction, idx: number)=>({
-           index: idx,
-           description: instruction,
-           instruction: instruction
-       }))
-       setColumnInstructions(newInstructionReasons)
-    }
+        const newInstructionReasons = Array.from({ length: filteredAccounts.length }, (r: ColumnInstruction, idx: number) => ({
+            index: idx,
+            description: instruction,
+            instruction: instruction
+        }));
+        setColumnInstructions(newInstructionReasons);
+    };
 
     const createLetters = async () => {
-        setLoading(true)
+        setLoading(true);
         const letters: DisputeLetter[] = [];
-        if(selectedInfo.length)
-        {   
-            const instructionsArray: {instruction:string; reason:string}[] = []
-            selectedInfo.forEach((info,idx) => {
-               const inquiryInstruction = columnInstructions.find(i => i.index === idx)?.instruction ??  disputeInstructions[0].items[0]
-               const inquiryReason = columnReasons.find(r => r.index === idx)?.reason ?? disputeOptions[0].items[0]
-               instructionsArray.push({ instruction: inquiryInstruction, reason: inquiryReason })
-               
-               letters.push({
-                id: randomId(),
-                letterName: 'Inquiries',
-                shortDescription: 'Credit Bureau',
-                letterType: 'InquiryRound1',
-                creditBureauName: info.bureau.toUpperCase(),
-                createdAt: new Date().toISOString(),
-                letterRound: 1,
-                userId: user?.uid || '',
-                letterSent: false,
-                letterCompleted: false,
-                accounts: [],
-                inquiries: [...instructionsArray]
-               })
-            })
+
+        if (selectedInfo.length) {
+            const instructionsArray: { instruction: string; reason: string; }[] = [];
+            selectedInfo.forEach((info, idx) => {
+                const inquiryInstruction = columnInstructions.find(i => i.index === idx)?.instruction ?? disputeInstructions[0].items[0];
+                const inquiryReason = columnReasons.find(r => r.index === idx)?.reason ?? disputeOptions[0].items[0];
+                instructionsArray.push({ instruction: inquiryInstruction, reason: inquiryReason });
+
+                letters.push({
+                    id: randomId(),
+                    letterName: 'Inquiry Removal Letter #1',
+                    shortDescription: 'Credit Bureau',
+                    letterType: 'InquiryRound1',
+                    creditBureauName: info.bureau.toUpperCase(),
+                    createdAt: new Date().toISOString(),
+                    letterRound: 1,
+                    userId: user?.uid || '',
+                    letterSent: false,
+                    letterCompleted: false,
+                    accounts: [],
+                    inquiries: [...instructionsArray],
+                    metadata: {
+                        subscriberCode: info.subscriberCode || '',
+                    }
+                });
+            });
         }
-        if(selectedCreditors.length) {
-          selectedCreditors.forEach(creditor => {
-            letters.push({
-                id: randomId(),
-                letterName: 'Inquiries',
-                shortDescription: 'Credit Bureau',
-                letterType: 'InquiryRound1',
-                creditBureauName: creditReport.creditors.find((c: { subscriberCode: string; }) => c.subscriberCode === creditor.creditor).name,
-                createdAt: new Date().toISOString(),
-                letterRound: 1,
-                userId: user?.uid || '',
-                letterSent: false,
-                letterCompleted: false
-               })
-          })
+        if (selectedCreditors.length) {
+            selectedCreditors.forEach(creditor => {
+                letters.push({
+                    id: randomId(),
+                    letterName: 'Inquiry Removal Letter #1',
+                    shortDescription: 'Creditor',
+                    letterType: 'InquiryRound1',
+                    creditBureauName: creditReport.creditors.find((c: { subscriberCode: string; }) => c.subscriberCode === creditor.creditor).name,
+                    createdAt: new Date().toISOString(),
+                    letterRound: 1,
+                    userId: user?.uid || '',
+                    letterSent: false,
+                    letterCompleted: false,
+                    metadata: {
+                        subscriberCode: creditor.creditor || '',
+                    }
+                });
+            });
 
         }
         try {
-        await Promise.all(
-        letters.map(async (letter) => {
-            const letterRef = doc(db, 'letters', letter.id);
-            await setDoc(letterRef, letter);
-        })
-        );
-        setLoading(false)
-        toast('Success', {
-        description: 'Personal information dispute letters created successfully.',
-        duration: 3000,
-        });
+            await Promise.all(
+                letters.map(async (letter) => {
+                    const letterRef = doc(db, 'letters', letter.id);
+                    await setDoc(letterRef, letter);
+                })
+            );
+            setLoading(false);
+            toast('Success', {
+                description: 'Personal information dispute letters created successfully.',
+                duration: 3000,
+            });
+            setSelectedCreditors([]);
+            setSelectedInfo([]);
+            router.refresh();
+            onCloseDialog();
+            setColumnInstructions([]);
+            setColumnReasons([]);
+
         } catch (error) {
-            setLoading(false)
+            setLoading(false);
             toast('Error', {
-        description: 'Something went wrong while creating dispute letters.',
-        duration: 3000,
-        })
+                description: 'Something went wrong while creating dispute letters.',
+                duration: 3000,
+            });
         }
 
-        setSelectedCreditors([])
-        setSelectedInfo([])
-    }
+    };
 
     return (
         <div className="w-full ">
@@ -282,8 +294,8 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                         </SelectContent>
                     </Select>
 
-                   {
-                    allSelected && 
+                    {
+                        allSelected &&
                         <div className="flex space-x-4">
                             <Button
                                 variant="outline"
@@ -292,7 +304,7 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                             >
                                 Reasons for All
                             </Button>
-                           <Button
+                            <Button
                                 variant="outline"
                                 className="text-brand-navy border-brand-navy hover:bg-brand-navy/10"
                                 onClick={() => setIsInstructionForAllModalOpen(true)}
@@ -300,8 +312,8 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                                 Instructions for All
                             </Button>
                         </div>
-                   }                
-                
+                    }
+
                 </div>
 
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -337,15 +349,16 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                                             const checkedBureau: SelectedInfo = {
                                                 index: idx,
                                                 bureau: account.bureau,
-                                                subscriberName: account.subscriberName
-                                            }
-                                            if(filteredAccounts.length === selectedInfo.length){setAllSelected(true)}
-                                            if(filteredAccounts.length !== selectedInfo.length){setAllSelected(false)}
-                                            if(selectedInfo.some(info => info.index === idx)) {
-                                            setSelectedInfo(prev => prev.filter(info => info.index !== idx));
-                                            return;
+                                                subscriberName: account.subscriberName,
+                                                subscriberCode: account.subscriberCode
                                             };
-                                            setSelectedInfo([...selectedInfo, checkedBureau])                                            
+                                            if (filteredAccounts.length === selectedInfo.length) { setAllSelected(true); }
+                                            if (filteredAccounts.length !== selectedInfo.length) { setAllSelected(false); }
+                                            if (selectedInfo.some(info => info.index === idx)) {
+                                                setSelectedInfo(prev => prev.filter(info => info.index !== idx));
+                                                return;
+                                            };
+                                            setSelectedInfo([...selectedInfo, checkedBureau]);
                                         }
                                     }}
                                     creditorValue={selectedCreditors.find((c) => c.index === idx)?.creditor}
@@ -395,14 +408,14 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                     <ReasonsForAllModal
                         open={isReasonForAllModalOpen}
                         onOpenChange={setIsReasonForAllModalOpen}
-                        handleReasonForAll= {(reason: string) =>  handleReasonForAll(reason)}
+                        handleReasonForAll={(reason: string) => handleReasonForAll(reason)}
                     />
                 )}
                 {isInstructionForAllModalOpen && (
                     <InstructionsForAllModal
                         open={isInstructionForAllModalOpen}
                         onOpenChange={setIsInstructionForAllModalOpen}
-                        handleInstructionsForAll= {(instruction: string) =>  handleInstructionsForAll(instruction)}
+                        handleInstructionsForAll={(instruction: string) => handleInstructionsForAll(instruction)}
                     />
                 )}
             </div>
@@ -414,7 +427,7 @@ export default function InquiriesTable({ onCloseDialog }: Props) {
                     disabled={!selectedInfo.length && !selectedCreditors.length}
                     onClick={createLetters}
                 >
-                    {loading ? <Loader  className="h-4 w-4 animate-spin" /> : ' Create Letters'} 
+                    {loading ? <Loader className="h-4 w-4 animate-spin" /> : ' Create Letters'}
                 </Button>
             </div>
         </div>

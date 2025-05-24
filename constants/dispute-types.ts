@@ -1,3 +1,11 @@
+export enum DisputeType {
+    PERSONAL_INFO = 'personal-info',
+    DEROGATORY = 'derogatory',
+    INQUIRIES = 'inquiries',
+    LATE_PAYMENTS = 'late-payments',
+    PUBLIC_RECORDS = 'public-records',
+    ALL_ACCOUNTS = 'all-accounts'
+}
 export const DISPUTE_TYPES = [
     {
         name: 'Personal Information',
@@ -21,8 +29,8 @@ export const DISPUTE_TYPES = [
         name: 'Public Records',
         type: 'public-records'
     },
-    {
-        name: 'All Accounts',
-        type: 'all-accounts'
-    },
+    // {
+    //     name: 'All Accounts',
+    //     type: 'all-accounts'
+    // },
 ];

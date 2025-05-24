@@ -24,7 +24,7 @@ export default function PersonalInformationDisputeDialog({ open, onOpenChange }:
     const [selectedInfos, setSelectedInfos] = useState<SelectedInfo[]>([]);
 
     const { creditReport, loading: loadingCreditReport } = useCreditReport();
-    const personalInfo = creditReport?.personalInfo;
+    const personalInfo = creditReport?.personalInfo;    
 
     const handleSelectionChange = (bureau: Bureau, type: string, value: string) => {
         const exists = selectedInfos?.find((info) => info.bureau === bureau && info.value === value && info.type === type);

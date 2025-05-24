@@ -67,15 +67,15 @@ export default function ConsumerLawOptions({ selectedOption="Derogatory", select
     }, [creditReport?.accounts.length, creditReport?.inquiries?.length, creditReport?.publicRecords?.length, derogatoryAccs?.length, latePaymentAccounts?.length]);
 
     return (
-        <div className="grid grid-cols-6 gap-4">
+        <div className="flex gap-4 flex-wrap">
             {derivedDisputeTypes.map((type: any) => (
                 <div
                     key={type.name}
                     className={`
-                  border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md hover:border-gray-300
-                  ${selectedOption === type.name ? "border-2 border-green-500 shadow-lg" : ""}
+                  border rounded-lg p-4 flex-1 cursor-pointer transition-all hover:shadow-md hover:border-gray-300
+                  ${selectedOption === type.type ? "border-2 border-green-500 shadow-lg" : ""}
                 `}
-                    onClick={() => selectOption(type.name)}
+                    onClick={() => selectOption(type.type)}
                 >
                     <div className="mb-2 flex align-center justify-center">
                         <Badge className="bg-green-100 text-green-800 hover:bg-green-100 gap-1">

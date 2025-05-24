@@ -3,15 +3,12 @@
 import { AccountDetailsDialog } from '@/app/creditreport/components/account-details-dialog';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { disputeInstructions, disputeOptions } from '@/constants/edit-dipute-letter-data';
 import { useCreditReport } from '@/hooks/use-credit-report';
 import { DisputeAccount } from '@/types/account';
-import { useCallback, useMemo, useState } from "react";
-import { SelectDisputeInstruction, SelectDisputeReason } from "../dispute-reason-instructions";
+import { useCallback, useState } from "react";
 import { Account } from "../DisputeTable";
-import SearchBar from "../search-bar";
 import AccountTableRow from './account-table-row';
 import { CreateAccountDisputeDialog } from './create-account-dispute-modal';
 export interface SelectedInfo {
@@ -39,7 +36,7 @@ interface Props {
     onCloseDialog: () => void;
 }
 
-export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
+export default function ConsumerLawLatePayments({ onCloseDialog }: Props) {
     const [selectedDisputeType, setSelectedDisputeType] = useState<string | null>("Derogatory");
     const [selectedInquiries, setSelectedInquiries] = useState<Record<string, boolean>>({});
     const [selectedFilter, setSelectedFilter] = useState<string>("All");
@@ -55,11 +52,6 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
     const [showAddressModal, setShowAddressModal] = useState(false);
 
     const [allSelected, setAllSelected] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-
-    const [selectedReason, setSelectedReason] = useState('');
-    const [selectedInstruction, setSelectedInstruction] = useState('');
-
 
     const isChecked = (index: number, bureau: string) => {
         return selectedInfo.some((info) => info.index === index && info.bureau === bureau);
@@ -79,20 +71,7 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
         }
     };
 
-    const { derogatoryAccs } = useCreditReport();
-
-    const filteredAccounts = useMemo(() => {
-        if (!derogatoryAccs) return [];
-        if (searchTerm) {
-            return derogatoryAccs.filter((account: any) => {
-                const bureauDetails = account[0];
-                const creditorName = bureauDetails.creditorName.toLowerCase();
-                const accountNumber = bureauDetails.accountNumber.toLowerCase();
-                return creditorName.includes(searchTerm.toLowerCase()) || accountNumber.includes(searchTerm.toLowerCase());
-            });
-        }
-        return derogatoryAccs;
-    }, [searchTerm, derogatoryAccs]);
+    const { latePaymentAccounts } = useCreditReport();
 
     const handleEditReason = useCallback(({ reason, description }: { reason: string; description: string; }, idx: number) => {
         const existing = columnReasons.find((c) => c.index === idx);
@@ -133,28 +112,7 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
                     >
                         {allSelected ? "Deselect All" : "Dispute All"}
                     </Button>
-                    <Select value={disputeRound} onValueChange={setDisputeRound}>
-                        <SelectTrigger className="w-[200px]">
-                            <SelectValue placeholder="Select round" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {[...Array(6)].map((_, i) => (
-                                <SelectItem key={i} value={`Dispute Round #${i + 1}`}>
-                                    Dispute Round #{i + 1}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-
-                    {selectedAccounts.length > 0 && (
-                        <div className="flex space-x-4">
-                            <SelectDisputeReason selectedReason={selectedReason} setSelectedReason={setSelectedReason} />
-                            <SelectDisputeInstruction selectedInstruction={selectedInstruction} setSelectedInstruction={setSelectedInstruction} />
-                        </div>
-                    )}
                 </div>
-
-                <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             </div>
 
             <div className="border rounded-md overflow-hidden shadow-sm mt-4 ">
@@ -163,7 +121,7 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
                         <TableRow>
                             <TableHead className="w-12">
                                 <Checkbox
-                                    checked={selectedAccounts.length === filteredAccounts.length && filteredAccounts.length > 0}
+                                    checked={selectedAccounts.length === latePaymentAccounts.length && latePaymentAccounts.length > 0}
                                     onCheckedChange={toggleSelectAll}
                                 />
                             </TableHead>
@@ -176,7 +134,16 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {filteredAccounts.map((accounts: any, idx: number) => {
+                        {
+                            latePaymentAccounts.length === 0 && (
+                                <TableRow>
+                                    <td colSpan={7} className="text-center py-4 text-gray-500">
+                                        No late payment accounts found.
+                                    </td>
+                                </TableRow>
+                            )
+                        }
+                        {latePaymentAccounts.map((accounts: any, idx: number) => {
                             const account = accounts[0];
                             return (
                                 <AccountTableRow
@@ -274,7 +241,9 @@ export default function ConsumerLawDerogatories({ onCloseDialog }: Props) {
                     columnReasons={columnReasons}
                     selectedInfos={selectedInfo}
                     selectedCreditors={selectedCreditors}
-                    accounts={filteredAccounts}
+                    accounts={latePaymentAccounts}
+                    letterType='latePayment'
+                    letterName='Late Payment Letter 1'
                 />
             )}
         </div>

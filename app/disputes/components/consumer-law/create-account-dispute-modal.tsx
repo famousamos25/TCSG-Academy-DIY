@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import { disputeInstructions, disputeOptions } from '@/constants/edit-dipute-letter-data';
+import { useCreditReport } from '@/hooks/use-credit-report';
 import { auth, db } from "@/lib/firebase";
 import { randomId } from "@/lib/utils";
+import { Creditor } from '@/types/creditor';
 import { DisputeLetter } from '@/types/dispute-center';
 import { doc, setDoc } from "firebase/firestore";
 import { Info, Loader, X } from "lucide-react";
@@ -11,10 +14,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Select from "react-select";
 import { toast } from "sonner";
 import { ColumnInstruction, ColumnReason, SelectedCreditor, SelectedInfo } from './consumer-law-derogatories';
-import { DisputeAccount } from '@/types/account';
-import { disputeInstructions, disputeOptions } from '@/constants/edit-dipute-letter-data';
-import { useCreditReport } from '@/hooks/use-credit-report';
-import { Creditor } from '@/types/creditor';
 
 const transUnionAdresses = [
   "P.O BOX 2000, Chester, PA 19016-2000",
@@ -49,9 +48,16 @@ type CreateAccountDisputeProps = {
   columnReasons: ColumnReason[];
   columnInstructions: ColumnInstruction[];
   selectedCreditors: SelectedCreditor[];
+  letterType?: string;
+  letterName?: string;
+
 };
 
-export function CreateAccountDisputeDialog({ isOpen, handleClose, selectedInfos, columnReasons, accounts, selectedCreditors, columnInstructions, onComplete = () => { } }: CreateAccountDisputeProps) {
+export function CreateAccountDisputeDialog({
+  isOpen, handleClose, selectedInfos, columnReasons, accounts, selectedCreditors, columnInstructions, onComplete = () => { },
+  letterType = 'derogatory',
+  letterName = 'Derogatory Letter #1',
+}: CreateAccountDisputeProps) {
   const [user] = useAuthState(auth);
 
 
@@ -100,9 +106,7 @@ export function CreateAccountDisputeDialog({ isOpen, handleClose, selectedInfos,
 
       // Create letters for creditors
       selectedCreditors.forEach((creditor) => {
-        const account = accounts[creditor.index]?.[0];
-        console.log({ account });
-        
+        const account = accounts[creditor.index]?.[0];        
         const reason = columnReasons[creditor.index]?.reason || disputeOptions[0]?.items[0];
         const reasonDescription = columnReasons[creditor.index]?.description || disputeOptions[0]?.items[0];
 
@@ -111,8 +115,8 @@ export function CreateAccountDisputeDialog({ isOpen, handleClose, selectedInfos,
 
         letters.push({
           id: randomId(),
-          letterType: 'derogatory',
-          letterName: 'Derogatory Letter #1',
+          letterType,
+          letterName: letterType === "latePayment"? "Late Payment Letter Round 1" : letterName,
           shortDescription: 'Creditor',
           creditBureauName: creditors?.find(c => c.subscriberCode === creditor.creditor)?.name || '',
           createdAt: new Date().toISOString(),
@@ -159,8 +163,8 @@ export function CreateAccountDisputeDialog({ isOpen, handleClose, selectedInfos,
 
         letters.push({
           id: randomId(),
-          letterType: 'derogatory',
-          letterName: 'Derogatory Letter #1',
+          letterType,
+          letterName,
           shortDescription: 'Credit Bureau',
           creditBureauName: bureau?.toUpperCase(),
           createdAt: new Date().toISOString(),
@@ -200,11 +204,12 @@ export function CreateAccountDisputeDialog({ isOpen, handleClose, selectedInfos,
           instructionDescription
         };
       });
+
       selectedBureaus.forEach((bureau: any) => {
         letters.push({
           id: randomId(),
-          letterType: 'derogatory',
-          letterName: 'Derogatory Letter #1',
+          letterType,
+          letterName,
           shortDescription: 'Credit Bureau',
           creditBureauName: bureau?.value,
           createdAt: new Date().toISOString(),
